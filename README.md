@@ -30,7 +30,7 @@ install_pkgs <- function(pkg){
 install_pkgs(c("dplyr", "foreach", "ggplot2", "gridExtra", "reshape2", "scales"))
 ```
 
-Finally, to produce a `.rds` file for immediate visualization of loops in [DNAlandscapeR](dnalandscaper.aryeelab.org),
+Finally, to produce a `.rds` file for immediate visualization of loops in [DNAlandscapeR](https://dnalandscaper.aryeelab.org),
 the package `diffloop` must be installed either from Bioconductor or aryeelab. Run the following commands in the R console to get `diffloop` (if needed).  
 
 ```
@@ -63,22 +63,24 @@ The example below uses the test dataset bundled with the `hichipper` package sou
    samples:
       test_sample1: 
         - bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
+      test_sample2:
+	- bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
    ```
    
-  In this example the `test_sample1` sample has the `t_1_hg19.bwt2merged.bam` and `t_2_hg19.bwt2merged.bam` which
+  In this example, the `test_sample1` sample is defined the `t_1_hg19.bwt2merged.bam` and `t_2_hg19.bwt2merged.bam` which
   where output files from [HiC-Pro](https://github.com/nservant/HiC-Pro). Any `.bam` files from Hi-C preprocessing
   software should be valid input. 
   
   
 2. Run the pipeline:
   ```
-  $ hichipper --out test example.yaml
+  $ hichipper --out output1 example.yaml
   ```
 
 ## Usage details
   ```
   $ hichipper --help
-  Usage: preprocess_chiapet [OPTIONS] MANIFEST
+  Usage: hichipper [OPTIONS] file.yaml
 
   A preprocessing and QC pipeline for ChIA-PET data.
 

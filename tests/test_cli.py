@@ -8,7 +8,7 @@ def file_checksums_equal(file1, file2):
         checksum1 = md5.new(f.read()).digest()
     with open(file2) as f:
         checksum2 = md5.new(f.read()).digest()
-return checksum1==checksum2 
+    return checksum1==checksum2 
 
 def test_preproc_run():
     runner = CliRunner()
