@@ -122,13 +122,13 @@ Thus, the `config.yaml` file when executed from the current working directory wo
 ```
 samples:
   S75:
-    - hicpro_output/bowtie_results/bwt2/gm75/SRR3467178_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/gm75/SRR3467175_2_hg19.bwt2merged.bam
+    - hicpro_output/bowtie_results/bwt2/S75/SRR3467178_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/S75/SRR3467175_2_hg19.bwt2merged.bam
   S76:
-    - hicpro_output/bowtie_results/bwt2/gm76/SRR3467176_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/gm76/SRR3467176_2_hg19.bwt2merged.bam
+    - hicpro_output/bowtie_results/bwt2/S76/SRR3467176_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/S76/SRR3467176_2_hg19.bwt2merged.bam
   S77:
-    - hicpro_output/bowtie_results/bwt2/gm77/SRR3467177_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/gm77/SRR3467177_2_hg19.bwt2merged.bam
+    - hicpro_output/bowtie_results/bwt2/S77/SRR3467177_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/S77/SRR3467177_2_hg19.bwt2merged.bam
   S78:
-    - hicpro_output/bowtie_results/bwt2/gm78/SRR3467178_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/gm78/SRR3467178_2_hg19.bwt2merged.bam
+    - hicpro_output/bowtie_results/bwt2/S78/SRR3467178_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/S78/SRR3467178_2_hg19.bwt2merged.bam
 ```
 
 And could be executed running this command: 
