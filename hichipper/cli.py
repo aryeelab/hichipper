@@ -43,53 +43,59 @@ def get_subdirectories(dir):
 @click.option('--out', default=".", required=True, help='Output directory name')
 @click.option('--peak-pad', default="1500", help='Peak padding width (applied on both left and right); default = 1500')
 @click.option('--merge-gap', default="1500", help='Max gap size for merging peaks; default = 1500')
+@click.option('--min-qual', default="30", help='Minimum quality for read; default = 30')
+@click.option('--read-length', default="75", help='Length of reads from experiment; default = 75')
 @click.option('--keep-temp-files', is_flag=True, help='Keep temporary files?')
-@click.option('--skip-R', is_flag=True, help='Skip QC report generation? (Requires R)')
+@click.option('--skip-qc', is_flag=True, help='Skip QC report generation? (Requires R)')
+@click.option('--skip-diffloop', is_flag=True, help='Skipp diffloop processing of loops? (Requires R)')
 @click.argument('manifest')
 
-def main(manifest, out, peak_pad, merge_gap, keep_temp_files, skip_R):
-    """A preprocessing and QC pipeline for HiChIP data."""
-    __version__ = get_distribution('dnaloop').version
-    click.echo("Starting hichipper pipeline v%s" % __version__)
-    if os.path.exists(out):
-        sys.exit("ERROR: Output path (%s) already exists." % out)
-    os.mkdir(out)        
-    os.mkdir(os.path.join(out, 'log'))
-    with open(os.path.join(out, 'log', 'VERSION.txt'), 'w') as f: 
-        f.write(__version__ + '\n')
-    script_dir = os.path.dirname(os.path.realpath(__file__))
-    out = os.path.abspath(out)    
-    click.echo("Output folder: %s" % out) 
-    # Preprocess individual samples
-    samples = parse_manifest(manifest)
-    i = 0
-    for sample in samples:
-        i += 1
-        click.echo("\nProcessing sample %d of %d: %s" % (i, len(samples), sample['name']))
-        click.echo("    Read 1: %s" % sample['read1']) 
-        click.echo("    Read 2: %s" % sample['read2'])    
-        hichipperRun = os.path.join(script_dir, 'hichipper.sh')
-        if allow_missing_linker:
-            allow_missing_linker_opt = "allow_missing_linker=yes"
-        else:
-            allow_missing_linker_opt = "allow_missing_linker=no"
-        
-        cmd = [hichipperRun, os.path.join(out, 'samples', sample['name']), merge_gap, sample['read1'], sample['read2'], bwa_mode, allow_missing_linker_opt, linkers]
-        click.echo("    Executing: %s" % " ".join(cmd))
-        call(cmd)
+def main(manifest, out, peak_pad, merge_gap, keep_temp_files, skip_qc, skip_diffloop, min_qual, read_length):
+	"""A preprocessing and QC pipeline for HiChIP data."""
+	__version__ = get_distribution('hichipper').version
+	click.echo("Starting hichipper pipeline v%s" % __version__)
+	if os.path.exists(out):
+		sys.exit("ERROR: Output path (%s) already exists." % out)
+	os.mkdir(out)        
+	script_dir = os.path.dirname(os.path.realpath(__file__))
+	outfolder = os.path.abspath(out)  
+	cwd = os.getcwd()
+	click.echo("Executed from: %s" % cwd)
+	click.echo("Output folder: %s" % outfolder) 
+	sample_names = []
+	samples = parse_manifest(manifest)
+	click.echo(samples)
+	i = 0
+	for sample in samples:
+		i += 1
+		click.echo("\nProcessing sample %d of %d: %s" % (i, len(samples), sample['name']))
+		click.echo("    Alignment 1: %s" % sample['read1']) 
+		click.echo("    Alignment 2: %s" % sample['read2'])    
+		hichipperRun = os.path.join(script_dir, 'hichipper.sh')
+		
+		cmd = ['bash', hichipperRun, cwd, out, sample['name'], sample['read1'], sample['read2'], peak_pad, merge_gap, min_qual, read_length]        
+		click.echo("    Executing: %s" % " ".join(cmd))
+		call(cmd)
+		sample_names.append(sample['name'])
+				
+	if skip_qc:
+		click.echo("Skipping QC report generation since --skip-qc was specified")
+	else:
+		click.echo("Creating QC report")
+		print(sample_names)
+		cftg = ' '.join(sample_names)
+		cmd = ['Rscript', os.path.join(script_dir, 'qcReport.R'), cwd, out, cftg] 
+		click.echo("    Executing: %s" % " ".join(cmd))
+		call(cmd)
 
-    
-    if skip_R:
-        click.echo("Skipping QC report generation since --skip-R was specified")
-    else:
-        click.echo("Creating QC report")
-        cmd = ['Rscript', os.path.join(script_dir, 'qcReport.R'), out] 
-        call(cmd)
-    if keep_temp_files:
-        click.echo("Temporary files not deleted since --keep-temp-files was specified")
-    else:
-        click.echo("Deleting temporary files")
-    click.echo("Done")
-
-
-
+	if keep_temp_files:
+		click.echo("Temporary files not deleted since --keep-temp-files was specified")
+	else:
+		click.echo("Deleting temporary files")
+		files = os.listdir(outfolder)
+		for file in files:
+			if file.endswith(".tmp"):
+				os.remove(os.path.join(outfolder,file))
+			elif "_temporary_" in file:
+				os.remove(os.path.join(outfolder,file))
+	click.echo("Done")

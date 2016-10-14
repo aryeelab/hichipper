@@ -1,0 +1,5 @@
+samples:
+  test_sample1: 
+    - bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
+  test_sample2:
+    - bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam

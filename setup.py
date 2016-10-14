@@ -3,7 +3,7 @@ Preprocessing HiChIP data
 """
 from setuptools import find_packages, setup
 
-dependencies = ['click', 'pyyaml', 'numpy', 'MACS2']
+dependencies = ['click', 'PyYAML', 'Numpy', 'MACS2']
 
 setup(
     name='hichipper',

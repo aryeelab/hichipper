@@ -1,6 +1,9 @@
 #!/usr/bin/env Rscript
-samples <- commandArgs(trailingOnly = TRUE)
+args <- commandArgs(trailingOnly = TRUE)
 
+cwd <- args[1]
+outdir <- args[2]
+samples <- unlist(strsplit(args[c(-1,-2)], split = " "))
 
 library(ggplot2)
 library(scales)
@@ -10,14 +13,14 @@ library(reshape2)
 library(dplyr)
 library(readr)
 
-pdf <- "qcReport.pdf"
+pdf <- paste0(outdir, "/", "qcReport.pdf")
 
 message("Processing: ", samples)
 message("Saving QC Report to: ", pdf)
 
 # Creates a dataframe of summary statistics from the individual sample log output files
 readstats <- foreach(sample = samples, .combine="rbind") %do% {
-  sfilename <- file.path(paste0(sample, ".stat"))
+  sfilename <- file.path(paste0(outdir, "/", sample, ".stat"))
   rs <- read.table(sfilename, header=FALSE, stringsAsFactors = FALSE, sep = "=")[c(1:5),]
   rs <- cbind(sample=sample, rs)
   colnames(rs) <- c("sample", "metric", "count")
@@ -28,7 +31,7 @@ readstats$metric <- rep(metrics, length(samples))
 
 # Get loop lengths and counts
 loop_pets <- foreach(sample = samples, .combine="rbind") %do% {
-  sfilename <- file.path(paste0(sample , ".loop_counts.bedpe"))
+  sfilename <- file.path(paste0(outdir, "/",sample , ".intra.loop_counts.bedpe"))
   x <- read_delim(sfilename, " ", col_names = FALSE)
   intra <- x[,1]==x[,4]
   x <- x[intra,]
