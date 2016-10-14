@@ -10,11 +10,9 @@ def file_checksums_equal(file1, file2):
         checksum2 = md5.new(f.read()).digest()
     return checksum1==checksum2 
 
-def test_preproc_run():
-    runner = CliRunner()
-    result = runner.invoke(cli.main, ['--out', 'output1',  'example.yaml'])
-    assert result.exit_code == 0
 
 def test_loops_output():
+	runner = CliRunner()
+    result = runner.invoke(cli.main, ['--out', 'output1', 'example.yaml'])
 	assert file_checksums_equal('correct_output/co.intra.loop_counts.bedpe', 'output1/test_sample1.intra.loop_counts.bedpe')
 	assert file_checksums_equal('correct_output/co.intra.loop_counts.bedpe', 'output1/test_sample2.intra.loop_counts.bedpe')
