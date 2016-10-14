@@ -48,11 +48,11 @@ To install hichipper given the dependencies above, simply run:
 pip install hichipper
 ```
 
-## Usage example
+## Simple usage example
 
 The example below uses the test dataset bundled with the `hichipper` package source code. Download the package with:
 
-`git clone https://github.com/aryeelab/hichipper.git`
+`$ git clone https://github.com/aryeelab/hichipper.git`
 
 
 1. Create a sample description file:
@@ -78,9 +78,62 @@ The example below uses the test dataset bundled with the `hichipper` package sou
   
 2. Run the pipeline:
 
+`$ hichipper --out output1 example.yaml`
+
+
+## More typical example
+While the example above references files 
+
 ```
-hichipper --out output1 example.yaml
+fastq/
+|-- S75
+|  |-- SRR3467175_1.fastq.gz
+|  |-- SRR3467175_2.fastq.gz
+|-- S76
+|  |-- SRR3467176_1.fastq.gz
+|  |-- SRR3467176_2.fastq.gz
+|-- S77
+|  |-- SRR3467177_1.fastq.gz
+|  |-- SRR3467177_2.fastq.gz
+|-- S78
+|  |-- SRR3467178_1.fastq.gz
+|  |-- SRR3467178_2.fastq.gz
+hicpro_output/
+|-- bowtie_results/
+|  |-- bwt2/
+|  |  |-- S75
+|  |  |  |-- SRR3467175_1_hg19.bwt2merged.bam
+|  |  |  |-- SRR3467175_2_hg19.bwt2merged.bam
+|  |  |-- S76
+|  |  |  |-- SRR3467176_1_hg19.bwt2merged.bam
+|  |  |  |-- SRR3467176_2_hg19.bwt2merged.bam
+|  |  |-- S77
+|  |  |  |-- SRR3467177_1_hg19.bwt2merged.bam
+|  |  |  |-- SRR3467177_2_hg19.bwt2merged.bam
+|  |  |-- S78
+|  |  |  |-- SRR3467178_1_hg19.bwt2merged.bam
+|  |  |  |-- SRR3467178_2_hg19.bwt2merged.bam
+config.yaml
+config-hicpro-mboi-ext12.txt
 ```
+
+Thus, the `config.yaml` file when executed from the current working directory would look like this:
+
+```
+samples:
+  S75:
+    - hicpro_output/bowtie_results/bwt2/gm75/SRR3467178_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/gm75/SRR3467175_2_hg19.bwt2merged.bam
+  S76:
+    - hicpro_output/bowtie_results/bwt2/gm76/SRR3467176_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/gm76/SRR3467176_2_hg19.bwt2merged.bam
+  S77:
+    - hicpro_output/bowtie_results/bwt2/gm77/SRR3467177_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/gm77/SRR3467177_2_hg19.bwt2merged.bam
+  S78:
+    - hicpro_output/bowtie_results/bwt2/gm78/SRR3467178_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/gm78/SRR3467178_2_hg19.bwt2merged.bam
+```
+
+And could be executed running this command: 
+
+`$ hichipper --out GM12878 config.yaml`
 
 ## Usage details
 
@@ -100,3 +153,11 @@ Options:
   --skip-diffloop     Skipp diffloop processing of loops? (Requires R)
   --help              Show this message and exit.
   ```
+
+## Analysis of loops in the R environment
+Talk about diffloop
+
+## Visualization of Loops
+Talk about DNAlandscapeR
+
+

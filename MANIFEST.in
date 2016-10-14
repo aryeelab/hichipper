@@ -1,5 +1,10 @@
 #Tests and data
 recursive-include tests *
 
+#Scripts
+recursive-include hichipper *
+
 #Misc
+include Authors.rst
 include LICENSE.txt
+include NEWS

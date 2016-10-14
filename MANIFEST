@@ -1,9 +1,0 @@
-AUTHORS.rst
-LICENSE.txt
-NEWS
-setup.cfg
-setup.py
-tests/example.yaml
-tests/test_cli.py
-hichipper/hichipper.sh
-hichipper/qcReport.R
