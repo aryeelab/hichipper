@@ -52,7 +52,7 @@ pip install hichipper
 
 The example below uses the test dataset bundled with the `hichipper` package source code. Download the package with:
 
-`git clone https://github.com/aryeelab/dnaloop.git`
+`git clone https://github.com/aryeelab/hichipper.git`
 
 
 1. Create a sample description file:
