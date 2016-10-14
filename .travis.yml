@@ -1,0 +1,25 @@
+language: python
+
+python:
+  - "2.7"
+
+addons:
+  apt:
+    packages:
+    - samtools
+    
+before_install:
+  # Install bedtools
+  - git clone https://github.com/arq5x/bedtools2.git
+  - cd bedtools2
+  - git checkout tags/v2.25.0
+  - make
+  - cd ..
+  - PATH=`pwd`/bedtools2/bin:$PATH
+  - cd ..
+
+install:
+ - python setup.py install
+
+script: 
+ - cd test && py.test
