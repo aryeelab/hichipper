@@ -4,6 +4,7 @@ dist/
 build/
 *.egg-info/
 
+.pypirc
 .cache/
 .tox/
 .coverage
