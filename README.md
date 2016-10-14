@@ -2,11 +2,13 @@
 
 [![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper)
 
-A preprocessing and QC pipeline for HiChIP data.
+The hichipper package implements our data processing and quality control pipeline for HiChIP data. This package takes aligned `.bam` files and a parameter manifest file (.yaml) as input and produces output that can be used to 1) determine quality of library prep, 2) visualize loops interactively, and 3) estimate per-loop statistical confidence measures.
+
+![hichipper_overview](overview.png)
 
 ## Dependencies
 
-The following dependencies need to be manually installed:
+The following dependencies need to be manually installed and available in the PATH when executing the commands. 
 
 - samtools
 - bedtools
@@ -40,7 +42,7 @@ devtools::install_github("aryeelab/diffloop")
 
 ## Installation
 
-Simply run:
+To install hichipper given the dependencies above, simply run:
 
     $ pip install hichipper
 
