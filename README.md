@@ -2,13 +2,35 @@
 
 [![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper)
 
+## About<a name="about"></a>
+
 The hichipper package implements our data processing and quality control pipeline for HiChIP data. This package takes aligned `.bam` files and a parameter manifest file (.yaml) as input and produces output that can be used to 1) determine quality of library prep, 2) visualize loops interactively, and 3) estimate per-loop statistical confidence measures.
 
+The package is maintained by [Caleb Lareau](caleblareau@g.harvard.edu)
+
+## Table of Contents<a name="toc"></a>
+- [About](#about)
+- [Table of Contents](#toc)
+- [Graphical Overview](#go)
+- [Quality Control reports](#qcr)
+- [Dependencies](#dependencies)
+- [Installation](#installation)
+- [Simple Usage Example](#sue)
+- [More typical example](#moe)
+- [Configurations](#configuration)
+- [Parameter Explainations](#pe)
+- [Analyzing loops in the R](#loops)
+- [Interactive visualization of loops](#viz)
+
+## Graphical Overview<a name="go"></a>
 ![hichipper_overview](overview.png)
 
-## Dependencies
+## Quality Control reports
+Show two histrograms, make references, mention to send interesting reports for further collection (will be anon. unless made public). 
 
-The following dependencies need to be manually installed and available in the PATH when executing the commands. 
+## Dependencies<a name="dependencies"></a>
+
+The following dependencies need to be manually installed and available in the PATH when executing hichipper. 
 
 - samtools
 - bedtools
@@ -40,7 +62,7 @@ install.packages("devtools") # if needed
 devtools::install_github("aryeelab/diffloop")
 ```
 
-## Installation
+## Installation<a name="installation"></a>
 
 To install hichipper given the dependencies above, simply run:
 
@@ -48,12 +70,13 @@ To install hichipper given the dependencies above, simply run:
 pip install hichipper
 ```
 
-## Simple usage example
+## Simple usage example<a name="sue"></a>
 
 The example below uses the test dataset bundled with the `hichipper` package source code. Download the package with:
 
-`$ git clone https://github.com/aryeelab/hichipper.git`
-
+```
+git clone https://github.com/aryeelab/hichipper.git
+```
 
 1. Create a sample description file:
   
@@ -68,7 +91,7 @@ The example below uses the test dataset bundled with the `hichipper` package sou
       test_sample1: 
         - bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
       test_sample2:
-		- bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
+	- bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
    ```
    
   In this example, the `test_sample1` sample is defined the `t_1_hg19.bwt2merged.bam` and `t_2_hg19.bwt2merged.bam` which
@@ -77,11 +100,11 @@ The example below uses the test dataset bundled with the `hichipper` package sou
   
   
 2. Run the pipeline:
+```
+hichipper --out output1 example.yaml
+```
 
-`$ hichipper --out output1 example.yaml`
-
-
-## More typical example
+## More typical example<a name="moe"></a>
 While the example above references files 
 
 ```
@@ -116,13 +139,18 @@ hicpro_output/
 config.yaml
 config-hicpro-mboi-ext12.txt
 ```
+The data in the `hicpro_output` directory could have been obtained by running: 
+```
+HiC-Pro --input fastq/ --output hicpro_output/ --config config-hicpro-mboi-ext12.txt -p
+```
+and subsequently executing Step 1 on a computing cluster node. 
 
 Thus, the `config.yaml` file when executed from the current working directory would look like this:
 
 ```
 samples:
   S75:
-    - hicpro_output/bowtie_results/bwt2/S75/SRR3467178_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/S75/SRR3467175_2_hg19.bwt2merged.bam
+    - hicpro_output/bowtie_results/bwt2/S75/SRR3467175_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/S75/SRR3467175_2_hg19.bwt2merged.bam
   S76:
     - hicpro_output/bowtie_results/bwt2/S76/SRR3467176_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/S76/SRR3467176_2_hg19.bwt2merged.bam
   S77:
@@ -133,9 +161,16 @@ samples:
 
 And could be executed running this command: 
 
-`$ hichipper --out GM12878 config.yaml`
+```
+hichipper --out GM12878 config.yaml
+```
 
-## Usage details
+## Configurations<a name="configuartions"></a>
+Running
+```
+hichipper --help
+```
+shows the parameters that can be used in this software package as reproduced below.
 
   ```
   $ Usage: hichipper [OPTIONS] MANIFEST
@@ -154,10 +189,13 @@ Options:
   --help              Show this message and exit.
   ```
 
-## Analysis of loops in the R environment
+## Parameter explanations<a name="pe"></a>
+Describe each parameter... Pictures would be a plus
+
+## Analyzing loops in the R<a name="loops"></a>
 Talk about diffloop
 
-## Visualization of Loops
+## Interactive visualization of loops<a name="viz"></a>
 Talk about DNAlandscapeR
 
 
