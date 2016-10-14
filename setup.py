@@ -3,16 +3,16 @@ Preprocessing HiChIP data
 """
 from setuptools import find_packages, setup
 
-dependencies = ['click']
+dependencies = ['click', 'pyyaml', 'numpy', 'MACS2']
 
 setup(
     name='hichipper',
     version='0.2.0',
-    url='https://github.com/caleblareau/hichipper',
+    url='https://github.com/aryeelab/hichipper',
     license='BSD',
-    author='Caleb Lareau',
+    author='Caleb Lareau and Martin Aryee',
     author_email='caleblareau@g.harvard.edu',
-    description='Preprocessing HiChIP data',
+    description='Processing HiChIP data into loops.',
     long_description=__doc__,
     packages=find_packages(exclude=['tests']),
     include_package_data=True,
