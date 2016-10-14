@@ -44,7 +44,9 @@ devtools::install_github("aryeelab/diffloop")
 
 To install hichipper given the dependencies above, simply run:
 
-    $ pip install hichipper
+```
+pip install hichipper
+```
 
 ## Usage example
 
@@ -66,7 +68,7 @@ The example below uses the test dataset bundled with the `hichipper` package sou
       test_sample1: 
         - bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
       test_sample2:
-	- bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
+		- bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
    ```
    
   In this example, the `test_sample1` sample is defined the `t_1_hg19.bwt2merged.bam` and `t_2_hg19.bwt2merged.bam` which
@@ -75,22 +77,26 @@ The example below uses the test dataset bundled with the `hichipper` package sou
   
   
 2. Run the pipeline:
-  ```
-  $ hichipper --out output1 example.yaml
-  ```
+
+```
+hichipper --out output1 example.yaml
+```
 
 ## Usage details
+
   ```
-  $ hichipper --help
-  Usage: hichipper [OPTIONS] file.yaml
+  $ Usage: hichipper [OPTIONS] MANIFEST
 
-  A preprocessing and QC pipeline for ChIA-PET data.
+  A preprocessing and QC pipeline for HiChIP data.
 
-  Options:
-    --out TEXT         Output directory name  [required]
-    --peak-pad TEXT    Peak padding width (applied on both left and right)
-    --merge-gap TEXT   Max gap size for merging peaks
-    --keep-temp-files  Keep temporary files?
-    --no-R     	       Skip QC report generation and creation of .rds file? (Requires R)
-    --help             Show this message and exit.
-
+Options:
+  --out TEXT          Output directory name [required]
+  --peak-pad TEXT     Peak padding width (applied on both left and right); default = 1500
+  --merge-gap TEXT    Max gap size for merging peaks; default = 1500
+  --min-qual TEXT     Minimum quality for read; default = 30
+  --read-length TEXT  Length of reads from experiment; default = 75
+  --keep-temp-files   Keep temporary files?
+  --skip-qc           Skip QC report generation? (Requires R)
+  --skip-diffloop     Skipp diffloop processing of loops? (Requires R)
+  --help              Show this message and exit.
+  ```

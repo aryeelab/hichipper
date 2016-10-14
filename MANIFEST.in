@@ -1,2 +1,5 @@
+#Tests and data
+recursive-include tests *
+
 #Misc
 include LICENSE.txt
