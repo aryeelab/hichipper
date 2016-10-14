@@ -4,5 +4,6 @@ dist/
 build/
 *.egg-info/
 
+.cache/
 .tox/
 .coverage
