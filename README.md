@@ -1,6 +1,7 @@
 # hichipper
-
 [![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper)
+
+This package is maintained by [Caleb Lareau](caleblareau@g.harvard.edu) under the supervision of [Martin Aryee](http://aryee.mgh.harvard.edu/).
 
 ## About<a name="about"></a>
 
@@ -12,8 +13,6 @@ and 3) estimate per-loop statistical confidence measures.
 Check out the [big graphical overview](#int) to see how **hichipper** integrates with some other
 tools to quickly assess the quality of your HiChIP library as well as find and visualize interesting
 biology. 
-
-The package is maintained by [Caleb Lareau](caleblareau@g.harvard.edu)
 
 ## Table of Contents<a name="toc"></a>
 - [About](#about)
