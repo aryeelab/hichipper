@@ -4,39 +4,46 @@
 
 ## About<a name="about"></a>
 
-The hichipper package implements our data processing and quality control pipeline for HiChIP data. This package takes aligned `.bam` files and a parameter manifest file (.yaml) as input and produces output that can be used to 1) determine quality of library prep, 2) visualize loops interactively, and 3) estimate per-loop statistical confidence measures.
+The hichipper package implements our data processing and quality control pipeline for HiChIP data.
+This package takes aligned `.bam` files and a sample manifest file (`.yaml`) as input and produces
+output that can be used to 1) determine quality of library prep, 2) visualize loops interactively,
+and 3) estimate per-loop statistical confidence measures.
+
+Check out the [big graphical overview](#int) to see how **hichipper** integrates with some other
+tools to quickly assess the quality of your HiChIP library as well as find and visualize interesting
+biology. 
 
 The package is maintained by [Caleb Lareau](caleblareau@g.harvard.edu)
 
 ## Table of Contents<a name="toc"></a>
 - [About](#about)
 - [Table of Contents](#toc)
-- [Graphical Overview](#go)
-- [Quality Control reports](#qcr)
+- [User Overview](#ugo)
 - [Dependencies](#dependencies)
 - [Installation](#installation)
 - [Simple Usage Example](#sue)
 - [More typical example](#moe)
 - [Configurations](#configuration)
 - [Parameter Explainations](#pe)
-- [Analyzing loops in the R](#loops)
+- [Integration with other tools](#int)
+- [Quality Control reports](#qcr)
 - [Interactive visualization of loops](#viz)
+- [Analyzing loops in the R](#loops)
 
-## Graphical Overview<a name="go"></a>
-![hichipper_overview](overview.png)
-
-## Quality Control reports
-Show two histrograms, make references, mention to send interesting reports for further collection (will be anon. unless made public). 
+## User Overview<a name="ugo"></a>
+A simple graphical guide to processing HiChIP data is shown below. The role of **hichipper**
+is to import `.bam` files from alignment software (e.g. [HiC-Pro](https://github.com/nservant/HiC-Pro))
+as well as a sample `.yaml` file 
+ 
+![hichipper_overview](media/Overview.png)
 
 ## Dependencies<a name="dependencies"></a>
 
-The following dependencies need to be manually installed and available in the PATH when executing hichipper. 
-
+The following dependencies need to be manually installed and available in the PATH when executing **hichipper**. 
 - samtools
 - bedtools
 
 Additionally, to produce a QC report, R must be available in the environment as well as these packages:
-
 - dplyr
 - foreach
 - ggplot2
@@ -184,13 +191,21 @@ Options:
   --min-qual TEXT     Minimum quality for read; default = 30
   --read-length TEXT  Length of reads from experiment; default = 75
   --keep-temp-files   Keep temporary files?
-  --skip-qc           Skip QC report generation? (Requires R)
-  --skip-diffloop     Skipp diffloop processing of loops? (Requires R)
+  --skip-qc           Skip QC report generation? (Requires R + packages)
+  --skip-diffloop     Skipp diffloop processing of loops? (Requires R + diffloop)
   --help              Show this message and exit.
   ```
 
 ## Parameter explanations<a name="pe"></a>
 Describe each parameter... Pictures would be a plus
+
+## Integration with Other Tools<a name="int"></a>
+![big1](media/Big1.png)
+![big2](media/Big2.png)
+A higher resolution [slide of this image](media/Big.pptx) is in the [media](media) folder.
+
+## Quality Control reports
+Show two histrograms, make references, mention to send interesting reports for further collection (will be anon. unless made public). 
 
 ## Analyzing loops in the R<a name="loops"></a>
 Talk about diffloop

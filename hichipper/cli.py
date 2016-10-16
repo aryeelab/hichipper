@@ -41,18 +41,23 @@ def get_subdirectories(dir):
 
 @click.command()
 @click.option('--out', default=".", required=True, help='Output directory name')
+@click.option('--min-dist', default="5000", help='Minimum distance ; default = 5000')
+@click.option('--max-dist', default="2000000", help='Peak padding width (applied on both left and right); default = 2000000')
+@click.option('--macs2-string', default="-p 0.01 --nomodel", help='String of arguments to pass to MACS2; default = "-p 0.01 --nomodel"')
 @click.option('--peak-pad', default="1500", help='Peak padding width (applied on both left and right); default = 1500')
 @click.option('--merge-gap', default="1500", help='Max gap size for merging peaks; default = 1500')
 @click.option('--min-qual', default="30", help='Minimum quality for read; default = 30')
 @click.option('--read-length', default="75", help='Length of reads from experiment; default = 75')
 @click.option('--keep-temp-files', is_flag=True, help='Keep temporary files?')
-@click.option('--skip-qc', is_flag=True, help='Skip QC report generation? (Requires R)')
-@click.option('--skip-diffloop', is_flag=True, help='Skipp diffloop processing of loops? (Requires R)')
+@click.option('--skip-qc', is_flag=True, help='Skip QC report generation? (Requires R + dependent packages (see README))')
+@click.option('--skip-diffloop', is_flag=True, help='Skipp diffloop processing of loops? (Requires R + diffloop)')
 @click.argument('manifest')
+@click.version_option()
 
-def main(manifest, out, peak_pad, merge_gap, keep_temp_files, skip_qc, skip_diffloop, min_qual, read_length):
+def main(manifest, out, peak_pad, merge_gap, keep_temp_files, skip_qc, skip_diffloop, min_qual, read_length, min_dist, max_dist, macs2_string):
 	"""A preprocessing and QC pipeline for HiChIP data."""
 	__version__ = get_distribution('hichipper').version
+
 	click.echo("Starting hichipper pipeline v%s" % __version__)
 	if os.path.exists(out):
 		sys.exit("ERROR: Output path (%s) already exists." % out)
@@ -73,7 +78,7 @@ def main(manifest, out, peak_pad, merge_gap, keep_temp_files, skip_qc, skip_diff
 		click.echo("    Alignment 2: %s" % sample['read2'])    
 		hichipperRun = os.path.join(script_dir, 'hichipper.sh')
 		
-		cmd = ['bash', hichipperRun, cwd, out, sample['name'], sample['read1'], sample['read2'], peak_pad, merge_gap, min_qual, read_length]        
+		cmd = ['bash', hichipperRun, cwd, out, sample['name'], sample['read1'], sample['read2'], peak_pad, merge_gap, min_qual, read_length, min_dist, max_dist, macs2_string]        
 		click.echo("    Executing: %s" % " ".join(cmd))
 		call(cmd)
 		sample_names.append(sample['name'])

@@ -1,0 +1,8 @@
+Sat Oct 15 20:38:49 EDT 2016: Processing test_sample1
+WARNING-- .bam 2 has more reads than .bam 1. Check to see if they actually match!
+Sat Oct 15 20:38:51 EDT 2016: Writing unique (i.e. deduplicated) interactions (based on chr1, pos1, chr2, pos2)
+Sat Oct 15 20:38:53 EDT 2016: Padded peaks by 1500bp
+Sat Oct 15 20:38:54 EDT 2016: Processing test_sample2
+WARNING-- .bam 2 has more reads than .bam 1. Check to see if they actually match!
+Sat Oct 15 20:38:56 EDT 2016: Writing unique (i.e. deduplicated) interactions (based on chr1, pos1, chr2, pos2)
+Sat Oct 15 20:38:58 EDT 2016: Padded peaks by 1500bp

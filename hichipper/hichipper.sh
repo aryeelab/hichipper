@@ -8,8 +8,11 @@ BAM_ONE=$4
 BAM_TWO=$5
 PEAK_PAD=$6
 MERGE_GAP=$7
-MIN_QUAL=30
-READ_LEN=75
+MIN_QUAL=$8
+READ_LEN=$9
+MIN_DIST=${10}
+MAX_DIST=${11}
+MACS2_STRING=${12}
 
 # Make useful shortcuts
 LOG_FILE="${OUT_NAME}/hichipper.log"
@@ -17,8 +20,8 @@ LOG_FILE="${OUT_NAME}/hichipper.log"
 echo "`date`: Processing ${SAMPLE}" | tee -a $LOG_FILE
 
 # Process .bam into bedpe
-samtools view -F2304 "${WK_DIR}/${BAM_ONE}" | awk -v READ_LEN="$READ_LEN" -v MIN_QUAL="$MIN_QUAL" '{if ($5>=MIN_QUAL) print $3,$4,$4+READ_LEN,$1; else print "*","*","*",$1}' OFS='\t' > "${OUT_NAME}/${SAMPLE}_pos_r1.bed.tmp"
-samtools view -F2304 "${WK_DIR}/${BAM_TWO}" | awk -v READ_LEN="$READ_LEN" -v MIN_QUAL="$MIN_QUAL" '{if ($5>=MIN_QUAL) print $3,$4,$4+READ_LEN,$1; else print "*","*","*",$1}' OFS='\t' > "${OUT_NAME}/${SAMPLE}_pos_r2.bed.tmp"
+samtools view -F2304 "${BAM_ONE}" | awk -v READ_LEN="$READ_LEN" -v MIN_QUAL="$MIN_QUAL" '{if ($5>=MIN_QUAL) print $3,$4,$4+READ_LEN,$1; else print "*","*","*",$1}' OFS='\t' > "${OUT_NAME}/${SAMPLE}_pos_r1.bed.tmp"
+samtools view -F2304 "${BAM_TWO}" | awk -v READ_LEN="$READ_LEN" -v MIN_QUAL="$MIN_QUAL" '{if ($5>=MIN_QUAL) print $3,$4,$4+READ_LEN,$1; else print "*","*","*",$1}' OFS='\t' > "${OUT_NAME}/${SAMPLE}_pos_r2.bed.tmp"
 Total_PETs1=`samtools flagstat "${WK_DIR}/${BAM_ONE}" | head -1 | awk '{print $1}'`
 Total_PETs2=`samtools flagstat "${WK_DIR}/${BAM_TWO}" | head -1 | awk '{print $1}'`
 
@@ -48,7 +51,7 @@ echo "`date`: Writing unique (i.e. deduplicated) interactions (based on chr1, po
 sort -k1,1n -k2,2n -k4,4n -k5,5n --unique "${OUT_NAME}/${SAMPLE}_interactions.bedpe.tmp" > "${OUT_NAME}/${SAMPLE}_interactions.dedup.bedpe.tmp"
 Mapped_unique_PETs_q30=`wc -l "${OUT_NAME}/${SAMPLE}_interactions.dedup.bedpe.tmp" | awk '{print $1}'`
 Mapped_unique_intrachromosomal_q30=`awk '$1 == $4 {print $0}' "${OUT_NAME}/${SAMPLE}_interactions.dedup.bedpe.tmp" | wc -l | awk '{print $1}'`
-Mapped_unique_intrachromosomal_q30_5kb=`awk '$1 == $4 && (($5+$6) - (($2+$3)/2)> 5000) {print $0}' "${OUT_NAME}/${SAMPLE}_interactions.dedup.bedpe.tmp" | wc -l | awk '{print $1}'`
+Mapped_unique_intrachromosomal_q30_5kb=`awk -v MIN_DIST="$MIN_DIST" '$1 == $4 && (($5+$6) - (($2+$3)/2)>=MIN_DIST) {print $0}' "${OUT_NAME}/${SAMPLE}_interactions.dedup.bedpe.tmp" | wc -l | awk '{print $1}'`
 
 echo "Mapped_unique_PETs_q30=${Mapped_unique_PETs_q30}" 
 echo "Mapped_unique_intrachromosomal_q30=${Mapped_unique_intrachromosomal_q30}"
@@ -59,7 +62,7 @@ echo "Mapped_unique_intrachromosomal_q30_5kb=${Mapped_unique_intrachromosomal_q3
 cut -f 1-3,7 "${OUT_NAME}/${SAMPLE}_interactions.dedup.bedpe.tmp" >  "${OUT_NAME}/${SAMPLE}_left.dedup.bed.tmp"
 cut -f 4-6,7 "${OUT_NAME}/${SAMPLE}_interactions.dedup.bedpe.tmp" >  "${OUT_NAME}/${SAMPLE}_right.dedup.bed.tmp"
 cat "${OUT_NAME}/${SAMPLE}_left.dedup.bed.tmp" "${OUT_NAME}/${SAMPLE}_right.dedup.bed.tmp" >> "${OUT_NAME}/${SAMPLE}_reads.bed.tmp"	
-macs2 callpeak -t "${OUT_NAME}/${SAMPLE}_reads.bed.tmp" -g hs -f BED -n "${OUT_NAME}/${SAMPLE}_temporary" -p 0.01 --nomodel
+macs2 callpeak -t "${OUT_NAME}/${SAMPLE}_reads.bed.tmp" -g hs -f BED -n "${OUT_NAME}/${SAMPLE}_temporary" $MACS2_STRING
 
 # Pad peaks
 awk -v PEAK_PAD="$PEAK_PAD" '{$2-=PEAK_PAD; $3+=PEAK_PAD}1' OFS="\t" "${OUT_NAME}/${SAMPLE}_temporary_peaks.narrowPeak" > "${OUT_NAME}/${SAMPLE}_temporary_peaks.narrowPeak.padded"
@@ -75,6 +78,8 @@ bedtools intersect -loj -a "${OUT_NAME}/${SAMPLE}_right.dedup.bed.tmp" -b "${OUT
 paste "${OUT_NAME}/${SAMPLE}_anchor1.bed.tmp" "${OUT_NAME}/${SAMPLE}_anchor2.bed.tmp" | cut -f 1-3,5-8 > "${OUT_NAME}/${SAMPLE}_anchor.interactions.tmp"
 awk '{if ($1 != "." && $4 != ".") print}' "${OUT_NAME}/${SAMPLE}_anchor.interactions.tmp" > "${OUT_NAME}/${SAMPLE}_anchor.interactions.bedpe.tmp"
 cut -f1-6  "${OUT_NAME}/${SAMPLE}_anchor.interactions.bedpe.tmp" | sort | uniq -c | awk '{print $2,$3,$4,$5,$6,$7,".",$1}' >  "${OUT_NAME}/${SAMPLE}.loop_counts.bedpe.tmp"
+Mapped_unique_intrachromosomal_q30_5kb=`awk -v MIN_DIST="$MIN_DIST" '$1 == $4 && (($5+$6)/2 - (($2+$3)/2)>=MIN_DIST) {print $0}' "${OUT_NAME}/${SAMPLE}_interactions.dedup.bedpe.tmp" | wc -l | awk '{print $1}'`
+
 awk '$1 != $4 {print $0}' "${OUT_NAME}/${SAMPLE}.loop_counts.bedpe.tmp" > "${OUT_NAME}/${SAMPLE}.inter.loop_counts.bedpe"
 awk '$1 == $4 && $2 != $5 {print $0}' "${OUT_NAME}/${SAMPLE}.loop_counts.bedpe.tmp" > "${OUT_NAME}/${SAMPLE}.intra.loop_counts.bedpe"
 
