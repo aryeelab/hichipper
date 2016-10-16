@@ -1,11 +1,12 @@
 # hichipper
-[![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper)
+[![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper) [![PyPI version](https://badge.fury.io/py/hichipper.svg)](https://badge.fury.io/py/hichipper) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) 
 
 This package is maintained by [Caleb Lareau](caleblareau@g.harvard.edu) under the supervision of [Martin Aryee](http://aryee.mgh.harvard.edu/).
 
 ## About<a name="about"></a>
 
-The hichipper package implements our data processing and quality control pipeline for HiChIP data.
+The hichipper package implements our data processing and quality control pipeline for 
+HiChIP](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3999.html) data.
 This package takes aligned `.bam` files and a sample manifest file (`.yaml`) as input and produces
 output that can be used to 1) determine quality of library prep, 2) visualize loops interactively,
 and 3) estimate per-loop statistical confidence measures.
