@@ -96,9 +96,9 @@ git clone https://github.com/aryeelab/hichipper.git
    ```
    samples:
       test_sample1: 
-        - bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
+       - bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
       test_sample2:
-	- bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
+       - bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
    ```
    
   In this example, the `test_sample1` sample is defined the `t_1_hg19.bwt2merged.bam` and `t_2_hg19.bwt2merged.bam` which
@@ -148,7 +148,7 @@ config-hicpro-mboi-ext12.txt
 ```
 The data in the `hicpro_output` directory could have been obtained by running: 
 ```
-HiC-Pro --input fastq/ --output hicpro_output/ --config config-hicpro-mboi-ext12.txt -p
+HiC-Pro -i fastq/ -o hicpro_output/ -c config-hicpro-mboi-ext12.txt -p
 ```
 and subsequently executing Step 1 on a computing cluster node. 
 
