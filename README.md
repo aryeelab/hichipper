@@ -1,5 +1,5 @@
 # hichipper
-This package is maintained by [Caleb Lareau](caleblareau@g.harvard.edu) under the supervision of [Martin Aryee](http://aryee.mgh.harvard.edu/).
+This package is maintained by [Caleb Lareau](caleblareau@g.harvard.edu) under the supervision of [Martin Aryee](http://aryee.mgh.harvard.edu/) and made freely available through [PyPi](https://pypi.python.org/pypi/hichipper/).
 
 [![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper) [![PyPI version](https://badge.fury.io/py/hichipper.svg)](https://badge.fury.io/py/hichipper) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) 
 
@@ -231,9 +231,32 @@ Options:
   --version            Show the version and exit.
   --help               Show this message and exit.
 ```
+ 
+Running
+```
+hichipper --version
+```  
+will show the version of this package currently installed. 
+
+```
+hichipper, version 0.2.4
+```
+Check the badge up top to see if a newer version is available or try directly through `pip`:
+
+```
+pip install hichipper --upgrate
+```
+
+Unless these flags are supplied, the pipeline will attempt to run. Minimally sufficient parameters include
+the `--out` flag and a `.yaml` file as shown in the example executions. Below are some explanations of the
+additional parameters than can be configured when executing the pipeline. 
 
 ## Parameter explanations<a name="pe"></a>
-Describe each parameter... Pictures would be a plus
+ADD MORE DETAIL HERE
+
+![param](media/param1.png)
+
+The `--merge-gap` command is basically just running [bedtools merge -d](http://bedtools.readthedocs.io/en/latest/content/tools/merge.html) on the padded anchors. 
 
 ## Integration with Other Tools<a name="int"></a>
 A graphical overview of HiChIP, **hichipper**, and other utilities to handle processed
@@ -246,10 +269,18 @@ A higher resolution [slide of this image](media/Big.pptx) is in the [media](medi
 ## Quality Control reports
 Show two histrograms, make references, mention to send interesting reports for further collection (will be anon. unless made public). 
 
-## Analyzing loops in the R<a name="loops"></a>
-Talk about diffloop
+## Finding differences<a name="loops"></a>
+Generate a bunch of HiChIP samples and want to see what's different between them? Check out
+the [diffloop vignette](http://rpubs.com/caleblareau/diffloop_vignette) for a sample analysis
+comparing loops from ChIA-PET (the cranky uncle of HiChIP) between K562 and MCF-7. Installation
+instructions for this package are shown in the [dependencies](#dependencies) section. 
 
 ## Interactive visualization of loops<a name="viz"></a>
-Talk about DNAlandscapeR
+One you've (hopefully) assessed that your samples look good, now go visualize them! One option
+is to link the `.bedpe` file to the [WashU Genome Browser](http://epigenomegateway.wustl.edu/). Another
+option is to upload the `.rds` to our implementation, [DNAlandscapeR](https://dnalandscaper.aryeelab.org). Navigate
+to the **Guide** tab to get a sense of how the browser works and ultimately add your sample(s) to a local user session
+using the **Import** tab. Note: the browser currently supports hg19/hg37 and mm9 genome builds. 
 
-
+## Questions/comments/feedback
+are always welcomed. Email [Caleb](caleblareau@g.harvard.edu) anytime! 
