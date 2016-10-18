@@ -72,7 +72,7 @@ devtools::install_github("aryeelab/diffloop")
 
 ## Installation<a name="installation"></a>
 
-To install hichipper given the dependencies above, simply run:
+To install **hichipper** given the dependencies above, simply run:
 
 ```
 pip install hichipper
@@ -80,7 +80,7 @@ pip install hichipper
 
 ## Simple usage example<a name="sue"></a>
 
-The example below uses the test dataset bundled with the `hichipper` package source code. Download the package with:
+The example below uses the test dataset bundled with the **hichipper** package source code. Download the package with:
 
 ```
 git clone https://github.com/aryeelab/hichipper.git
@@ -185,10 +185,15 @@ samples. These are the global output files for each particular run.
 Per sample, six (yes, 6, but don't worry-- there's lots of redundancy) output files are created. They are:
 
 1. `*.stat` Key summary statistics that show the number of PETs meeting certain criteria
+
 2. `*.inter.loop_counts.bedpe` Interchromosomal looping between defined anchor loci. 
+
 3. `*.intra.loop_counts.bedpe` Intrachromosomal looping between **all** defined anchor loci
+
 4. `*.filt.intra.loop_counts.bedpe` Intrachromosomal looping between defined anchor loci where loops meet min/max distance requirements.
+
 5. `*interactions.all.mango` The same set of loops as 4 but with per-loop FDR measures from the loop proximity bias correction algorithm originally implemented in [Mango](https://github.com/dphansti/mango) and presented in the same format. 
+
 6. `*.rds` The same set of loops as 4 but in an R binary compressed format of a `loops()` S4 object from `diffloop`. Can immediately be imported for interactie visualization in [DNAlandscapeR](https://dnalandscaper.aryeelab.org).
 
 So, outputs 4, 5, and 6 are identical except in presentation. These data are a subset of those presented in 3. Intrachromosomal interactions from 2 are often discarded by other preprocessing pipelines, but they may hold value. 
