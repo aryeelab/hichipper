@@ -23,6 +23,7 @@ biology.
 - [Installation](#installation)
 - [Simple Usage Example](#sue)
 - [More typical example](#moe)
+- [Output](#output)
 - [Configurations](#configuration)
 - [Parameter Explainations](#pe)
 - [Integration with other tools](#int)
@@ -40,8 +41,8 @@ as well as a sample `.yaml` file and produce user-friendly output.
 ## Dependencies<a name="dependencies"></a>
 
 The following dependencies need to be manually installed and available in the PATH when executing **hichipper**. 
-- samtools
-- bedtools
+- [samtools](http://www.htslib.org/download/)
+- [bedtools](http://bedtools.readthedocs.io/en/latest/content/installation.html)
 
 Additionally, to produce a QC report, R must be available in the environment as well as these packages:
 - dplyr
@@ -107,12 +108,14 @@ git clone https://github.com/aryeelab/hichipper.git
   
   
 2. Run the pipeline:
-```
-hichipper --out output1 example.yaml
-```
+	```
+	hichipper --out output1 example.yaml
+	```
 
 ## More typical example<a name="moe"></a>
-While the example above references files 
+While the example above references files that are part of the **hichipper** distribution,
+our experience using this tool in conjunction with HiC-Pro suggests that a file hierarchy
+like the following may be more typical. 
 
 ```
 fastq/
@@ -146,13 +149,12 @@ hicpro_output/
 config.yaml
 config-hicpro-mboi-ext12.txt
 ```
-The data in the `hicpro_output` directory could have been obtained by running: 
+The results in the `hicpro_output` directory could have been obtained by running: 
 ```
 HiC-Pro -i fastq/ -o hicpro_output/ -c config-hicpro-mboi-ext12.txt -p
 ```
-and subsequently executing Step 1 on a computing cluster node. 
-
-Thus, the `config.yaml` file when executed from the current working directory would look like this:
+and subsequently executing Step 1 on a computing cluster node.  Thus, the `config.yaml` file
+when executed from the current working directory would look like this:
 
 ```
 samples:
@@ -172,6 +174,26 @@ And could be executed running this command:
 hichipper --out GM12878 config.yaml
 ```
 
+would yield the default output from **hichipper**. 
+
+## Output<a name="output"></a>
+Each time the user runs **hichipper**, a `*.hichipper.log` file containing information pertaining to the 
+flow of the software execution is placed in the `out` directory (the object of the `--out` flag). Unless
+otherwise specified, a file ending in `*_hichipper-qcReport.pdf` provides the quality control report for the
+samples. These are the global output files for each particular run. 
+
+Per sample, six (yes, 6, but don't worry-- there's lots of redundancy) output files are created. They are:
+
+1. `*.stat` Key summary statistics that show the number of PETs meeting certain criteria
+2. `*.inter.loop_counts.bedpe` Interchromosomal looping between defined anchor loci. 
+3. `*.intra.loop_counts.bedpe` Intrachromosomal looping between **all** defined anchor loci
+4. `*.filt.intra.loop_counts.bedpe` Intrachromosomal looping between defined anchor loci where loops meet min/max distance requirements.
+5. `*interactions.all.mango` The same set of loops as 4 but with per-loop FDR measures from the loop proximity bias correction algorithm originally implemented in [Mango](https://github.com/dphansti/mango) and presented in the same format. 
+6. `*.rds` The same set of loops as 4 but in an R binary compressed format of a `loops()` S4 object from `diffloop`. Can immediately be imported for interactie visualization in [DNAlandscapeR](https://dnalandscaper.aryeelab.org).
+
+So, outputs 4, 5, and 6 are identical except in presentation. These data are a subset of those presented in 3. Intrachromosomal interactions from 2 are often discarded by other preprocessing pipelines, but they may hold value. 
+If the `qcReport` is generated, then the `.stat` file won't tell you anything new. However, if `R` is not installed on your machine, this will be a useful file for assessing the quality of your library.  
+
 ## Configurations<a name="configuartions"></a>
 Running
 ```
@@ -179,29 +201,41 @@ hichipper --help
 ```
 shows the parameters that can be used in this software package as reproduced below.
 
-  ```
-  $ Usage: hichipper [OPTIONS] MANIFEST
+```
+Usage: hichipper [OPTIONS] MANIFEST
 
   A preprocessing and QC pipeline for HiChIP data.
 
 Options:
-  --out TEXT          Output directory name [required]
-  --peak-pad TEXT     Peak padding width (applied on both left and right); default = 1500
-  --merge-gap TEXT    Max gap size for merging peaks; default = 1500
-  --min-qual TEXT     Minimum quality for read; default = 30
-  --read-length TEXT  Length of reads from experiment; default = 75
-  --keep-temp-files   Keep temporary files?
-  --skip-qc           Skip QC report generation? (Requires R + packages)
-  --skip-diffloop     Skipp diffloop processing of loops? (Requires R + diffloop)
-  --help              Show this message and exit.
-  ```
+  --out TEXT           Output directory name  [required]
+  --min-dist TEXT      Minimum distance ; default = 5000
+  --max-dist TEXT      Peak padding width (applied on both left and right);
+                       default = 2000000
+  --macs2-string TEXT  String of arguments to pass to MACS2; default = "-p
+                       0.01 --nomodel"
+  --peak-pad TEXT      Peak padding width (applied on both left and right);
+                       default = 1500
+  --merge-gap TEXT     Max gap size for merging peaks; default = 1500
+  --min-qual TEXT      Minimum quality for read; default = 30
+  --read-length TEXT   Length of reads from experiment; default = 75
+  --keep-temp-files    Keep temporary files?
+  --skip-qc            Skip QC report generation? (Requires R + dependent
+                       packages (see README))
+  --skip-diffloop      Skipp diffloop processing of loops? (Requires R +
+                       diffloop)
+  --version            Show the version and exit.
+  --help               Show this message and exit.
+```
 
 ## Parameter explanations<a name="pe"></a>
 Describe each parameter... Pictures would be a plus
 
 ## Integration with Other Tools<a name="int"></a>
+A graphical overview of HiChIP, **hichipper**, and other utilities to handle processed
+data is shown in the overview figure below and detailed descriptions of the different
+branches of output from **hichipper** are discussed at the bottom of this guide. 
 ![big1](media/Big1.png)
-![big2](media/Big2.png)
+![big2](media/Big2.png)<br>
 A higher resolution [slide of this image](media/Big.pptx) is in the [media](media) folder.
 
 ## Quality Control reports

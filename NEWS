@@ -1,3 +1,12 @@
+# 0.2.4
+- Added diffloop output
+- Better flow control/informative error messages
+- Added a few QC metrics
+
+# 0.2.2
+- Fixed bug in QC report generation
+- Full helper script integration
+
 # 0.2.1
 - Addition of MANIFEST file to add helper scripts
 

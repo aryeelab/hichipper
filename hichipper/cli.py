@@ -1,5 +1,6 @@
 import click
 import os
+import os.path
 import sys
 import shutil
 import yaml
@@ -57,7 +58,7 @@ def get_subdirectories(dir):
 def main(manifest, out, peak_pad, merge_gap, keep_temp_files, skip_qc, skip_diffloop, min_qual, read_length, min_dist, max_dist, macs2_string):
 	"""A preprocessing and QC pipeline for HiChIP data."""
 	__version__ = get_distribution('hichipper').version
-
+	
 	click.echo("Starting hichipper pipeline v%s" % __version__)
 	if os.path.exists(out):
 		sys.exit("ERROR: Output path (%s) already exists." % out)
@@ -74,25 +75,39 @@ def main(manifest, out, peak_pad, merge_gap, keep_temp_files, skip_qc, skip_diff
 	for sample in samples:
 		i += 1
 		click.echo("\nProcessing sample %d of %d: %s" % (i, len(samples), sample['name']))
-		click.echo("    Alignment 1: %s" % sample['read1']) 
-		click.echo("    Alignment 2: %s" % sample['read2'])    
+		#click.echo("    Alignment 1: %s" % sample['read1']) 
+		#click.echo("    Alignment 2: %s" % sample['read2'])    
 		hichipperRun = os.path.join(script_dir, 'hichipper.sh')
 		
 		cmd = ['bash', hichipperRun, cwd, out, sample['name'], sample['read1'], sample['read2'], peak_pad, merge_gap, min_qual, read_length, min_dist, max_dist, macs2_string]        
-		click.echo("    Executing: %s" % " ".join(cmd))
+		#click.echo("    Executing: %s" % " ".join(cmd))
 		call(cmd)
+		statout = out + "/" + sample['name'] + ".stat"
+		if not os.path.isfile(statout):
+			sys.exit('ERROR: Could not execute the pipeline successfully; check the .log file for more info')
 		sample_names.append(sample['name'])
-				
+		
+	# QC Report			
 	if skip_qc:
 		click.echo("Skipping QC report generation since --skip-qc was specified")
 	else:
 		click.echo("Creating QC report")
-		print(sample_names)
 		cftg = ' '.join(sample_names)
 		cmd = ['Rscript', os.path.join(script_dir, 'qcReport.R'), cwd, out, cftg] 
-		click.echo("    Executing: %s" % " ".join(cmd))
+		#click.echo("    Executing: %s" % " ".join(cmd))
 		call(cmd)
-
+		
+	# diffloop work
+	if skip_diffloop:
+		click.echo("Skipping diffloop analyses since --skip-diffloop was specified")
+	else:
+		click.echo("Creating QC report")
+		cftg = ' '.join(sample_names)
+		cmd = ['Rscript', os.path.join(script_dir, 'diffloop_work.R'), cwd, out, cftg] 
+		#click.echo("    Executing: %s" % " ".join(cmd))
+		call(cmd)	
+	
+	# Temporary File Management
 	if keep_temp_files:
 		click.echo("Temporary files not deleted since --keep-temp-files was specified")
 	else:
