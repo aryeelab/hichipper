@@ -1,6 +1,7 @@
 # 0.2.5
 - Fixed bug with single sample
 - Read length no longer important (need a new param though...)
+- Grey out loops that aren't significant in DNAlandscapeR
 - Improved QC report
 
 # 0.2.4
