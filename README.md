@@ -239,7 +239,7 @@ hichipper --version
 will show the version of this package currently installed. 
 
 ```
-hichipper, version 0.2.4
+hichipper, version 0.2.5
 ```
 Check the badge up top to see if a newer version is available or try directly through `pip`:
 
