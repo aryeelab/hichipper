@@ -43,7 +43,7 @@ loop_pets <- foreach(sample = samples, .combine="rbind") %do% {
 }
 
 np <- paste0("Mapped_unique_intra_q30_anchor_", round(min_length/1000), "KB-",  round(max_length/1000000), "Mb")
-metrics <- c("Total_PETs", "Mapped_PETs_q30", "Mapped_unique_PETs_q30", "Mapped_unique_intrachromosomal_q30", paste0("Mapped_unique_intrachromosomal_q30", round(min_length/1000), "KB"),
+metrics <- c("Total_PETs", "Mapped_PETs_q30", "Mapped_unique_PETs_q30", "Mapped_unique_intrachromosomal_q30", paste0("Mapped_unique_intrachromosomal_q30_>", round(min_length/1000), "KB"),
              np, paste0("Mapped_unique_intra_q30_anchor<", round(min_length/1000), "KB"),  paste0("Mapped_unique_intra_q30_anchor>",round(max_length/1000000), "Mb"), "Number_Peaks")
 readstats$metric <- factor(rep(metrics, length(samples)), levels=metrics)
 
