@@ -64,7 +64,7 @@ install_pkgs(c("dplyr", "foreach", "ggplot2", "gridExtra", "reshape2", "scales")
 ```
 
 Finally, to produce a `.rds` file for immediate visualization of loops in [DNAlandscapeR](https://dnalandscaper.aryeelab.org),
-the [diffloop](http://bioconductor.org/packages/release/bioc/html/diffloop.html) package must be installed either from Bioconductor or aryeelab. Run the following commands in the R console to get `diffloop` (if needed).  
+the `diffloop` package must be installed either from [Bioconductor](http://bioconductor.org/packages/release/bioc/html/diffloop.html) (for the stable release version) or [Github](https://github.com/aryeelab/hichipper) (for the most current version). Run the following commands in the R console to install `diffloop` from Github (if needed).  
 
 ```
 install.packages("devtools") # if needed
@@ -154,7 +154,7 @@ The results in the `hicpro_output` directory could have been obtained by running
 ```
 HiC-Pro -i fastq/ -o hicpro_output/ -c config-hicpro-mboi-ext12.txt -p
 ```
-and subsequently executing Step 1 on a computing cluster node.  Thus, the `config.yaml` file
+and subsequently executing the resulting `HiCPro_step1_hic.sh`.  Thus, the `config.yaml` file
 when executed from the current working directory would look like this:
 
 ```
@@ -178,11 +178,13 @@ hichipper --out GM12878 config.yaml
 would yield the default output from **hichipper**. 
 
 ## Output<a name="output"></a>
+
+### Per-run output files
 Each time the user runs **hichipper**, a `*.hichipper.log` file containing information pertaining to the 
 flow of the software execution is placed in the `out` directory (specified by the `--out` flag). Unless
-otherwise specified, a file ending in `*_hichipper-qcReport.pdf` provides the quality control report for the
-samples. These are the global output files for each particular run. 
+otherwise specified, a file ending in `*_hichipper-qcReport.pdf` provides a summary quality control report for all samples. 
 
+### Per-sample output files
 Per sample, six (yes, 6, but don't worry-- there's lots of redundancy) output files are created. They are:
 
 1. `*.stat` Key summary statistics that show the number of PETs meeting certain criteria
@@ -197,10 +199,10 @@ Per sample, six (yes, 6, but don't worry-- there's lots of redundancy) output fi
 
 6. `*.rds` The same set of loops as 4 but in an R binary compressed format of a `loops()` S4 object from [diffloop](http://bioconductor.org/packages/release/bioc/html/diffloop.html). Can immediately be imported for interactie visualization in [DNAlandscapeR](https://dnalandscaper.aryeelab.org).
 
-So, outputs 4, 5, and 6 are identical except in presentation. These data are a subset of those presented in 3. Intrachromosomal interactions from 2 are often discarded by other preprocessing pipelines, but they may hold value. 
+So, outputs 4, 5, and 6 are identical except in presentation. These data are a subset of those presented in 3. Interchromosomal interactions from 2 are often discarded by other preprocessing pipelines, but they may hold value. 
 If the `qcReport` is generated, then the `.stat` file won't tell you anything new. However, if `R` is not installed on your machine, this will be a useful file for assessing the quality of your library.  
 
-## Configurations<a name="configuartions"></a>
+## Configurations<a name="configuration"></a>
 Running
 ```
 hichipper --help
@@ -263,15 +265,15 @@ The `--merge-gap` command is basically just running [bedtools merge -d](http://b
 Show two histrograms, make references, mention to send interesting reports for further collection (will be anon. unless made public). 
 
 ## Finding differences<a name="loops"></a>
-Generate a bunch of HiChIP samples and want to see what's different between them? Check out
-the [diffloop vignette](http://rpubs.com/caleblareau/diffloop_vignette) for a sample analysis
+Have you generated a bunch of HiChIP samples and want to see what's different between them? Check out
+the [diffloop vignette](http://rpubs.com/caleblareau/diffloop_vignette) for an example analysis
 comparing loops from ChIA-PET (the cranky uncle of HiChIP) between K562 and MCF-7. Installation
 instructions for this package are shown in the [dependencies](#dependencies) section. 
 
 ## Interactive visualization of loops<a name="viz"></a>
 One you've (hopefully) assessed that your samples look good, now go visualize them! One option
 is to link the `.bedpe` file to the [WashU Genome Browser](http://epigenomegateway.wustl.edu/). Another
-option is to upload the `.rds` to our implementation, [DNAlandscapeR](https://dnalandscaper.aryeelab.org). Navigate
+option is to upload the `.rds` to our genome topology browser, [DNAlandscapeR](https://dnalandscaper.aryeelab.org). Navigate
 to the **Guide** tab to get a sense of how the browser works and ultimately add your sample(s) to a local user session
 using the **Import** tab. Note: the browser currently supports hg19/hg37 and mm9 genome builds. 
 
