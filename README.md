@@ -7,36 +7,37 @@ This package is maintained by [Caleb Lareau](caleblareau@g.harvard.edu) under th
 
 The **hichipper** package implements our data processing and quality control pipeline for 
 [HiChIP](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3999.html) data.
-This package takes aligned `.bam` files and a sample manifest file (`.yaml`) as input and produces
-output that can be used to 1) determine quality of library prep, 2) visualize loops interactively,
-and 3) estimate per-loop statistical confidence measures.
+This package takes aligned `.bam` files and a sample manifest file (`.yaml`) as input and produces output that can be used to 1) determine library quality, 2) identify and characterize DNA loops and 3) interactively visualize loops. Loops are assigned strength and confidence metrics that can be used to evaluate samples individually or for differential analysis in downstream tools like [diffloop](http://bioconductor.org/packages/release/bioc/html/diffloop.html). We have used the library QC metrics with as few as 1 million reads, enabling library quality to be assessed through shallow (and cheap) sequencing before performing a full depth sequencing run.
 
-Check out the [big graphical overview](#int) to see how **hichipper** integrates with some other
-tools to quickly assess the quality of your HiChIP library as well as find and visualize interesting
-biology. 
+A graphical overview showing how **hichipper** integrates with other tools in the analysis of raw HiChIP data is shown in the overview figure below. Detailed descriptions of the different branches of output from **hichipper** are discussed at the bottom of this guide. 
+![big1](media/Big1.png)
+![big2](media/Big2.png)<br>
+A higher resolution [slide of this image](media/Big.pptx) is in the [media](media) folder.
+
 
 ## Table of Contents<a name="toc"></a>
 - [About](#about)
 - [Table of Contents](#toc)
-- [User Overview](#ugo)
+- [Workflow Overview](#ugo)
 - [Dependencies](#dependencies)
 - [Installation](#installation)
 - [Simple Usage Example](#sue)
 - [More typical example](#moe)
 - [Output](#output)
 - [Configurations](#configuration)
-- [Parameter Explainations](#pe)
-- [Integration with other tools](#int)
+- [Parameter Explanations](#pe)
 - [Quality Control reports](#qcr)
 - [Interactive visualization of loops](#viz)
 - [Analyzing loops in the R](#loops)
 
-## User Overview<a name="ugo"></a>
+## Workflow Overview<a name="ugo"></a>
 A simple graphical guide to processing HiChIP data is shown below. The role of **hichipper**
 is to import `.bam` files from alignment software (e.g. [HiC-Pro](https://github.com/nservant/HiC-Pro))
 as well as a sample `.yaml` file and produce user-friendly output. 
  
 ![hichipper_overview](media/Overview.png)
+
+**[Add workflow figure showing something like: Call peaks/anchors -> Map PETs to anchors -> Identify loops -> Calculate loop metrics (PET count, p-value)**
 
 ## Dependencies<a name="dependencies"></a>
 
@@ -63,7 +64,7 @@ install_pkgs(c("dplyr", "foreach", "ggplot2", "gridExtra", "reshape2", "scales")
 ```
 
 Finally, to produce a `.rds` file for immediate visualization of loops in [DNAlandscapeR](https://dnalandscaper.aryeelab.org),
-the package `diffloop` must be installed either from Bioconductor or aryeelab. Run the following commands in the R console to get `diffloop` (if needed).  
+the [diffloop](http://bioconductor.org/packages/release/bioc/html/diffloop.html) package must be installed either from Bioconductor or aryeelab. Run the following commands in the R console to get `diffloop` (if needed).  
 
 ```
 install.packages("devtools") # if needed
@@ -178,7 +179,7 @@ would yield the default output from **hichipper**.
 
 ## Output<a name="output"></a>
 Each time the user runs **hichipper**, a `*.hichipper.log` file containing information pertaining to the 
-flow of the software execution is placed in the `out` directory (the object of the `--out` flag). Unless
+flow of the software execution is placed in the `out` directory (specified by the `--out` flag). Unless
 otherwise specified, a file ending in `*_hichipper-qcReport.pdf` provides the quality control report for the
 samples. These are the global output files for each particular run. 
 
@@ -186,15 +187,15 @@ Per sample, six (yes, 6, but don't worry-- there's lots of redundancy) output fi
 
 1. `*.stat` Key summary statistics that show the number of PETs meeting certain criteria
 
-2. `*.inter.loop_counts.bedpe` Interchromosomal looping between defined anchor loci. 
+2. `*.inter.loop_counts.bedpe` Interchromosomal looping between anchor loci. 
 
-3. `*.intra.loop_counts.bedpe` Intrachromosomal looping between **all** defined anchor loci
+3. `*.intra.loop_counts.bedpe` Intrachromosomal looping between **all**  anchor loci
 
-4. `*.filt.intra.loop_counts.bedpe` Intrachromosomal looping between defined anchor loci where loops meet min/max distance requirements.
+4. `*.filt.intra.loop_counts.bedpe` Intrachromosomal looping between anchor loci where loops meet min/max distance requirements.
 
 5. `*interactions.all.mango` The same set of loops as 4 but with per-loop FDR measures from the loop proximity bias correction algorithm originally implemented in [Mango](https://github.com/dphansti/mango) and presented in the same format. 
 
-6. `*.rds` The same set of loops as 4 but in an R binary compressed format of a `loops()` S4 object from `diffloop`. Can immediately be imported for interactie visualization in [DNAlandscapeR](https://dnalandscaper.aryeelab.org).
+6. `*.rds` The same set of loops as 4 but in an R binary compressed format of a `loops()` S4 object from [diffloop](http://bioconductor.org/packages/release/bioc/html/diffloop.html). Can immediately be imported for interactie visualization in [DNAlandscapeR](https://dnalandscaper.aryeelab.org).
 
 So, outputs 4, 5, and 6 are identical except in presentation. These data are a subset of those presented in 3. Intrachromosomal interactions from 2 are often discarded by other preprocessing pipelines, but they may hold value. 
 If the `qcReport` is generated, then the `.stat` file won't tell you anything new. However, if `R` is not installed on your machine, this will be a useful file for assessing the quality of your library.  
@@ -226,8 +227,8 @@ Options:
   --keep-temp-files    Keep temporary files?
   --skip-qc            Skip QC report generation? (Requires R + dependent
                        packages (see README))
-  --skip-diffloop      Skipp diffloop processing of loops? (Requires R +
-                       diffloop)
+  --skip-diffloop      Skip diffloop processing of loops? (Requires R +
+                       [diffloop](http://bioconductor.org/packages/release/bioc/html/diffloop.html))
   --version            Show the version and exit.
   --help               Show this message and exit.
 ```
@@ -257,14 +258,6 @@ ADD MORE DETAIL HERE
 ![param](media/param1.png)
 
 The `--merge-gap` command is basically just running [bedtools merge -d](http://bedtools.readthedocs.io/en/latest/content/tools/merge.html) on the padded anchors. 
-
-## Integration with Other Tools<a name="int"></a>
-A graphical overview of HiChIP, **hichipper**, and other utilities to handle processed
-data is shown in the overview figure below and detailed descriptions of the different
-branches of output from **hichipper** are discussed at the bottom of this guide. 
-![big1](media/Big1.png)
-![big2](media/Big2.png)<br>
-A higher resolution [slide of this image](media/Big.pptx) is in the [media](media) folder.
 
 ## Quality Control reports
 Show two histrograms, make references, mention to send interesting reports for further collection (will be anon. unless made public). 
