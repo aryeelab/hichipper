@@ -43,8 +43,11 @@ loop_pets <- foreach(sample = samples, .combine="rbind") %do% {
 }
 
 np <- paste0("Mapped_unique_intra_q30_anchor_", round(min_length/1000), "KB-",  round(max_length/1000000), "Mb")
-metrics <- c("Total_PETs", "Mapped_PETs_q30", "Mapped_unique_PETs_q30", "Mapped_unique_intrachromosomal_q30", paste0("Mapped_unique_intrachromosomal_q30", round(min_length/1000), "KB"),
-             np, paste0("Mapped_unique_intra_q30_anchor<", round(min_length/1000), "KB"),  paste0("Mapped_unique_intra_q30_anchor>",round(max_length/1000000), "Mb"), "Number_Peaks")
+metrics <- c("Total_PETs", "Mapped_PETs_q30", "Mapped_unique_PETs_q30", "Mapped_unique_intrachromosomal_q30",
+             paste0("Mapped_unique_intrachromosomal_q30_>", round(min_length/1000), "KB"),
+             np, paste0("Mapped_unique_intra_q30_anchor<", round(min_length/1000), "KB"),
+             paste0("Mapped_unique_intra_q30_anchor>",round(max_length/1000000), "Mb"), "Number_Peaks")
+
 readstats$metric <- factor(rep(metrics, length(samples)), levels=metrics)
 
 # Plot read stats
@@ -66,19 +69,24 @@ rownames(tab_summary) <- c(paste0("% in Loops"),
                            "% Long Range Interaction",
                            "% Mapped",
                            "Total PETs")
-tab_summary <- tab_summary[4:1,]
+tab_summary <- tab_summary[4:1,, drop = FALSE]
 
-intraSum <- colSums(tab[c(6,7,8),])
+if(dim(tab)[2] == 1){
+  intraSum <- sum(tab[c(6,7,8),])
+}else {
+  intraSum <- colSums(tab[c(6,7,8),])
+}
+
 tab_summary2 <- rbind(intraSum,
                       format(tab[6,]/intraSum * 100, digits = 2, nsmall = 2),
                       format(tab[7,]/intraSum * 100, digits = 2, nsmall = 2),
                       format(tab[8,]/intraSum * 100, digits = 2, nsmall = 2))
 r <-  paste0(round(min_length/1000), "KB-",  round(max_length/1000000), "Mb")
 rownames(tab_summary2) <- c("Intra, anchor-mapped PETs",
-                           paste0("% Long Reads in ",r),
-                           paste0("% Long Reads < ", round(min_length/1000), "KB"),
-                           paste0("% Long Reads > ", round(max_length/1000000), "Mb"))
-
+                            paste0("% Long Reads in ",r),
+                            paste0("% Long Reads < ", round(min_length/1000), "KB"),
+                            paste0("% Long Reads > ", round(max_length/1000000), "Mb"))
+colnames(tab_summary2) <- colnames(tab_summary)
 
 # Output graphics and table to PDF file
 pdf(pdf, height=8.5, width=11, onefile = TRUE)
@@ -91,6 +99,6 @@ p_metrics
 plot.new()
 grid.table(format(acast(readstats, metric~sample, sum), big.mark=","))
 plot.new()
-grid.table(format(tab_percent[-9,], digits=2, nsmall=2))
+grid.table(format(tab_percent[-9,,drop = FALSE], digits=2, nsmall=2))
 p_hist
 dev.off()

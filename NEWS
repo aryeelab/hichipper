@@ -1,3 +1,9 @@
+# 0.2.7
+- Fixed qcReport for single sample
+
+# 0.2.6
+- Addressed issue with variable read length
+
 # 0.2.5
 - Fixed bug with single sample
 - Read length no longer important (need a new param though...)

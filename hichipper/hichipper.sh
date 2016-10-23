@@ -32,8 +32,8 @@ if [ ! -f "${BAM_TWO}" ] ; then
 fi
 
 # Create bed files of the reads, but we remove those with poor quality. 
-bedtools bamtobed -i "${BAM_ONE}" | paste -d'\t' /dev/stdin <(samtools view -F2304 "${BAM_ONE}" | awk -v MIN_QUAL="$MIN_QUAL" '{if ($5>=MIN_QUAL) print $3,$4,$1; else print "*","*",$1}' OFS='\t') |  awk '{print $7,$8,$3,$4}' OFS='\t' > "${OUT_NAME}/${SAMPLE}_pos_r1.bed.tmp"
-bedtools bamtobed -i "${BAM_TWO}" | paste -d'\t' /dev/stdin <(samtools view -F2304 "${BAM_TWO}" | awk -v MIN_QUAL="$MIN_QUAL" '{if ($5>=MIN_QUAL) print $3,$4,$1; else print "*","*",$1}' OFS='\t') |  awk '{print $7,$8,$3,$4}' OFS='\t' > "${OUT_NAME}/${SAMPLE}_pos_r2.bed.tmp"
+samtools view "${BAM_ONE}" | cut -f 10 | perl -ne 'chomp;print length($_) . "\n"' | paste -d'\t' /dev/stdin <(samtools view -F2304 "${BAM_ONE}" | awk -v MIN_QUAL="$MIN_QUAL" '{if ($5>=MIN_QUAL) print $3,$4,$1; else print "*","*",$1}' OFS='\t') | awk '{print $2"\t"$3"\t"$3+$1"\t"$4}' > "${OUT_NAME}/${SAMPLE}_pos_r1.bed.tmp"
+samtools view "${BAM_TWO}" | cut -f 10 | perl -ne 'chomp;print length($_) . "\n"' | paste -d'\t' /dev/stdin <(samtools view -F2304 "${BAM_TWO}" | awk -v MIN_QUAL="$MIN_QUAL" '{if ($5>=MIN_QUAL) print $3,$4,$1; else print "*","*",$1}' OFS='\t') | awk '{print $2"\t"$3"\t"$3+$1"\t"$4}' > "${OUT_NAME}/${SAMPLE}_pos_r2.bed.tmp"
 
 if [ ! -f "${OUT_NAME}/${SAMPLE}_pos_r2.bed.tmp" ] ; then
     echo "File specified doesn't seem like a .bam and/or samtools is not accessible, aborting." | tee -a $LOG_FILE
