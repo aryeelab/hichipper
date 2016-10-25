@@ -37,7 +37,6 @@ as well as a sample `.yaml` file and produce user-friendly output.
  
 ![hichipper_overview](media/Overview.png)
 
-**[Add workflow figure showing something like: Call peaks/anchors -> Map PETs to anchors -> Identify loops -> Calculate loop metrics (PET count, p-value)**
 
 ## Dependencies<a name="dependencies"></a>
 
@@ -255,7 +254,6 @@ the `--out` flag and a `.yaml` file as shown in the example executions. Below ar
 additional parameters than can be configured when executing the pipeline. 
 
 ## Parameter explanations<a name="pe"></a>
-ADD MORE DETAIL HERE
 
 ![param](media/param1.png)
 
