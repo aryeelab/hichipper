@@ -1,5 +1,5 @@
 # hichipper
-This package is maintained by [Caleb Lareau](caleblareau@g.harvard.edu) under the supervision of [Martin Aryee](http://aryee.mgh.harvard.edu/) and made freely available through [PyPi](https://pypi.python.org/pypi/hichipper/).
+This package is maintained by [Caleb Lareau](http://caleblareau.github.io) under the supervision of [Martin Aryee](http://aryee.mgh.harvard.edu/) and made freely available through [PyPi](https://pypi.python.org/pypi/hichipper/).
 
 [![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper) [![PyPI version](https://badge.fury.io/py/hichipper.svg)](https://badge.fury.io/py/hichipper) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) 
 
@@ -276,4 +276,4 @@ to the **Guide** tab to get a sense of how the browser works and ultimately add 
 using the **Import** tab. Note: the browser currently supports hg19/hg37 and mm9 genome builds. 
 
 ## Questions/comments/feedback
-are always welcomed. Email [Caleb](caleblareau@g.harvard.edu) anytime! 
+are always welcomed. Email [Caleb](http://caleblareau@github.io) anytime! 
