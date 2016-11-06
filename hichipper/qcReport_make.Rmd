@@ -101,7 +101,7 @@ colnames(tab_summary2) <- colnames(tab_summary)
 ```
 
 ## Sankey Diagrams
-Hover your mouse on any edge of the network to see the proportion of PETs that each edge represents. 100 defines the total number of reads originally used as input contained in the `.bam` file while the proportion at the end that is "In Anchors" corresponds to the number of loops. <br> <br> <br> 
+Hover your mouse on any edge of the network to see the proportion of PETs that each edge represents. 100 defines the total number of reads originally used as input contained in the `.bam` file while the proportion at the end that is "In Anchors" corresponds to the number of loops. <br><br><br> 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
 
@@ -150,13 +150,15 @@ for(sample in samples){
 datatable(tab_summary, class = 'cell-border stripe')
 ```
 
-#### The first summary table notes how many PETs are in each sample and what fraction were mapped with high quality. The "% Long
+
+The first summary table notes how many PETs are in each sample and what fraction were mapped with high-quality. The "% Long Range Interaction" value represents the number of intrachromosomal reads longer than the minimum length (default 5Kb) specified by the user and is a good approximation for the efficacy of the in situ ligation. Finally, the "% in Loops" is the fraction of total reads that are in loops, defined by high-quality, mapped intrachromosomal, anchor-mapped, between min and max lengths (default 5Kb and 2Mb). If the proportion of loops reads is low but the proportion of long range interactions is high, this suggests that the ChIP efficiency is relatively low. <br><br><br>
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
 datatable(tab_summary2, class = 'cell-border stripe')
 ```
 
-#### The table above shows 1) the total number of intrachromosomal PETs and 
+
+The second summary table shows the total number of intrachromosomal pets and the distance that they span binned by the max and min user defined distances. Only reads in the middle are used when making loops but all are used for anchor calling. If the very long interactions are disproportionately abundant, the proximity ligation step may not have been effective. In contrast, if the short range interactions are disproportionately abundant, issues with the in situ ligation likely occurred in the experiment. <br><br><br>
 
 ## Loop Width Distribution Histogram
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, results='asis', out.width='\\textwidth', fig.width=7}
@@ -184,24 +186,27 @@ loop_pets <- foreach(sample = samples) %do% {
 cat(paste0(' \n \n \n '))
 
 ```
+<br>
 
-
-### Raw Read Stats
+## Raw Read Stats
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
 datatable(format(acast(readstats, metric~sample, sum), big.mark=",")[-8,, drop = FALSE], class = 'cell-border stripe')
 ```
+<br>
 
-### Proportional Read Stats
+## Proportional Read Stats
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
 datatable(format(tab_percent[c(-8,-10),,drop = FALSE], digits=2, nsmall=2), class = 'cell-border stripe')
 ```
+<br>
 
-### Number of Anchor Peaks
+## Number of Anchor Peaks
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
 datatable(anchors, rownames = FALSE, class = 'cell-border stripe')
 ```
 
-#### The number of anchor peaks used in each sample. In lowly sequenced samples, these numbers may be low and be responsible for the lack of PETs mapping into loops. <br> <br>
+
+The number of anchor peaks used in each sample. In lowly sequenced samples, these numbers may be low and be responsible for the lack of PETs mapping into loops. <br> <br>
 
 ## Session info
 ```{r sessInfo}
