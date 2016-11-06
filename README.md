@@ -45,12 +45,13 @@ The following dependencies need to be manually installed and available in the PA
 - [bedtools](http://bedtools.readthedocs.io/en/latest/content/installation.html)
 
 Additionally, to produce a QC report, R must be available in the environment as well as these packages:
-- dplyr
+- DT
 - foreach
 - ggplot2
-- gridExtra
+- knitr
+- networkD3
+- readr
 - reshape2
-- scales
 
 These can all be installed (if needed) running these lines of code in the R console--
 
@@ -59,7 +60,7 @@ install_pkgs <- function(pkg){
     new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
     if (length(new.pkg)) install.packages(new.pkg, dependencies = TRUE)
 }
-install_pkgs(c("dplyr", "foreach", "ggplot2", "gridExtra", "reshape2", "scales"))
+install_pkgs(c("DT", "foreach", "ggplot2", "knitr", "networkD3", "readr", "reshape2"))
 ```
 
 Finally, to produce a `.rds` file for immediate visualization of loops in [DNAlandscapeR](https://dnalandscaper.aryeelab.org),
@@ -104,7 +105,7 @@ git clone https://github.com/aryeelab/hichipper.git
    
   In this example, the `test_sample1` sample is defined the `t_1_hg19.bwt2merged.bam` and `t_2_hg19.bwt2merged.bam` which
   where output files from [HiC-Pro](https://github.com/nservant/HiC-Pro). Any `.bam` files from Hi-C preprocessing
-  software should be valid input. 
+  software should be valid input. For maintaining a small memory footprint, `test_sample2` is defined as by the same `.bam` files.  
   
   
 2. Run the pipeline:
@@ -181,7 +182,7 @@ would yield the default output from **hichipper**.
 ### Per-run output files
 Each time the user runs **hichipper**, a `*.hichipper.log` file containing information pertaining to the 
 flow of the software execution is placed in the `out` directory (specified by the `--out` flag). Unless
-otherwise specified, a file ending in `*_hichipper-qcReport.pdf` provides a summary quality control report for all samples. 
+otherwise specified, a file ending in `hichipper-qcReport.html` provides an interactive quality control report for all samples. 
 
 ### Per-sample output files
 Per sample, six (yes, 6, but don't worry-- there's lots of redundancy) output files are created. They are:
@@ -196,7 +197,7 @@ Per sample, six (yes, 6, but don't worry-- there's lots of redundancy) output fi
 
 5. `*interactions.all.mango` The same set of loops as 4 but with per-loop FDR measures from the loop proximity bias correction algorithm originally implemented in [Mango](https://github.com/dphansti/mango) and presented in the same format. 
 
-6. `*.rds` The same set of loops as 4 but in an R binary compressed format of a `loops()` S4 object from [diffloop](http://bioconductor.org/packages/release/bioc/html/diffloop.html). Can immediately be imported for interactie visualization in [DNAlandscapeR](https://dnalandscaper.aryeelab.org).
+6. `*.rds` The same set of loops as 4 but in an R binary compressed format of a `loops()` S4 object from [diffloop](http://bioconductor.org/packages/release/bioc/html/diffloop.html). Can immediately be imported for interactive visualization in [DNAlandscapeR](https://dnalandscaper.aryeelab.org).
 
 So, outputs 4, 5, and 6 are identical except in presentation. These data are a subset of those presented in 3. Interchromosomal interactions from 2 are often discarded by other preprocessing pipelines, but they may hold value. 
 If the `qcReport` is generated, then the `.stat` file won't tell you anything new. However, if `R` is not installed on your machine, this will be a useful file for assessing the quality of your library.  
@@ -246,7 +247,7 @@ hichipper, version X.X.X
 Check the badge up top to see if a newer version is available or try directly through `pip`:
 
 ```
-pip install hichipper --upgrate
+pip install hichipper --upgrade
 ```
 
 Unless these flags are supplied, the pipeline will attempt to run. Minimally sufficient parameters include
@@ -255,25 +256,45 @@ additional parameters than can be configured when executing the pipeline.
 
 ## Parameter explanations<a name="pe"></a>
 
+Most of the parameter options are fairly straight forward. Running `hichipper --version` or `hichipper --help`
+doesn't run the tool but supplies the information noted above. Otherwise, the default run mode requires 
+a `.yaml` file supplied in addition to the `--out` parameter, which specifies the output directory of the run. 
+Users can decide to customize final output by using boolean flags  `--keep-temp-files`, `--skip-qc`, and  `--skip-diffloop`. 
+If the `R` dependencies noted above could not be successfully installed, these last two flags may be useful. 
+
+The figure below shows a cartoon of loops, PETs, and anchors and how the various parameters pertain to padding anchors. 
+
 ![param](media/param1.png)
 
-The `--merge-gap` command is basically just running [bedtools merge -d](http://bedtools.readthedocs.io/en/latest/content/tools/merge.html) on the padded anchors. 
+As noted in orange, defined peaks are automatically padded by some integer width from the `--peak-pad` flag. By default, 
+this pad extends 1500 base pairs in either direction. Padding the peaks boosts the number of PETs that can be mapped to loops. 
+For example, `PET 1` would not be considered in loop since the left end of the read does not overlap with the called anchor. However,
+it does overlap with the padded peak, so it is retained. When two peaks are close to one another, they may be merged using the 
+`--merge-gap` command. As noted in purple, the padded peaks `B` and `C` are sufficiently close to be merged into a single anchor. 
+Note that this can lead to some PETs becoming self-ligation (e.g. `1` and `3`). Note, he `--merge-gap` command is equivalent to running 
+[bedtools merge -d](http://bedtools.readthedocs.io/en/latest/content/tools/merge.html) on the padded anchors. 
 
-## Quality Control reports
-Show two histrograms, make references, mention to send interesting reports for further collection (will be anon. unless made public). 
+The `dist` or distance between two peaks is noted in black as the center of two peaks. The `--min-dist` flag is the smallest
+and `--max-dist` is the largest integer number that ensures this distance falls between to be considered in a loop. These defaults
+are 5Kb and 2Mb as smaller reads are likely self-ligations whereas larger reads are unlikely to be biologically real loops. 
+
+
+## Quality control reports
+In the [qcReports folder](qcReports), 
+
 
 ## Finding differences<a name="loops"></a>
 Have you generated a bunch of HiChIP samples and want to see what's different between them? Check out
-the [diffloop vignette](http://rpubs.com/caleblareau/diffloop_vignette) for an example analysis
+the [diffloop vignette](https://rpubs.com/caleblareau/diffloop_vignette) for an example analysis
 comparing loops from ChIA-PET (the cranky uncle of HiChIP) between K562 and MCF-7. Installation
 instructions for this package are shown in the [dependencies](#dependencies) section. 
 
 ## Interactive visualization of loops<a name="viz"></a>
 One you've (hopefully) assessed that your samples look good, now go visualize them! One option
-is to link the `.bedpe` file to the [WashU Genome Browser](http://epigenomegateway.wustl.edu/). Another
+is to link the `.bedpe` file to the [WashU Genome Browser](https://epigenomegateway.wustl.edu/). Another
 option is to upload the `.rds` to our genome topology browser, [DNAlandscapeR](https://dnalandscaper.aryeelab.org). Navigate
 to the **Guide** tab to get a sense of how the browser works and ultimately add your sample(s) to a local user session
 using the **Import** tab. Note: the browser currently supports hg19/hg37 and mm9 genome builds. 
 
 ## Questions/comments/feedback
-are always welcomed. Email [Caleb](http://caleblareau@github.io) anytime! 
+are always welcomed. Email [Caleb](https://caleblareau@github.io) anytime! 

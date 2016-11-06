@@ -1,0 +1,209 @@
+---
+title: "hichipper QC report"
+date: "`r Sys.Date()`"
+params:
+   outdir: ""
+   scriptdir: ""
+   samples: ""
+   cwd: ""
+   version: ""
+output:
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{hichipper QC report}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo=FALSE, message=TRUE, warning=TRUE}
+suppressMessages(library(ggplot2))
+suppressMessages(library(foreach))
+suppressMessages(library(reshape2))
+suppressMessages(library(readr))
+suppressMessages(library(knitr))
+suppressMessages(library(DT))
+suppressMessages(library(networkD3))
+
+options(scipen=999)
+
+outdir <- params$outdir
+scriptdir <- params$scriptdir
+samples <- params$samples
+cwd <- params$cwd
+version <- params$version
+
+#opts_chunk$set(out.width='\\textwidth', dpi=200)
+```
+hichipper, version `r version`. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Most of the work/parsing
+min_length <- 0
+max_length <- 0
+anchors <- data.frame()
+
+# Creates a dataframe of summary statistics from the individual sample log output files
+readstats <- foreach(sample = samples, .combine="rbind") %do% {
+  sfilename <- file.path(paste0(cwd, "/", outdir, "/", sample, ".stat"))
+  rs <- read.table(sfilename, header=FALSE, stringsAsFactors = FALSE, sep = "=")
+  anchors <- rbind(anchors, data.frame(sample= sample, npeaks = rs[12,2] ))
+  min_length <- rs[13,2]
+  max_length <- rs[14,2]
+  rso <- cbind(sample=sample, rs[c(1:8, 10),])
+  colnames(rso) <- c("sample", "metric", "count")
+  rso
+}
+
+mincar <- paste0(round(min_length/1000), "Kb")
+maxcar <- paste0(round(max_length/1000000), "Mb")
+
+
+np <- paste0("Mapped_unique_intra_q30_", mincar, "-",  maxcar)
+npa <- paste0("Mapped_unique_intra_q30_anchor_", mincar,"-", maxcar)
+metrics <- c("Total_PETs", "Mapped_PETs_q30", "Mapped_unique_PETs_q30", "Mapped_unique_intra_q30", #1-4
+             paste0("Mapped_unique_intra_q30_<", mincar), np, #5,6
+             paste0("Mapped_unique_intra_q30_>", maxcar), #7
+             paste0("Mapped_unique_intra_q30_anchor"), npa) #8,9
+
+readstats$metric <- factor(rep(metrics, length(samples)), levels=metrics)
+
+# Organize summary tables
+
+tab <- suppressMessages(acast(readstats, metric~sample, sum))
+tab <- rbind(tab, Long_Range_Interactions = tab[6,] + tab[7,])
+tab_percent <- 100*sweep(tab, 2, tab["Total_PETs",], FUN="/")
+tab_summary <- rbind(format(tab_percent[c(9,10,2),,drop = FALSE], digits = 2, nsmall = 2), 
+                     as.character(tab[1,,drop = FALSE]) )
+rownames(tab_summary) <- c(paste0("% in Loops"),
+                           "% Long Range Interaction",
+                           "% HQ Mapped",
+                           "Total PETs")
+tab_summary <- tab_summary[4:1,, drop = FALSE]
+
+if(dim(tab)[2] == 1){
+  intraSum <- sum(tab[c(5,6,7),])
+}else {
+  intraSum <- colSums(tab[c(5,6,7),])
+}
+
+tab_summary2 <- rbind(intraSum,
+                      format(tab[5,]/intraSum * 100, digits = 2, nsmall = 2),
+                      format(tab[6,]/intraSum * 100, digits = 2, nsmall = 2),
+                      format(tab[7,]/intraSum * 100, digits = 2, nsmall = 2))
+r <-  paste0(round(min_length/1000), "KB-",  round(max_length/1000000), "Mb")
+rownames(tab_summary2) <- c("Intrachromasomal PETs",
+                            paste0("% Reads < ", mincar),
+                            paste0("% Reads in ",r),
+                            paste0("% Reads > ", maxcar))
+colnames(tab_summary2) <- colnames(tab_summary)
+
+```
+
+## Sankey Diagrams
+Hover your mouse on any edge of the network to see the proportion of PETs that each edge represents. 100 defines the total number of reads originally used as input contained in the `.bam` file while the proportion at the end that is "In Anchors" corresponds to the number of loops. <br> <br> <br> 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+
+for(sample in samples){
+  
+  dat <- readstats[readstats[,1] == sample,3]
+  total <- dat[1]
+  
+  total_mapped <- dat[2]/total * 100
+  total_unmapped <- 100 - total_mapped 
+  mapped_u <- dat[3]/total * 100
+  mapped_nu <- total_mapped - mapped_u
+  u_i <- dat[4]/total * 100
+  u_ni <- mapped_u - u_i
+  i_small <- u_i * dat[5]/sum(dat[c(5,6,7)])
+  i_med <-  u_i * dat[6]/sum(dat[c(5,6,7)])
+  i_big <-  u_i * dat[7]/sum(dat[c(5,6,7)])
+  med_anchor <- dat[8]/total * 100
+  med_nanchor <- i_med - med_anchor
+  
+  nodes <- data.frame(name = c("Total", "Not in Loops", "HQ_Mapped", "Unique", "Intra", "<5kb", ">2Mb", "5kb-2Mb", "In Anchors"),
+                      g = c("a", "c", rep("a", 3), "c", "c", "a", "a"))
+  
+  links <- data.frame(source = c(0,0,2,2,3,3,4,4,4,5,6,7,7), target = c(2,1,3,1,4,1,5,6,7,1,1,8,1),
+                      value = c(total_mapped, total_unmapped, mapped_u, mapped_nu, u_i, u_ni,
+                                i_small, i_big, i_med,  i_small, i_big, med_anchor, med_nanchor),
+                      g = c("b", "d", "b", "d", "b", "d", "d", "d", "b", "d", "d", "b", "d" ))
+  
+  df <- list(nodes = nodes, links = links)
+  
+  cat(paste0(' \n \n \n ', sample)) 
+  
+  .pl <- sankeyNetwork(Links = df$links, Nodes = df$nodes, Source = "source",
+                Target = "target", Value = "value", NodeID = "name", nodePadding = 30,
+                fontSize = 12, nodeWidth = 30, fontFamily = "Arial", NodeGroup = "g",
+                LinkGroup = "g", colourScale = JS("d3.scale.category10()"), margin = list(0,0,0,0),
+                width = "100%", height = "100%")
+ 
+  cat(knit(text = knit_expand(text = sprintf("```{r %s, echo=FALSE, message=FALSE} \n .pl \n```", paste0("san", sample))), quiet = TRUE))
+}
+
+```
+
+## Summary Tables
+```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
+datatable(tab_summary, class = 'cell-border stripe')
+```
+
+#### The first summary table notes how many PETs are in each sample and what fraction were mapped with high quality. The "% Long
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
+datatable(tab_summary2, class = 'cell-border stripe')
+```
+
+#### The table above shows 1) the total number of intrachromosomal PETs and 
+
+## Loop Width Distribution Histogram
+```{r, echo=FALSE, message=FALSE, warning=FALSE, results='asis', out.width='\\textwidth', fig.width=7}
+
+# Old Read Stats... plot read stats
+#cd <- c("#B2182B", "#EF8A62", "#FDDBC7", "#D1E5F0", "#67A9CF", "#2166AC", "#A3A1A1", "gray84","#F7A128")
+#p_metrics <- ggplot(readstats, aes(x = sample, y = count, fill=metric))  + 
+#  geom_bar(stat='identity', position=position_dodge()) + theme_bw() + 
+#  ggtitle("Counts") + xlab("") + scale_fill_manual(values=cd) +
+#  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))  + scale_y_continuous(labels=comma)
+
+
+# Get loop lengths for histogram
+loop_pets <- foreach(sample = samples) %do% {
+  sfilename <- file.path(paste0(cwd, "/",outdir, "/",sample , ".intra.loop_counts.bedpe"))
+  x <- suppressMessages(read_delim(sfilename, " ", col_names = FALSE))
+  intra <- x[,1]==x[,4]
+  x <- x[intra,]
+  loop_length <- rep(as.numeric(((x[, 5]+ x[, 6])/2 - (x[, 2] + x[, 3])/2)[[1]]), as.numeric((x[, 8])[[1]]))
+  df <- data.frame(loop_length = pmax(0, loop_length))
+  pl1 <- ggplot(df, aes(loop_length)) + geom_histogram(bins = 40) + scale_x_log10() +
+    theme_bw() +labs(title = paste0(sample, " Loop Width Distribution"), x = "Loop Length")  
+  cat(knit(text = knit_expand(text = sprintf("```{r %s, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth', fig.width=7 } \n pl1 \n```", paste0("hist", sample))), quiet = TRUE))
+}
+cat(paste0(' \n \n \n '))
+
+```
+
+
+### Raw Read Stats
+```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
+datatable(format(acast(readstats, metric~sample, sum), big.mark=",")[-8,, drop = FALSE], class = 'cell-border stripe')
+```
+
+### Proportional Read Stats
+```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
+datatable(format(tab_percent[c(-8,-10),,drop = FALSE], digits=2, nsmall=2), class = 'cell-border stripe')
+```
+
+### Number of Anchor Peaks
+```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
+datatable(anchors, rownames = FALSE, class = 'cell-border stripe')
+```
+
+#### The number of anchor peaks used in each sample. In lowly sequenced samples, these numbers may be low and be responsible for the lack of PETs mapping into loops. <br> <br>
+
+## Session info
+```{r sessInfo}
+sessionInfo()
+```

@@ -48,14 +48,13 @@ def get_subdirectories(dir):
 @click.option('--peak-pad', default="1500", help='Peak padding width (applied on both left and right); default = 1500')
 @click.option('--merge-gap', default="1500", help='Max gap size for merging peaks; default = 1500')
 @click.option('--min-qual', default="30", help='Minimum quality for read; default = 30')
-@click.option('--read-length', default="75", help='Length of reads from experiment; default = 75')
 @click.option('--keep-temp-files', is_flag=True, help='Keep temporary files?')
 @click.option('--skip-qc', is_flag=True, help='Skip QC report generation? (Requires R + dependent packages (see README))')
 @click.option('--skip-diffloop', is_flag=True, help='Skipp diffloop processing of loops? (Requires R + diffloop)')
 @click.argument('manifest')
 @click.version_option()
 
-def main(manifest, out, peak_pad, merge_gap, keep_temp_files, skip_qc, skip_diffloop, min_qual, read_length, min_dist, max_dist, macs2_string):
+def main(manifest, out, peak_pad, merge_gap, keep_temp_files, skip_qc, skip_diffloop, min_qual, min_dist, max_dist, macs2_string):
 	"""A preprocessing and QC pipeline for HiChIP data."""
 	__version__ = get_distribution('hichipper').version
 	
@@ -79,7 +78,7 @@ def main(manifest, out, peak_pad, merge_gap, keep_temp_files, skip_qc, skip_diff
 		#click.echo("    Alignment 2: %s" % sample['read2'])    
 		hichipperRun = os.path.join(script_dir, 'hichipper.sh')
 		
-		cmd = ['bash', hichipperRun, cwd, out, sample['name'], sample['read1'], sample['read2'], peak_pad, merge_gap, min_qual, read_length, min_dist, max_dist, macs2_string]        
+		cmd = ['bash', hichipperRun, cwd, out, sample['name'], sample['read1'], sample['read2'], peak_pad, merge_gap, min_qual, min_dist, max_dist, macs2_string]        
 		#click.echo("    Executing: %s" % " ".join(cmd))
 		call(cmd)
 		statout = out + "/" + sample['name'] + ".stat"
@@ -93,7 +92,7 @@ def main(manifest, out, peak_pad, merge_gap, keep_temp_files, skip_qc, skip_diff
 	else:
 		click.echo("Creating QC report")
 		cftg = ' '.join(sample_names)
-		cmd = ['Rscript', os.path.join(script_dir, 'qcReport.R'), cwd, out, cftg] 
+		cmd = ['Rscript', os.path.join(script_dir, 'qcReport.R'), script_dir, out, cwd, __version__ , cftg] 
 		#click.echo("    Executing: %s" % " ".join(cmd))
 		call(cmd)
 		
@@ -101,7 +100,7 @@ def main(manifest, out, peak_pad, merge_gap, keep_temp_files, skip_qc, skip_diff
 	if skip_diffloop:
 		click.echo("Skipping diffloop analyses since --skip-diffloop was specified")
 	else:
-		click.echo("Creating QC report")
+		click.echo("Creating .rds and .mango files")
 		cftg = ' '.join(sample_names)
 		cmd = ['Rscript', os.path.join(script_dir, 'diffloop_work.R'), cwd, out, cftg] 
 		#click.echo("    Executing: %s" % " ".join(cmd))
