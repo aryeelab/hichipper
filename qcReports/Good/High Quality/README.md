@@ -3,6 +3,8 @@ Descriptions of files that were analyzed separate of the original data present i
 [HiChIP](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3999.html) paper. 
 
 ## HighQuality_SMC1
+[Compiled HTML here](https://cdn.rawgit.com/aryeelab/hichipper/master/qcReports/Good/High%20Quality/HighQuality_SMC1.hichipper.html)
+
 What makes this sample high quality? Look at the histogram and notice the relative height 
 of the peak around 100,000 bp compared to the original other samples. The difference in relative
 heights of the peaks is roughly 10x compared to roughly 2x for the samples described in the original
