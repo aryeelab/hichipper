@@ -1,12 +1,7 @@
 # Poor Quality Samples
 Descriptions of reports of samples performed outside of the original experiments deemed to be low quality.
 
-## HighQuality_SMC1
-[Compiled HTML here](https://cdn.rawgit.com/aryeelab/hichipper/master/qcReports/Good/High%20Quality/HighQuality_SMC1.hichipper.html)
+## PoorQuality_H3K27ac
+[Compiled HTML here](https://cdn.rawgit.com/aryeelab/hichipper/master/qcReports/Bad/PoorQuality_H3K27ac.hichipper.html)
 
-What makes this sample high quality? Look at the histogram and notice the relative height 
-of the peak around 100,000 bp compared to the original other samples. The difference in relative
-heights of the peaks is roughly 10x compared to roughly 2x for the samples described in the original
-manuscript. The proportion of PETs mapping to loops is relatively low, but this can be attributed
-to the fewer number of anchors called. This sample may benefit from different anchor definitions
-or more sequencing depth to identify these anchor regions. 
+What makes this sample low quality? From the Sankey diagram, we can see that most intrachromosal reads are short (less than 5kb) suggesting that the proximity ligation step was not successful. 
