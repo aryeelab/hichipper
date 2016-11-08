@@ -174,7 +174,7 @@ The second summary table shows the total number of intrachromosomal pets and the
 # Get loop lengths for histogram
 loop_pets <- foreach(sample = samples) %do% {
   sfilename <- file.path(paste0(cwd, "/",outdir, "/",sample , ".intra.loop_counts.bedpe"))
-  x <- suppressMessages(read_delim(sfilename, " ", col_names = FALSE))
+  x <- suppressMessages(read_delim(sfilename, " ", col_names = FALSE, progress = FALSE))
   intra <- x[,1]==x[,4]
   x <- x[intra,]
   loop_length <- rep(as.numeric(((x[, 5]+ x[, 6])/2 - (x[, 2] + x[, 3])/2)[[1]]), as.numeric((x[, 8])[[1]]))
