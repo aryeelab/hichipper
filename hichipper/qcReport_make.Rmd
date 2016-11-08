@@ -119,7 +119,7 @@ for(sample in samples){
   i_small <- u_i * dat[5]/sum(dat[c(5,6,7)])
   i_med <-  u_i * dat[6]/sum(dat[c(5,6,7)])
   i_big <-  u_i * dat[7]/sum(dat[c(5,6,7)])
-  med_anchor <- dat[8]/total * 100
+  med_anchor <- dat[9]/total * 100
   med_nanchor <- i_med - med_anchor
   
   nodes <- data.frame(name = c("Total", "Not in Loops", "HQ_Mapped", "Unique", "Intra", "<5kb", ">2Mb", "5kb-2Mb", "In Anchors"),
@@ -180,12 +180,13 @@ loop_pets <- foreach(sample = samples) %do% {
   loop_length <- rep(as.numeric(((x[, 5]+ x[, 6])/2 - (x[, 2] + x[, 3])/2)[[1]]), as.numeric((x[, 8])[[1]]))
   df <- data.frame(loop_length = pmax(0, loop_length))
   pl1 <- ggplot(df, aes(loop_length)) + geom_histogram(bins = 40) + scale_x_log10() +
-    theme_bw() +labs(title = paste0(sample, " Loop Width Distribution"), x = "Loop Length")  
+    theme_bw() +labs(title = paste0(sample, " Loop Width Distribution >", mincar), x = "Loop Length")  
   cat(knit(text = knit_expand(text = sprintf("```{r %s, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth', fig.width=7 } \n pl1 \n```", paste0("hist", sample))), quiet = TRUE))
 }
 cat(paste0(' \n \n \n '))
 
 ```
+Above is a histogram of the loop widths greater than the minimum distance supplied in the parameters. Note that the loops smaller than the minimum distance have been filtered to make the histogram more interpretable (refer to the table above to see the proportion of very loops below the minimum distance, which are likely self-ligations). 
 <br>
 
 ## Raw Read Stats
