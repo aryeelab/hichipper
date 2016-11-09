@@ -298,8 +298,8 @@ instructions for this package are shown in the [dependencies](#dependencies) sec
 
 ## Interactive visualization of loops<a name="viz"></a>
 One you've (hopefully) assessed that your samples look good, now go visualize them! One option
-is to link the `.bedpe` file to the [WashU Genome Browser](https://epigenomegateway.wustl.edu/). Another
-option is to upload the `.rds` to our genome topology browser, [DNAlandscapeR](https://dnalandscaper.aryeelab.org). Navigate
+is to link the `.bedpe` file to the [WashU Genome Browser](http://epigenomegateway.wustl.edu/). Another
+option is to upload the `.rds` to our genome topology browser, [DNAlandscapeR](http://dnalandscaper.aryeelab.org). Navigate
 to the **Guide** tab to get a sense of how the browser works and ultimately add your sample(s) to a local user session
 using the **Import** tab. Note: the browser currently supports hg19/hg37 and mm9 genome builds. 
 
