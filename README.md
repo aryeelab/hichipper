@@ -81,10 +81,11 @@ pip install hichipper
 
 ## Simple usage example<a name="sue"></a>
 
-The example below uses the test dataset bundled with the **hichipper** package source code. Download the package with:
+The example below uses the test dataset bundled with the **hichipper** package source code. Download the package and change to the test directory with:
 
 ```
 git clone https://github.com/aryeelab/hichipper.git
+cd hichipper/tests
 ```
 
 1. Create a sample description file:
@@ -102,7 +103,8 @@ git clone https://github.com/aryeelab/hichipper.git
       test_sample2:
        - bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
    ```
-   
+  Note: This file is available as `example.yaml` in the `hichipper/tests` directory.
+  
   In this example, the `test_sample1` sample is defined the `t_1_hg19.bwt2merged.bam` and `t_2_hg19.bwt2merged.bam` which
   where output files from [HiC-Pro](https://github.com/nservant/HiC-Pro). Any `.bam` files from Hi-C preprocessing
   software should be valid input. For maintaining a small memory footprint, `test_sample2` is defined as by the same `.bam` files.  
