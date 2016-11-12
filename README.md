@@ -40,46 +40,25 @@ as well as a sample `.yaml` file and produce user-friendly output.
 
 ## Dependencies<a name="dependencies"></a>
 
-The following dependencies need to be installed before running **hichipper**. 
-- [samtools](http://www.htslib.org/download/)
-- [bedtools](http://bedtools.readthedocs.io/en/latest/content/installation.html)
-- OpenSSL
-- libcurl
-- libxml2
+The following dependencies need to be installed before running **hichipper**: [samtools](http://www.htslib.org/download/), [bedtools](http://bedtools.readthedocs.io/en/latest/content/installation.html), OpenSSL, libcurl, and libxml2
 
 On an Ubuntu system these can be installed with:
 ```
 apt-get install samtools bedtools libssl-dev libcurl4-openssl-dev libxml2-dev
 ```
 
-Additionally, to produce a QC report, R must be available in the environment as well as [pandoc](http://pandoc.org) and these R packages:
-- DT
-- foreach
-- ggplot2
-- knitr
-- networkD3
-- readr
-- reshape2
-
-These R packages can be installed (if needed) running these lines of code in the R console--
+Additionally, to produce a QC report and useful output files, `R` must be available in the environment as well as [pandoc](http://pandoc.org) and a few packages that can be downloaded running the following in an 'R' environment:
 
 ```
 install_pkgs <- function(pkg){
     new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
     if (length(new.pkg)) install.packages(new.pkg, dependencies = TRUE)
 }
-install_pkgs(c("DT", "foreach", "ggplot2", "knitr", "networkD3", "readr", "reshape2"))
+install_pkgs(c("DT", "devtools", "foreach", "ggplot2", "knitr", "networkD3", "readr", "reshape2"))
+devtools::install_github("aryeelab/diffloop")
 ```
 
 Convenient [pandoc binaries](https://s3.amazonaws.com/rstudio-buildtools/pandoc-1.12.4.2.zip) for Linux, Mac and Windows are available for download from RStudio.
-
-Finally, to produce a `.rds` file for immediate visualization of loops in [DNAlandscapeR](https://dnalandscaper.aryeelab.org),
-the `diffloop` package must be installed either from [Bioconductor](http://bioconductor.org/packages/release/bioc/html/diffloop.html) (for the stable release version) or [Github](https://github.com/aryeelab/hichipper) (for the most current version). Run the following commands in the R console to install `diffloop` from Github (if needed).  
-
-```
-install.packages("devtools") # if needed
-devtools::install_github("aryeelab/diffloop")
-```
 
 ## Installation<a name="installation"></a>
 
