@@ -1,5 +1,5 @@
 # hichipper
-This package is maintained by [Caleb Lareau](http://caleblareau.github.io) in the [Aryee Lab](http://aryee.mgh.harvard.edu/). Source code is made freely available here and a packaged install version is provided through [PyPi](https://pypi.python.org/pypi/hichipper/).
+This package is maintained by [Caleb Lareau](mailto:caleblareau@g.harvard.edu) in the [Aryee Lab](http://aryee.mgh.harvard.edu/). Source code is made freely available here and a packaged install version is provided through [PyPi](https://pypi.python.org/pypi/hichipper/).
 
 [![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper) [![PyPI version](https://badge.fury.io/py/hichipper.svg)](https://badge.fury.io/py/hichipper) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) 
 
@@ -7,7 +7,7 @@ This package is maintained by [Caleb Lareau](http://caleblareau.github.io) in th
 
 The **hichipper** package implements our data processing and quality control pipeline for 
 [HiChIP](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3999.html) data.
-This package takes aligned `.bam` files and a sample manifest file (`.yaml`) as input and produces output that can be used to 1) determine library quality, 2) identify and characterize DNA loops and 3) interactively visualize loops. Loops are assigned strength and confidence metrics that can be used to evaluate samples individually or for differential analysis in downstream tools like [diffloop](http://bioconductor.org/packages/release/bioc/html/diffloop.html). We have used the library QC metrics with as few as 1 million reads, enabling library quality to be assessed through shallow (and cheap) sequencing before performing a full depth sequencing run.
+This package takes aligned `.bam` files and a sample manifest file (`.yaml`) as input and produces output that can be used to 1) determine library quality, 2) identify and characterize DNA loops and 3) interactively visualize loops. Loops are assigned strength and confidence metrics that can be used to evaluate samples individually or for differential analysis in downstream tools like [diffloop](http://github.com/aryeelab/diffloop). We have used the library QC metrics with as few as 1 million reads, enabling library quality to be assessed through shallow (and cheap) sequencing before performing a full depth sequencing run.
 
 A graphical overview showing how **hichipper** integrates with other tools in the analysis of raw HiChIP data is shown in the overview figure below. Detailed descriptions of the different branches of output from **hichipper** are discussed at the bottom of this guide. 
 ![big1](media/Big1.png)
@@ -295,4 +295,4 @@ to the **Guide** tab to get a sense of how the browser works and ultimately add 
 using the **Import** tab. Note: the browser currently supports hg19/hg37 and mm9 genome builds. 
 
 ## Questions/comments/feedback
-are always welcomed. Email [Caleb](https://caleblareau@github.io) anytime! 
+are always welcomed. Email [Caleb](mailto:caleblareau@g.harvard.edu) anytime! 
