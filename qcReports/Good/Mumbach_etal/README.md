@@ -1,6 +1,6 @@
 # Original Samples
-Descriptions of files that were analyzed as part of the original data present in original
-[HiChIP](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3999.html) paper. 
+Descriptions of files that were analyzed as part of the original data present in [original
+HiChIP paper](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3999.html). 
 Notably, these sample's QC metrics are very consistent and appear to be of high quality as the 
 proportion of long range interactions exceeds 20 percent. 
 
@@ -19,13 +19,9 @@ Compiled HTML for [1 million](https://cdn.rawgit.com/aryeelab/hichipper/master/q
 
 While each sample looks mostly successful, we note the lower proportion of long range interactions in the 5 million cell count relative 
 to the other samples. As the 1 million cell sample looks slightly better, we cannot determine, at least from these samples,
-that reduced cellular input has a direct effect on library quality.  
+that reduced cellular input has a direct effect on library quality. A comparison side-by-side was put in the "Noteworthy" folder, 
+and the [compiled HTML is here](https://cdn.rawgit.com/aryeelab/hichipper/master/qcReports/Noteworthy/cellInput.hichipper.html).
+ 
 
-# downsampled
-[Compiled HTML here](https://cdn.rawgit.com/aryeelab/hichipper/master/qcReports/Good/Mumbach_etal/downsampled.hichipper.html)
 
-Three samples were created from random downsampling of the GM12878 HiChIP experiment with
-1 million, 500,000 and 250,000 reads. As the proportion of long range interactions remains
-relatively constant, we suggest that a relatively small number of reads may be sufficient 
-to determine library quality before performing a deeper sequencing run.  
 
