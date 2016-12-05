@@ -266,6 +266,8 @@ it does overlap with the padded peak, so it is retained. When two peaks are clos
 Note that this can lead to some PETs becoming self-ligation (e.g. `1` and `3`). Note, the `--merge-gap` command is equivalent to running 
 [bedtools merge -d](http://bedtools.readthedocs.io/en/latest/content/tools/merge.html) on the padded anchors. 
 
+We compared various parameter settings [for the same sample here](https://cdn.rawgit.com/aryeelab/hichipper/master/qcReports/Parameters/peakPlay.hichipper.html). Each sample was processed with a peak pad and merge gap of 250, 500, 1000, and 1500. By default, we've set these parameters at 1500 to mirror those established in ChIA-PET preprocessing. However, the strong retention of reads near the called anchor loci suggest that using smaller parameter values (i.e. 250 or 500 bp) may be optimal for HiChIP analyses to maximize resolution of loop contact loci. 
+
 The `dist` or distance between two peaks is noted in black as the center of two peaks. The `--min-dist` flag is the smallest
 and `--max-dist` is the largest integer number that ensures this distance falls between to be considered in a loop. These defaults
 are 5Kb and 2Mb as smaller reads are likely self-ligations whereas larger reads are unlikely to be biologically real loops.
