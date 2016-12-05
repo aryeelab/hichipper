@@ -25,3 +25,13 @@ relatively constant, we suggest that a relatively small number of reads may be s
 to determine library quality before performing a deeper sequencing run. This comparison is just
 a reorganization of data in the Good/Mumbach_etal/ folder. The original SRR files shown here include
 SRR3467183 (10 million), SRR3467185 (5 million), and SRR3467187 (1 million). 
+
+## Variable Merge Gap/Peak Pad
+[Compiled HTML here](https://cdn.rawgit.com/aryeelab/hichipper/master/qcReports/Parameters/peakPlay.hichipper.html)
+
+Here we took the same sample and adjusted the `peak-pad` and `merge-gap` parameters to be 
+the same value of (250, 500, 1000, and 1500). See the front README to get an explanation 
+of these parameters. This comparison suggests a natural trade off between resolution and
+depth of reads retained in loops. Unlike ChIA-PET preprocessing tools that favor larger values,
+we suggest that smaller values for these parameters may suffice to get higher resolutions of 
+contact points while still maintaining sufficient depth to call loops. 
