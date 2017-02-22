@@ -49,15 +49,25 @@ On an Ubuntu system these can be installed with:
 apt-get install bedtools libssl-dev libcurl4-openssl-dev libxml2-dev
 ```
 
-Additionally, `R` must be available in the environment as well as [pandoc](http://pandoc.org) and a few packages that can be downloaded running the following in an 'R' environment:
+Additionally, `R` must be available in the environment as well as a reasonably recent version of [pandoc](http://pandoc.org) and a few packages that can be downloaded running the following in an 'R' environment. :
 
 ```
 install_pkgs <- function(pkg){
     new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
     if (length(new.pkg)) install.packages(new.pkg, dependencies = TRUE)
 }
-install_pkgs(c("DT", "devtools", "foreach", "ggplot2", "knitr", "networkD3", "readr", "reshape2"))
-devtools::install_github("aryeelab/diffloop")
+install_pkgs(c("DT", "data.table", "devtools", "foreach", "ggplot2", "knitr", "networkD3", "readr", "reshape2"))
+
+install_pkgs_bioc <- function(pkg){
+    new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+    if (length(new.pkg)) install.packages(new.pkg, dependencies = TRUE)
+}
+install_pkgs_bioc(c("diffloop"))
+```
+
+or simply download [this R script](hichipper/requirementsInstall.R) and run:
+```
+Rscript requirementsInstall.R
 ```
 
 Convenient [pandoc binaries](https://s3.amazonaws.com/rstudio-buildtools/pandoc-1.12.4.2.zip) for Linux, Mac and Windows are available for download from RStudio.
@@ -110,8 +120,6 @@ ls -LR
 ```
 yields (a slightly modified version of)
 ```
-<pre>
-
 ./hicpro/bowtie_results:
 bwt2  bwt2_global  bwt2_local
 
@@ -157,23 +165,22 @@ SRR3467178_hg19.bwt2pairs.DEPairs*    SRR3467178_hg19.bwt2pairs.RSstat*   SRR346
 SRR3467178_hg19.bwt2pairs.DumpPairs*  SRR3467178_hg19.bwt2pairs.SCPairs*  SRR3467178_hg19.bwt2pairs.validPairs*
 
 ...
-</pre>
 
 ```
 where files denoted in with an asterisk* are assumed to exist. Typically, an analysis folder may look like so:
 
 ```
 fastq/
-|-- S75
+|-- SRR3467175
 |  |-- SRR3467175_1.fastq.gz
 |  |-- SRR3467175_2.fastq.gz
-|-- S76
+|-- SRR3467176
 |  |-- SRR3467176_1.fastq.gz
 |  |-- SRR3467176_2.fastq.gz
-|-- S77
+|-- SRR3467177
 |  |-- SRR3467177_1.fastq.gz
 |  |-- SRR3467177_2.fastq.gz
-|-- S78
+|-- SRR3467178
 |  |-- SRR3467178_1.fastq.gz
 |  |-- SRR3467178_2.fastq.gz
 hicpro/
