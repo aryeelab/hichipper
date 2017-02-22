@@ -15,23 +15,14 @@ def parse_manifest(manifest):
     if manifest.endswith(('.yaml', '.yml')):
         with open(manifest, 'r') as f: 
             m = yaml.load(f)
-        sample_names = m['samples'].keys()
-        sample_names.sort()
-        for sample_name in sample_names:
-            runs = m['samples'][sample_name]
-            read1 = []
-            read2 = []
-            for run in runs:
-                bam1, bam2 = run.split(" ")
-                read1.append(bam1)
-                read2.append(bam2)
-            d = {
-                'name': sample_name, 
-                'read1': ','.join(read1),
-                'read2': ','.join(read2)
-                }
-            samples.append(d)
-        return samples
+        print(m)
+        peaks = m['peaks']
+        print(peaks)
+        resfrags = m['resfrags']
+        print(resfrags)
+        hicprooutput = m['hicpro_output']
+        print(hicprooutput)
+        return m
     else:
         click.echo("Please specify a valid .yaml file for samples")
 
@@ -41,16 +32,14 @@ def get_subdirectories(dir):
             if os.path.isdir(os.path.join(dir, name))]
 
 @click.command()
-@click.option('--out', default=".", required=True, help='Output directory name')
+@click.option('--out', default="hichipper_out", required=True, help='Output directory name')
 @click.option('--min-dist', default="5000", help='Minimum distance ; default = 5000')
 @click.option('--max-dist', default="2000000", help='Peak padding width (applied on both left and right); default = 2000000')
-@click.option('--macs2-string', default="-p 0.01 --nomodel", help='String of arguments to pass to MACS2; default = "-p 0.01 --nomodel"')
-@click.option('--peak-pad', default="1500", help='Peak padding width (applied on both left and right); default = 1500')
-@click.option('--merge-gap', default="1500", help='Max gap size for merging peaks; default = 1500')
-@click.option('--min-qual', default="30", help='Minimum quality for read; default = 30')
+@click.option('--macs2-string', default="-q 0.01 --extsize 147 --nomodel", help='String of arguments to pass to MACS2; only is called when peaks in .yaml is set to NONE; default = "-q 0.01 --extsize 147 --nomodel"')
+@click.option('--peak-pad', default="1000", help='Peak padding width (applied on both left and right); default = 1500')
 @click.option('--keep-temp-files', is_flag=True, help='Keep temporary files?')
-@click.option('--skip-qc', is_flag=True, help='Skip QC report generation? (Requires R + dependent packages (see README))')
-@click.option('--skip-diffloop', is_flag=True, help='Skipp diffloop processing of loops? (Requires R + diffloop)')
+@click.option('--skip-resfrag', is_flag=True, help='Skip restriction fragment padding?')
+@click.option('--read-length', default="75", help='Length of reads from sequencing runs')
 @click.argument('manifest')
 @click.version_option()
 

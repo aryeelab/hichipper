@@ -58,9 +58,10 @@ install_pkgs <- function(pkg){
 }
 install_pkgs(c("DT", "data.table", "devtools", "foreach", "ggplot2", "knitr", "networkD3", "readr", "reshape2"))
 
+source("https://bioconductor.org/biocLite.R")
 install_pkgs_bioc <- function(pkg){
     new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
-    if (length(new.pkg)) install.packages(new.pkg, dependencies = TRUE)
+    if (length(new.pkg)) biocLite(new.pkg, dependencies = TRUE)
 }
 install_pkgs_bioc(c("diffloop"))
 ```
@@ -98,7 +99,12 @@ cd hichipper/tests
    Example [yaml](https://en.wikipedia.org/wiki/YAML) format sample description file:
    
    ```
-   FIX ME
+   peaks:
+    - chipseq/GM12878_SMC3_ChIPSeq_chr22.narrowPeak
+   resfrags:
+    - resfrag/hg19_MboI_resfrag_chr22.bed.gz
+   hicpro_output:
+    - hicpro
    ```
   Note: This file is available as `example.yaml` in the `hichipper/tests` directory.
   
@@ -288,10 +294,6 @@ Options:
                        default = 1000
   --read-length TEXT   Length of reads from experiment; default = 75
   --keep-temp-files    Keep temporary files?
-  --skip-qc            Skip QC report generation? (Requires R + dependent
-                       packages (see README))
-  --skip-diffloop      Skip diffloop processing of loops? (Requires R +
-                       [diffloop](http://bioconductor.org/packages/release/bioc/html/diffloop.html))
   --version            Show the version and exit.
   --help               Show this message and exit.
 ```

@@ -14,6 +14,6 @@ def file_checksums_equal(file1, file2):
 
 def test_loops_output():
 	runner = CliRunner()
-	result = runner.invoke(cli.main, ['--out', 'output1', 'example.yaml'])
+	result = runner.invoke(cli.main, ['--out', 'output1', '--skip-resfrag', 'example_none.yaml'])
 	assert file_checksums_equal('correct_output/co.intra.loop_counts.bedpe', 'output1/test_sample1.filt.intra.loop_counts.bedpe')
 	assert file_checksums_equal('correct_output/co.intra.loop_counts.bedpe', 'output1/test_sample2.filt.intra.loop_counts.bedpe')
