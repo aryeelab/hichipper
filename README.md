@@ -159,6 +159,7 @@ SRR3467178_hg19.bwt2pairs.DumpPairs  SRR3467178_hg19.bwt2pairs.SCPairs  SRR34671
 where files denoted in **bold** are assumed to exist. Typically, an analysis folder may look like so:
 
 ```
+<pre>
 fastq/
 |-- S75
 |  |-- SRR3467175_1.fastq.gz
@@ -198,7 +199,7 @@ GM12878_SMC3_ChIPSeq.narrowPeak
 hg19_MboI_resfrag.bed.gz
 config.yaml
 config-hicpro-mboi-ext12.txt
-
+</pre>
 ```
 where the results in the `hicpro` directory could have been obtained by running: 
 ```
