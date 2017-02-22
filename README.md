@@ -110,6 +110,60 @@ our experience using this tool in conjunction with HiC-Pro suggests that a file 
 like the following may be more typical. 
 
 ```
+ls -LR
+```
+yields (a slightly modified version of)
+```
+./hicpro/bowtie_results:
+bwt2  bwt2_global  bwt2_local
+
+./hicpro/bowtie_results/bwt2:
+SRR3467175  SRR3467176  SRR3467177  SRR3467178
+
+./hicpro/bowtie_results/bwt2/SRR3467175:
+SRR3467175_1_hg19.bwt2merged.bam  SRR3467175_2_hg19.bwt2merged.bam  SRR3467175_hg19.bwt2pairs.bam
+SRR3467175_1_hg19.mapstat         SRR3467175_2_hg19.mapstat         <b>SRR3467175_hg19.bwt2pairs.pairstat</b>
+
+./hicpro/bowtie_results/bwt2/SRR3467176:
+SRR3467176_1_hg19.bwt2merged.bam  SRR3467176_2_hg19.bwt2merged.bam  SRR3467176_hg19.bwt2pairs.bam
+SRR3467176_1_hg19.mapstat         SRR3467176_2_hg19.mapstat         <b>SRR3467176_hg19.bwt2pairs.pairstat</b>
+
+./hicpro/bowtie_results/bwt2/SRR3467177:
+SRR3467177_1_hg19.bwt2merged.bam  SRR3467177_2_hg19.bwt2merged.bam  SRR3467177_hg19.bwt2pairs.bam
+SRR3467177_1_hg19.mapstat         SRR3467177_2_hg19.mapstat         <b>SRR3467177_hg19.bwt2pairs.pairstat</b>
+
+./hicpro/bowtie_results/bwt2/SRR3467178:
+SRR3467178_1_hg19.bwt2merged.bam  SRR3467178_2_hg19.bwt2merged.bam  SRR3467178_hg19.bwt2pairs.bam
+SRR3467178_1_hg19.mapstat         SRR3467178_2_hg19.mapstat         <b>SRR3467178_hg19.bwt2pairs.pairstat</b>
+
+./hicpro/hic_results:
+data
+
+./hicpro/hic_results/data:
+SRR3467175  SRR3467176  SRR3467177  SRR3467178
+
+./hicpro/hic_results/data/SRR3467175:
+<b>SRR3467175_hg19.bwt2pairs.DEPairs    SRR3467175_hg19.bwt2pairs.RSstat   SRR3467175_hg19.bwt2pairs.SinglePairs
+SRR3467175_hg19.bwt2pairs.DumpPairs  SRR3467175_hg19.bwt2pairs.SCPairs  SRR3467175_hg19.bwt2pairs.validPairs</b>
+
+./hicpro/hic_results/data/SRR3467176:
+<b>SRR3467176_hg19.bwt2pairs.DEPairs    SRR3467176_hg19.bwt2pairs.RSstat   SRR3467176_hg19.bwt2pairs.SinglePairs
+SRR3467176_hg19.bwt2pairs.DumpPairs  SRR3467176_hg19.bwt2pairs.SCPairs  SRR3467176_hg19.bwt2pairs.validPairs</b>
+
+./hicpro/hic_results/data/SRR3467177:
+<b>SRR3467177_hg19.bwt2pairs.DEPairs    SRR3467177_hg19.bwt2pairs.RSstat   SRR3467177_hg19.bwt2pairs.SinglePairs
+SRR3467177_hg19.bwt2pairs.DumpPairs  SRR3467177_hg19.bwt2pairs.SCPairs  SRR3467177_hg19.bwt2pairs.validPairs</b>
+
+./hicpro/hic_results/data/SRR3467178:
+<b>SRR3467178_hg19.bwt2pairs.DEPairs    SRR3467178_hg19.bwt2pairs.RSstat   SRR3467178_hg19.bwt2pairs.SinglePairs
+SRR3467178_hg19.bwt2pairs.DumpPairs  SRR3467178_hg19.bwt2pairs.SCPairs  SRR3467178_hg19.bwt2pairs.validPairs</b>
+
+...
+
+```
+where files denoted in **bold** are assumed to exist. Typically, an analysis folder may look like so:
+
+```
 fastq/
 |-- S75
 |  |-- SRR3467175_1.fastq.gz
@@ -123,41 +177,48 @@ fastq/
 |-- S78
 |  |-- SRR3467178_1.fastq.gz
 |  |-- SRR3467178_2.fastq.gz
-hicpro_output/
+hicpro/
+|-- HiCPro_step1_hic.sh
 |-- bowtie_results/
 |  |-- bwt2/
-|  |  |-- S75
-|  |  |  |-- SRR3467175_1_hg19.bwt2merged.bam
-|  |  |  |-- SRR3467175_2_hg19.bwt2merged.bam
-|  |  |-- S76
-|  |  |  |-- SRR3467176_1_hg19.bwt2merged.bam
-|  |  |  |-- SRR3467176_2_hg19.bwt2merged.bam
-|  |  |-- S77
-|  |  |  |-- SRR3467177_1_hg19.bwt2merged.bam
-|  |  |  |-- SRR3467177_2_hg19.bwt2merged.bam
-|  |  |-- S78
-|  |  |  |-- SRR3467178_1_hg19.bwt2merged.bam
-|  |  |  |-- SRR3467178_2_hg19.bwt2merged.bam
+|  |  |-- SRR3467175
+|  |  |  |-- SRR3467175_hg19.bwt2pairs.pairstat
+|  |  |-- SRR3467176
+|  |  |  |-- SRR3467176_hg19.bwt2pairs.pairstat
+|  |  |-- SRR3467177
+|  |  |  |-- SRR3467177_hg19.bwt2pairs.pairstat
+|  |  |-- SRR3467178
+|  |  |  |-- SRR3467178_hg19.bwt2pairs.pairstat
+|-- hic_results/
+|  |-- data/
+|  |  |-- SRR3467175
+|  |  |  |-- SRR3467175*Pairs # 6 Files
+|  |  |-- SRR3467176
+|  |  |  |-- SRR3467176*Pairs # 6 Files
+|  |  |-- SRR3467177
+|  |  |  |-- SRR3467177*Pairs # 6 Files
+|  |  |-- SRR3467178
+|  |  |  |-- SRR3467178*Pairs # 6 Files
+GM12878_SMC3_ChIPSeq.narrowPeak
+hg19_MboI_resfrag.bed.gz
 config.yaml
 config-hicpro-mboi-ext12.txt
-```
-The results in the `hicpro_output` directory could have been obtained by running: 
-```
-HiC-Pro -i fastq/ -o hicpro_output/ -c config-hicpro-mboi-ext12.txt -p
-```
-and subsequently executing the resulting `HiCPro_step1_hic.sh`.  Thus, the `config.yaml` file
-when executed from the current working directory would look like this:
 
 ```
-samples:
-  S75:
-    - hicpro_output/bowtie_results/bwt2/S75/SRR3467175_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/S75/SRR3467175_2_hg19.bwt2merged.bam
-  S76:
-    - hicpro_output/bowtie_results/bwt2/S76/SRR3467176_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/S76/SRR3467176_2_hg19.bwt2merged.bam
-  S77:
-    - hicpro_output/bowtie_results/bwt2/S77/SRR3467177_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/S77/SRR3467177_2_hg19.bwt2merged.bam
-  S78:
-    - hicpro_output/bowtie_results/bwt2/S78/SRR3467178_1_hg19.bwt2merged.bam hicpro_output/bowtie_results/bwt2/S78/SRR3467178_2_hg19.bwt2merged.bam
+where the results in the `hicpro` directory could have been obtained by running: 
+```
+HiC-Pro -i fastq/ -o hicpro/ -c config-hicpro-mboi-ext12.txt -p
+```
+and subsequently executing the resulting `HiCPro_step1_hic.sh`.  Thus, the `config.yaml` file
+needed for **hichipper** when executed from the current working directory would look like this:
+
+```
+peaks:
+  - GM12878_SMC3_ChIPSeq.narrowPeak
+resfrags:
+  - hg19_MboI_resfrag.bed.gz
+hicpro_output:
+  - hicpro
 ```
 
 And could be executed running this command: 
@@ -233,7 +294,7 @@ hichipper --version
 will show the version of this package currently installed. 
 
 ```
-hichipper, version 0.3.1
+hichipper, version 0.4.0
 ```
 Check the badge up top to see if a newer version is available or try directly through `pip`:
 
