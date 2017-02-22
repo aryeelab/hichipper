@@ -26,6 +26,7 @@ A higher resolution [slide of this image](media/Big.pptx) is in the [media](medi
 - [More typical example](#moe)
 - [Output](#output)
 - [Configurations](#configuration)
+- [HiChIP Peak Calling](#HPC)
 - [Parameter Explanations](#pe)
 - [Quality Control reports](#qcr)
 - [Interactive visualization of loops](#viz)
@@ -119,19 +120,19 @@ SRR3467175  SRR3467176  SRR3467177  SRR3467178
 
 ./hicpro/bowtie_results/bwt2/SRR3467175:
 SRR3467175_1_hg19.bwt2merged.bam  SRR3467175_2_hg19.bwt2merged.bam  SRR3467175_hg19.bwt2pairs.bam
-SRR3467175_1_hg19.mapstat         SRR3467175_2_hg19.mapstat         <b>SRR3467175_hg19.bwt2pairs.pairstat</b>
+SRR3467175_1_hg19.mapstat         SRR3467175_2_hg19.mapstat         <b>SRR3467175_hg19.bwt2pairs.pairstat*
 
 ./hicpro/bowtie_results/bwt2/SRR3467176:
 SRR3467176_1_hg19.bwt2merged.bam  SRR3467176_2_hg19.bwt2merged.bam  SRR3467176_hg19.bwt2pairs.bam
-SRR3467176_1_hg19.mapstat         SRR3467176_2_hg19.mapstat         <b>SRR3467176_hg19.bwt2pairs.pairstat</b>
+SRR3467176_1_hg19.mapstat         SRR3467176_2_hg19.mapstat         <b>SRR3467176_hg19.bwt2pairs.pairstat*
 
 ./hicpro/bowtie_results/bwt2/SRR3467177:
 SRR3467177_1_hg19.bwt2merged.bam  SRR3467177_2_hg19.bwt2merged.bam  SRR3467177_hg19.bwt2pairs.bam
-SRR3467177_1_hg19.mapstat         SRR3467177_2_hg19.mapstat         <b>SRR3467177_hg19.bwt2pairs.pairstat</b>
+SRR3467177_1_hg19.mapstat         SRR3467177_2_hg19.mapstat         <b>SRR3467177_hg19.bwt2pairs.pairstat*
 
 ./hicpro/bowtie_results/bwt2/SRR3467178:
 SRR3467178_1_hg19.bwt2merged.bam  SRR3467178_2_hg19.bwt2merged.bam  SRR3467178_hg19.bwt2pairs.bam
-SRR3467178_1_hg19.mapstat         SRR3467178_2_hg19.mapstat         <b>SRR3467178_hg19.bwt2pairs.pairstat</b>
+SRR3467178_1_hg19.mapstat         SRR3467178_2_hg19.mapstat         <b>SRR3467178_hg19.bwt2pairs.pairstat*
 
 ./hicpro/hic_results:
 data
@@ -140,26 +141,26 @@ data
 SRR3467175  SRR3467176  SRR3467177  SRR3467178
 
 ./hicpro/hic_results/data/SRR3467175:
-<b>SRR3467175_hg19.bwt2pairs.DEPairs    SRR3467175_hg19.bwt2pairs.RSstat   SRR3467175_hg19.bwt2pairs.SinglePairs
-SRR3467175_hg19.bwt2pairs.DumpPairs  SRR3467175_hg19.bwt2pairs.SCPairs  SRR3467175_hg19.bwt2pairs.validPairs</b>
+SRR3467175_hg19.bwt2pairs.DEPairs*    SRR3467175_hg19.bwt2pairs.RSstat*   SRR3467175_hg19.bwt2pairs.SinglePairs*
+SRR3467175_hg19.bwt2pairs.DumpPairs*  SRR3467175_hg19.bwt2pairs.SCPairs*  SRR3467175_hg19.bwt2pairs.validPairs*
 
 ./hicpro/hic_results/data/SRR3467176:
-<b>SRR3467176_hg19.bwt2pairs.DEPairs    SRR3467176_hg19.bwt2pairs.RSstat   SRR3467176_hg19.bwt2pairs.SinglePairs
-SRR3467176_hg19.bwt2pairs.DumpPairs  SRR3467176_hg19.bwt2pairs.SCPairs  SRR3467176_hg19.bwt2pairs.validPairs</b>
+SRR3467176_hg19.bwt2pairs.DEPairs*    SRR3467176_hg19.bwt2pairs.RSstat*  SRR3467176_hg19.bwt2pairs.SinglePairs*
+SRR3467176_hg19.bwt2pairs.DumpPairs*  SRR3467176_hg19.bwt2pairs.SCPairs* SRR3467176_hg19.bwt2pairs.validPairs*
 
 ./hicpro/hic_results/data/SRR3467177:
-<b>SRR3467177_hg19.bwt2pairs.DEPairs    SRR3467177_hg19.bwt2pairs.RSstat   SRR3467177_hg19.bwt2pairs.SinglePairs
-SRR3467177_hg19.bwt2pairs.DumpPairs  SRR3467177_hg19.bwt2pairs.SCPairs  SRR3467177_hg19.bwt2pairs.validPairs</b>
+SRR3467177_hg19.bwt2pairs.DEPairs*    SRR3467177_hg19.bwt2pairs.RSstat*   SRR3467177_hg19.bwt2pairs.SinglePairs*
+SRR3467177_hg19.bwt2pairs.DumpPairs*  SRR3467177_hg19.bwt2pairs.SCPairs*  SRR3467177_hg19.bwt2pairs.validPairs*
 
 ./hicpro/hic_results/data/SRR3467178:
-<b>SRR3467178_hg19.bwt2pairs.DEPairs    SRR3467178_hg19.bwt2pairs.RSstat   SRR3467178_hg19.bwt2pairs.SinglePairs
-SRR3467178_hg19.bwt2pairs.DumpPairs  SRR3467178_hg19.bwt2pairs.SCPairs  SRR3467178_hg19.bwt2pairs.validPairs</b>
+SRR3467178_hg19.bwt2pairs.DEPairs*    SRR3467178_hg19.bwt2pairs.RSstat*   SRR3467178_hg19.bwt2pairs.SinglePairs*
+SRR3467178_hg19.bwt2pairs.DumpPairs*  SRR3467178_hg19.bwt2pairs.SCPairs*  SRR3467178_hg19.bwt2pairs.validPairs*
 
 ...
 </pre>
 
 ```
-where files denoted in **bold** are assumed to exist. Typically, an analysis folder may look like so:
+where files denoted in with an asterisk* are assumed to exist. Typically, an analysis folder may look like so:
 
 ```
 fastq/
@@ -190,13 +191,17 @@ hicpro/
 |-- hic_results/
 |  |-- data/
 |  |  |-- SRR3467175
-|  |  |  |-- SRR3467175*Pairs # 6 Files
+|  |  |  |-- SRR3467175*RSstat
+|  |  |  |-- SRR3467175*Pairs # 5 Files
 |  |  |-- SRR3467176
-|  |  |  |-- SRR3467176*Pairs # 6 Files
+|  |  |  |-- SRR3467176*RSstat
+|  |  |  |-- SRR3467176*Pairs # 5 Files
 |  |  |-- SRR3467177
-|  |  |  |-- SRR3467177*Pairs # 6 Files
+|  |  |  |-- SRR3467177*RSstat
+|  |  |  |-- SRR3467177*Pairs # 5 Files
 |  |  |-- SRR3467178
-|  |  |  |-- SRR3467178*Pairs # 6 Files
+|  |  |  |-- SRR3467178*RSstat
+|  |  |  |-- SRR3467178*Pairs # 5 Files
 GM12878_SMC3_ChIPSeq.narrowPeak
 hg19_MboI_resfrag.bed.gz
 config.yaml
@@ -268,12 +273,12 @@ Options:
   --min-dist TEXT      Minimum distance ; default = 5000
   --max-dist TEXT      Peak padding width (applied on both left and right);
                        default = 2000000
-  --macs2-string TEXT  String of arguments to pass to MACS2; default = "-p
+  --macs2-string TEXT  String of arguments to pass to MACS2;
+                       default = "-q 0.01 --extsize 147 --nomodel"
                        0.01 --nomodel"
-  --peak-pad TEXT      Peak padding width (applied on both left and right);
-                       default = 1500
-  --merge-gap TEXT     Max gap size for merging peaks; default = 1500
-  --min-qual TEXT      Minimum quality for read; default = 30
+  --peak-pad TEXT      Peak padding width (applied on both left and right before 
+                       additional padding due to restriction fragments);
+                       default = 1000
   --read-length TEXT   Length of reads from experiment; default = 75
   --keep-temp-files    Keep temporary files?
   --skip-qc            Skip QC report generation? (Requires R + dependent
@@ -302,6 +307,20 @@ pip install hichipper --upgrade
 Unless these flags are supplied, the pipeline will attempt to run. Minimally sufficient parameters include
 the `--out` flag and a `.yaml` file as shown in the example executions. Below are some explanations of the
 additional parameters than can be configured when executing the pipeline. 
+
+
+## HiChIP Peak Calling<a name="HPC"></a>
+Noting that HiChIP peak calls may be untrustworthy due to systematic bias where reads localize near 
+restriction fragment cutsites, 
+
+```
+peaks:
+  - NONE
+resfrags:
+  - hg19_MboI_resfrag.bed.gz
+hicpro_output:
+  - hicpro
+```
 
 ## Parameter explanations<a name="pe"></a>
 
