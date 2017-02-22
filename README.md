@@ -7,7 +7,8 @@ This package is maintained by [Caleb Lareau](mailto:caleblareau@g.harvard.edu) i
 
 The **hichipper** package implements our data processing and quality control pipeline for 
 [HiChIP](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3999.html) data.
-This package takes aligned `.bam` files and a sample manifest file (`.yaml`) as input and produces output that can be used to 1) determine library quality, 2) identify and characterize DNA loops and 3) interactively visualize loops. Loops are assigned strength and confidence metrics that can be used to evaluate samples individually or for differential analysis in downstream tools like [diffloop](http://github.com/aryeelab/diffloop). We have used the library QC metrics with as few as 1 million reads, enabling library quality to be assessed through shallow (and cheap) sequencing before performing a full depth sequencing run.
+This package takes output from a [HiC-Pro](https://github.com/nservant/HiC-Pro) run and a sample manifest file (`.yaml`) that coordinates optional high-quality peaks (identified through ChIP-Seq) and restriction fragment locations (see [folder here](RestrictionFragmentFiles))
+as input and produces output that can be used to 1) determine library quality, 2) identify and characterize DNA loops and 3) interactively visualize loops. Loops are assigned strength and confidence metrics that can be used to evaluate samples individually or for differential analysis in downstream tools like [diffloop](http://github.com/aryeelab/diffloop). We have used the library QC metrics with as few as 1 million reads, enabling library quality to be assessed through shallow (and cheap) sequencing before performing a full depth sequencing run.
 
 A graphical overview showing how **hichipper** integrates with other tools in the analysis of raw HiChIP data is shown in the overview figure below. Detailed descriptions of the different branches of output from **hichipper** are discussed at the bottom of this guide. 
 ![big1](media/Big1.png)
@@ -32,7 +33,7 @@ A higher resolution [slide of this image](media/Big.pptx) is in the [media](medi
 
 ## Workflow Overview<a name="ugo"></a>
 A simple graphical guide to processing HiChIP data is shown below. The role of **hichipper**
-is to import `.bam` files from alignment software (e.g. [HiC-Pro](https://github.com/nservant/HiC-Pro))
+is to import aligned read files from (e.g. [HiC-Pro](https://github.com/nservant/HiC-Pro))
 as well as a sample `.yaml` file and produce user-friendly output. 
  
 ![hichipper_overview](media/Overview.png)
@@ -40,14 +41,14 @@ as well as a sample `.yaml` file and produce user-friendly output.
 
 ## Dependencies<a name="dependencies"></a>
 
-The following dependencies need to be installed before running **hichipper**: [samtools](http://www.htslib.org/download/), [bedtools](http://bedtools.readthedocs.io/en/latest/content/installation.html), OpenSSL, libcurl, and libxml2
+The following dependencies need to be installed before running **hichipper**: [bedtools](http://bedtools.readthedocs.io/en/latest/content/installation.html), OpenSSL, libcurl, and libxml2
 
 On an Ubuntu system these can be installed with:
 ```
-apt-get install samtools bedtools libssl-dev libcurl4-openssl-dev libxml2-dev
+apt-get install bedtools libssl-dev libcurl4-openssl-dev libxml2-dev
 ```
 
-Additionally, to produce a QC report and useful output files, `R` must be available in the environment as well as [pandoc](http://pandoc.org) and a few packages that can be downloaded running the following in an 'R' environment:
+Additionally, `R` must be available in the environment as well as [pandoc](http://pandoc.org) and a few packages that can be downloaded running the following in an 'R' environment:
 
 ```
 install_pkgs <- function(pkg){
@@ -86,17 +87,11 @@ cd hichipper/tests
    Example [yaml](https://en.wikipedia.org/wiki/YAML) format sample description file:
    
    ```
-   samples:
-      test_sample1: 
-       - bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
-      test_sample2:
-       - bam/t_1_hg19.bwt2merged.bam bam/t_2_hg19.bwt2merged.bam
+   FIX ME
    ```
   Note: This file is available as `example.yaml` in the `hichipper/tests` directory.
   
-  In this example, the `test_sample1` sample is defined the `t_1_hg19.bwt2merged.bam` and `t_2_hg19.bwt2merged.bam` which
-  where output files from [HiC-Pro](https://github.com/nservant/HiC-Pro). Any `.bam` files from Hi-C preprocessing
-  software should be valid input. For maintaining a small memory footprint, `test_sample2` is defined as by the same `.bam` files.  
+  In this example, we call loops from two GM12878 samples using just chromosome 22.  
   
   
 2. Run the pipeline:
