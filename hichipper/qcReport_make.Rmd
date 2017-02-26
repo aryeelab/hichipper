@@ -33,7 +33,6 @@ samples <- params$samples
 cwd <- params$cwd
 version <- params$version
 
-#opts_chunk$set(out.width='\\textwidth', dpi=200)
 ```
 hichipper, version `r version`. 
 
@@ -50,21 +49,22 @@ readstats <- foreach(sample = samples, .combine="rbind") %do% {
   anchors <- rbind(anchors, data.frame(sample= sample, npeaks = rs[12,2] ))
   min_length <- rs[13,2]
   max_length <- rs[14,2]
-  rso <- cbind(sample=sample, rs[c(1:8, 10),])
+  readsinanchors <- rs[15,2]
+  rso <- cbind(sample=sample, rs[c(1:8, 10, 15),])
   colnames(rso) <- c("sample", "metric", "count")
   rso
 }
 
-mincar <- paste0(round(min_length/1000), "Kb")
-maxcar <- paste0(round(max_length/1000000), "Mb")
+mincar <- paste0(round(as.numeric(min_length)/1000), "Kb")
+maxcar <- paste0(round(as.numeric(max_length)/1000000), "Mb")
 
 
-np <- paste0("Mapped_unique_intra_q30_", mincar, "-",  maxcar)
-npa <- paste0("Mapped_unique_intra_q30_anchor_", mincar,"-", maxcar)
-metrics <- c("Total_PETs", "Mapped_PETs_q30", "Mapped_unique_PETs_q30", "Mapped_unique_intra_q30", #1-4
-             paste0("Mapped_unique_intra_q30_<", mincar), np, #5,6
-             paste0("Mapped_unique_intra_q30_>", maxcar), #7
-             paste0("Mapped_unique_intra_q30_anchor"), npa) #8,9
+np <- paste0("Valid_Intra_", mincar, "-",  maxcar)
+npa <- paste0("Valid_Intra_anchor_", mincar,"-", maxcar)
+metrics <- c("Total_PETs", "Mapped_unique_quality", "Mapped_unique_quality_valid", "Valid_Intra", #1-4
+             paste0("Valid_Intra_<", mincar), np, #5,6
+             paste0("Valid_Intra_>", maxcar), #7
+             paste0("Valid_Intra_anchor"), npa, "HQ_Reads_In_Anchors") #8, 10, 15
 
 readstats$metric <- factor(rep(metrics, length(samples)), levels=metrics)
 
@@ -73,13 +73,14 @@ readstats$metric <- factor(rep(metrics, length(samples)), levels=metrics)
 tab <- suppressMessages(acast(readstats, metric~sample, sum))
 tab <- rbind(tab, Long_Range_Interactions = tab[6,] + tab[7,])
 tab_percent <- 100*sweep(tab, 2, tab["Total_PETs",], FUN="/")
-tab_summary <- rbind(format(tab_percent[c(9,10,2),,drop = FALSE], digits = 2, nsmall = 2), 
+tab_summary <- rbind(format(tab_percent[c(8,10,2,9),,drop = FALSE], digits = 2, nsmall = 2), 
                      as.character(tab[1,,drop = FALSE]) )
 rownames(tab_summary) <- c(paste0("% in Loops"),
                            "% Long Range Interaction",
-                           "% HQ Mapped",
+                           "% HQ Unique Mapped",
+                           "% Reads in Anchors",
                            "Total PETs")
-tab_summary <- tab_summary[4:1,, drop = FALSE]
+tab_summary <- tab_summary[5:1,, drop = FALSE]
 
 if(dim(tab)[2] == 1){
   intraSum <- sum(tab[c(5,6,7),])
@@ -151,7 +152,7 @@ datatable(tab_summary, class = 'cell-border stripe')
 ```
 
 
-The first summary table notes how many PETs are in each sample and what fraction were mapped with high-quality. The "% Long Range Interaction" value represents the number of intrachromosomal reads longer than the minimum length (default 5Kb) specified by the user and is a good approximation for the efficacy of the in situ ligation. Finally, the "% in Loops" is the fraction of total reads that are in loops, defined by high-quality, mapped intrachromosomal, anchor-mapped, between min and max lengths (default 5Kb and 2Mb). If the proportion of loops reads is low but the proportion of long range interactions is high, this suggests that the ChIP efficiency is relatively low. <br><br><br>
+The first summary table notes how many PETs are in each sample and what fraction were mapped with high-quality. First, the "% Reads in Anchors" takes all unique, mappable pairs (whether they are valid, dangling, self-circle, etc. doesn't matter) and determines what fraction have both overlapping with anchor loci. Note, this numer should give an indication of the ChIP quality, but it may be sensitive to how peaks are determined with padding, etc. While the "% HQ Unique Mapped" reads should be self explanatory, the "% Long Range Interaction" value represents the number of intrachromosomal reads longer than the minimum length (default 5Kb) specified by the user and is a good approximation for the efficacy of the in situ ligation. Finally, the "% in Loops" is the fraction of total reads that are in loops, defined by high-quality, mapped intrachromosomal, anchor-mapped, between min and max lengths (default 5Kb and 2Mb). If the proportion of loops reads is low but the proportion of long range interactions is high, this suggests that the ChIP efficiency is relatively low. <br><br><br>
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
 datatable(tab_summary2, class = 'cell-border stripe')
@@ -209,7 +210,3 @@ datatable(anchors, rownames = FALSE, class = 'cell-border stripe')
 
 The number of anchor peaks used in each sample. In lowly sequenced samples, these numbers may be low and be responsible for the lack of PETs mapping into loops. <br> <br>
 
-## Session info
-```{r sessInfo}
-sessionInfo()
-```

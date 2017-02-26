@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
-library(GenomicRanges)
-library(data.table)
+suppressMessages(suppressWarnings(require(GenomicRanges)))
+suppressMessages(suppressWarnings(require(data.table)))
 
 args <- commandArgs(trailingOnly = TRUE)
 resfile <- args[1]
@@ -43,5 +43,5 @@ anchors_gfilt <- anchors_g[width(anchors_g) < 50000]
 cat(paste0("Anchors removed due to excessive size (likely at ends of chromosomes): ",
            as.character(length(anchors_g) - length(anchors_gfilt)), " \n"))
 write.table(data.frame(anchors_gfilt)[,c(1,2,3)], row.names = FALSE, col.names = FALSE, quote = FALSE, 
-            sep = "\t", file = paste0(peaksfile, "rf"))
+            sep = "\t", file = paste0(peaksfile, "rf.tmp"))
 

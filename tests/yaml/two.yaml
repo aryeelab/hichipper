@@ -1,0 +1,6 @@
+peaks:
+  - chipseq/GM12878_SMC3_ChIPSeq_chr22.narrowPeak
+resfrags:
+  - resfrag/hg19_MboI_resfrag_chr22.bed.gz
+hicpro_output:
+  - hicpro

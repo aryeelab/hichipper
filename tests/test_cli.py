@@ -11,9 +11,7 @@ def file_checksums_equal(file1, file2):
         checksum2 = md5.new(f.read()).digest()
     return checksum1==checksum2 
 
-
 def test_loops_output():
 	runner = CliRunner()
-	result = runner.invoke(cli.main, ['--out', 'output1', '--skip-resfrag', 'example_none.yaml'])
-	assert file_checksums_equal('correct_output/co.intra.loop_counts.bedpe', 'output1/test_sample1.filt.intra.loop_counts.bedpe')
-	assert file_checksums_equal('correct_output/co.intra.loop_counts.bedpe', 'output1/test_sample2.filt.intra.loop_counts.bedpe')
+	result = runner.invoke(cli.main, ['--out', 'output1', '--skip-resfrag', '--skip-qc', '--skip-diffloop', 'one.yaml'])
+	assert file_checksums_equal('correct_output/goal.loop_counts.bedpe', 'output1/dSRR3467177.filt.intra.loop_counts.bedpe')
