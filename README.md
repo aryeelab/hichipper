@@ -134,19 +134,19 @@ SRR3467175  SRR3467176  SRR3467177  SRR3467178
 
 ./hicpro/bowtie_results/bwt2/SRR3467175:
 SRR3467175_1_hg19.bwt2merged.bam  SRR3467175_2_hg19.bwt2merged.bam  SRR3467175_hg19.bwt2pairs.bam
-SRR3467175_1_hg19.mapstat         SRR3467175_2_hg19.mapstat         <b>SRR3467175_hg19.bwt2pairs.pairstat*
+SRR3467175_1_hg19.mapstat         SRR3467175_2_hg19.mapstat         SRR3467175_hg19.bwt2pairs.pairstat*
 
 ./hicpro/bowtie_results/bwt2/SRR3467176:
 SRR3467176_1_hg19.bwt2merged.bam  SRR3467176_2_hg19.bwt2merged.bam  SRR3467176_hg19.bwt2pairs.bam
-SRR3467176_1_hg19.mapstat         SRR3467176_2_hg19.mapstat         <b>SRR3467176_hg19.bwt2pairs.pairstat*
+SRR3467176_1_hg19.mapstat         SRR3467176_2_hg19.mapstat         SRR3467176_hg19.bwt2pairs.pairstat*
 
 ./hicpro/bowtie_results/bwt2/SRR3467177:
 SRR3467177_1_hg19.bwt2merged.bam  SRR3467177_2_hg19.bwt2merged.bam  SRR3467177_hg19.bwt2pairs.bam
-SRR3467177_1_hg19.mapstat         SRR3467177_2_hg19.mapstat         <b>SRR3467177_hg19.bwt2pairs.pairstat*
+SRR3467177_1_hg19.mapstat         SRR3467177_2_hg19.mapstat         SRR3467177_hg19.bwt2pairs.pairstat*
 
 ./hicpro/bowtie_results/bwt2/SRR3467178:
 SRR3467178_1_hg19.bwt2merged.bam  SRR3467178_2_hg19.bwt2merged.bam  SRR3467178_hg19.bwt2pairs.bam
-SRR3467178_1_hg19.mapstat         SRR3467178_2_hg19.mapstat         <b>SRR3467178_hg19.bwt2pairs.pairstat*
+SRR3467178_1_hg19.mapstat         SRR3467178_2_hg19.mapstat         SRR3467178_hg19.bwt2pairs.pairstat*
 
 ./hicpro/hic_results:
 data
@@ -159,8 +159,8 @@ SRR3467175_hg19.bwt2pairs.DEPairs*    SRR3467175_hg19.bwt2pairs.RSstat*   SRR346
 SRR3467175_hg19.bwt2pairs.DumpPairs*  SRR3467175_hg19.bwt2pairs.SCPairs*  SRR3467175_hg19.bwt2pairs.validPairs*
 
 ./hicpro/hic_results/data/SRR3467176:
-SRR3467176_hg19.bwt2pairs.DEPairs*    SRR3467176_hg19.bwt2pairs.RSstat*  SRR3467176_hg19.bwt2pairs.SinglePairs*
-SRR3467176_hg19.bwt2pairs.DumpPairs*  SRR3467176_hg19.bwt2pairs.SCPairs* SRR3467176_hg19.bwt2pairs.validPairs*
+SRR3467176_hg19.bwt2pairs.DEPairs*    SRR3467176_hg19.bwt2pairs.RSstat*   SRR3467176_hg19.bwt2pairs.SinglePairs*
+SRR3467176_hg19.bwt2pairs.DumpPairs*  SRR3467176_hg19.bwt2pairs.SCPairs*  SRR3467176_hg19.bwt2pairs.validPairs*
 
 ./hicpro/hic_results/data/SRR3467177:
 SRR3467177_hg19.bwt2pairs.DEPairs*    SRR3467177_hg19.bwt2pairs.RSstat*   SRR3467177_hg19.bwt2pairs.SinglePairs*

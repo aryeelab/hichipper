@@ -1,6 +1,0 @@
-peaks:
-  - NONE
-resfrags:
-  - resfrag/hg19_MboI_resfrag_chr22.bed.gz
-hicpro_output:
-  - hicpro
