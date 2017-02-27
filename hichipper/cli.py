@@ -31,17 +31,18 @@ def get_subdirectories(dir):
 @click.option('--max-dist', default="2000000", help='Peak padding width (applied on both left and right); default = 2000000')
 @click.option('--macs2-string', default="-q 0.01 --extsize 147 --nomodel", help='String of arguments to pass to MACS2; only is called when peaks in .yaml is set to NONE; default = "-q 0.01 --extsize 147 --nomodel"')
 @click.option('--peak-pad', default="1000", help='Peak padding width (applied on both left and right); default = 1000')
-@click.option('--merge-gap', default="0", help='Merge nearby peaks (after all padding is complete')
+@click.option('--merge-gap', default="500", help='Merge nearby peaks (after all padding is complete; default = 500')
 @click.option('--keep-temp-files', is_flag=True, help='Keep temporary files?')
 @click.option('--skip-resfrag', is_flag=True, help='Skip restriction fragment padding?')
 @click.option('--skip-qc', is_flag=True, help='Skip QC report generation?')
 @click.option('--skip-diffloop', is_flag=True, help='Skip QC report generation?')
-@click.option('--ignore-samples', default="NONE", help='Comma separated list of sample names to ignore')
+@click.option('--keep-samples', default="ALL", help='Comma separated list of sample names to keep; ALL by default')
+@click.option('--ignore-samples', default="NONE", help='Comma separated list of sample names to ignore; NONE by default')
 @click.option('--read-length', default="75", help='Length of reads from sequencing runs')
 @click.argument('manifest')
 @click.version_option()
 
-def main(manifest, out, min_dist, max_dist, macs2_string, peak_pad, merge_gap, keep_temp_files, skip_resfrag, skip_qc, skip_diffloop, read_length, ignore_samples):
+def main(manifest, out, min_dist, max_dist, macs2_string, peak_pad, merge_gap, keep_temp_files, skip_resfrag, skip_qc, skip_diffloop, read_length, keep_samples, ignore_samples):
 	"""A preprocessing and QC pipeline for HiChIP data."""
 	__version__ = get_distribution('hichipper').version
 	if os.path.exists(out):

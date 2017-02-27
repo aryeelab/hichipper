@@ -44,7 +44,8 @@ anchors <- data.frame()
 
 # Creates a dataframe of summary statistics from the individual sample log output files
 readstats <- foreach(sample = samples, .combine="rbind") %do% {
-  sfilename <- file.path(paste0(cwd, "/", outdir, "/", sample, ".stat"))
+  sfilename <- "/Users/lareauc/Downloads/ESO26_separate/ESO26_r1.stat"
+  #sfilename <- file.path(paste0(cwd, "/", outdir, "/", sample, ".stat"))
   rs <- read.table(sfilename, header=FALSE, stringsAsFactors = FALSE, sep = "=")
   anchors <- rbind(anchors, data.frame(sample= sample, npeaks = rs[12,2] ))
   min_length <- rs[13,2]
@@ -73,7 +74,7 @@ readstats$metric <- factor(rep(metrics, length(samples)), levels=metrics)
 tab <- suppressMessages(acast(readstats, metric~sample, sum))
 tab <- rbind(tab, Long_Range_Interactions = tab[6,] + tab[7,])
 tab_percent <- 100*sweep(tab, 2, tab["Total_PETs",], FUN="/")
-tab_summary <- rbind(format(tab_percent[c(8,10,2,9),,drop = FALSE], digits = 2, nsmall = 2), 
+tab_summary <- rbind(format(tab_percent[c(9,11,2,10),,drop = FALSE], digits = 2, nsmall = 2), 
                      as.character(tab[1,,drop = FALSE]) )
 rownames(tab_summary) <- c(paste0("% in Loops"),
                            "% Long Range Interaction",
