@@ -11,21 +11,21 @@ pad <- 0 # taken care of in the Python execution
 
 # Import Restriction Fragments / Convert to GRanges
 if(endsWith(resfile, "gz")){
-  resFrags <- fread(paste0(input = 'zcat < ', resfile), header = FALSE)
+  resFrags <- data.frame(fread(paste0(input = 'zcat < ', resfile), header = FALSE))
 } else {
-  resFrags <- fread(resfile,  header = FALSE)
+  resFrags <- data.frame(fread(resfile,  header = FALSE))
 }
 resFrags_g <- makeGRangesFromDataFrame(setNames(data.frame(
   resFrags[, 1], resFrags[, 2], resFrags[, 3]), c("seqnames", "start", "end")))
 
 # Import Peaks / Convert to GRanges
 if(endsWith(peaksfile, "gz")){
-  peaks <- fread(paste0(input = 'zcat < ', peaksfile), header = FALSE)
+  peaks <- data.frame(fread(paste0(input = 'zcat < ', peaksfile), header = FALSE))
 } else {
-  peaks <- fread(peaksfile,  header = FALSE)
+  peaks <- data.frame(fread(peaksfile,  header = FALSE))
 }
 peaks$start <- peaks$V2 - pad
-peaks$End <- peaks$V3 + pad
+peaks$end <- peaks$V3 + pad
 peaks <- makeGRangesFromDataFrame(peaks, seqnames.field = "V1", start.field = "start", end.field = "end")
 
 # Overlap the two; create GRanges of extreme fragments
@@ -42,6 +42,6 @@ anchors_g <- reduce(anchorsfin_g)
 anchors_gfilt <- anchors_g[width(anchors_g) < 50000] 
 cat(paste0("Anchors removed due to excessive size (likely at ends of chromosomes): ",
            as.character(length(anchors_g) - length(anchors_gfilt)), " \n"))
-write.table(data.frame(anchors_gfilt)[,c(1,2,3)], row.names = FALSE, col.names = FALSE, quote = FALSE, 
+write.table(as.data.frame(anchors_gfilt)[,c(1,2,3)], row.names = FALSE, col.names = FALSE, quote = FALSE, 
             sep = "\t", file = paste0(peaksfile, "rf.tmp"))
 
