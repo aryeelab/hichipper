@@ -87,7 +87,8 @@ def main(manifest, out, min_dist, max_dist, macs2_string, peak_pad, merge_gap, k
 	if(keep_samples != "ALL"):
 		keeplist = keep_samples.split(",")
 		click.echo(gettime() + "Intersecting detected samples with user-retained ones: " + keep_samples)
-	
+		samples = intersect(samples, keeplist)
+		
 	if(ignore_samples != "NONE"):
 		igslist = ignore_samples.split(",")
 		for byesample in igslist:
