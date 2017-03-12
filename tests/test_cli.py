@@ -13,5 +13,5 @@ def file_checksums_equal(file1, file2):
 
 def test_loops_output():
 	runner = CliRunner()
-	result = runner.invoke(cli.main, ['--out', 'output1', '--peak-pad', '1000', '--skip-resfrag', '--skip-qc', '--skip-diffloop', 'yaml/one.yaml'])
+	result = runner.invoke(cli.main, ['--out', 'output1', '--peak-pad', '1000', '--skip-resfrag-pad', '--skip-qc', '--skip-diffloop', 'yaml/one.yaml'])
 	assert file_checksums_equal('correct_output/goal.loop_counts.bedpe', 'output1/dSRR3467177.filt.intra.loop_counts.bedpe')
