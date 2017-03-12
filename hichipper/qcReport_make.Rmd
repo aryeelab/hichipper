@@ -44,8 +44,7 @@ anchors <- data.frame()
 
 # Creates a dataframe of summary statistics from the individual sample log output files
 readstats <- foreach(sample = samples, .combine="rbind") %do% {
-  sfilename <- "/Users/lareauc/Downloads/ESO26_separate/ESO26_r1.stat"
-  #sfilename <- file.path(paste0(cwd, "/", outdir, "/", sample, ".stat"))
+  sfilename <- file.path(paste0(cwd, "/", outdir, "/", sample, ".stat"))
   rs <- read.table(sfilename, header=FALSE, stringsAsFactors = FALSE, sep = "=")
   anchors <- rbind(anchors, data.frame(sample= sample, npeaks = rs[12,2] ))
   min_length <- rs[13,2]
