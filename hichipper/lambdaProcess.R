@@ -93,5 +93,7 @@ globalLambda <- min(mcols(hichipbg)[,1])
 outdf[outdf[,4] < globalLambda,4] <- globalLambda
 write.table(outdf, file = paste0(outdir, "/adjustedBackground.bdg.tmp"), sep = "\t", row.names = FALSE, quote = FALSE, col.names = FALSE)
 write.table(data.frame(round(hichipmean,2)),  file = paste0(outdir, "/globalMeanRatio.tmp"), sep = "\t", row.names = FALSE, quote = FALSE, col.names = FALSE)
-write.table(head(data.frame(scaleVec),750), file = paste0(outdir, "/observedRatios.tmp"), sep = "\t", row.names = TRUE, quote = FALSE, col.names = FALSE)
+
+tdf <- head(hichipratio, 750)
+write.table(data.frame(dist = names(tdf), vals = round(unname(tdf),3)), file = paste0(outdir, "/observedRatios.tmp"), sep = "\t", row.names = FALSE, quote = FALSE, col.names = FALSE)
 
