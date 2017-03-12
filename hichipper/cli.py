@@ -30,7 +30,7 @@ def get_subdirectories(dir):
 @click.option('--min-dist', default="5000", help='Minimum distance ; default = 5000')
 @click.option('--max-dist', default="2000000", help='Peak padding width (applied on both left and right); default = 2000000')
 @click.option('--macs2-string', default="-q 0.01 --extsize 147 --nomodel", help='String of arguments to pass to MACS2; only is called when peaks are set to be called; default = "-q 0.01 --extsize 147 --nomodel"')
-@click.option('--macs2-genome', default="gs", help='Argument to pass to the -g variable in MACS2 (mm for mouse genome; hs for human genome); default = "hs"')
+@click.option('--macs2-genome', default="hs", help='Argument to pass to the -g variable in MACS2 (mm for mouse genome; hs for human genome); default = "hs"')
 @click.option('--peak-pad', default="1000", help='Peak padding width (applied on both left and right); default = 500')
 @click.option('--merge-gap', default="500", help='Merge nearby peaks (after all padding is complete; default = 500')
 @click.option('--keep-temp-files', is_flag=True, help='Keep temporary files?')
@@ -132,7 +132,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 		    os.system('cat ' + hicprooutput + '/hic_results/data/' + sample + "/*SCPairs >> " + out + "/allDEandSCpairs.Pairs.tmp")
 		os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $2"\t"$3-RL"\t"$3+RL}' '''+ out + '''/allDEandSCpairs.Pairs.tmp | awk '$2 > 0 {print $0}' > ''' + out + '''/allDEandSCpairs.bed.tmp''')
 		os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $5"\t"$6-RL"\t"$6+RL}' '''+ out + '''/allDEandSCpairs.Pairs.tmp | awk '$2 > 0 {print $0}' >> ''' + out + '''/allDEandSCpairs.bed.tmp''')
-		macs2cmd = 'macs2 callpeak -t ' + out + '/allDEandSCpairs.bed.tmp ' + macs2_string + " -B -f BED --verbose 0 -n " + out + '/allSamples_temporary'
+		macs2cmd = 'macs2 callpeak -t ' + out + '/allDEandSCpairs.bed.tmp ' + macs2_string + " -g " + macs2_genome + " -B -f BED --verbose 0 -n " + out + '/allSamples_temporary'
 		click.echo(gettime() +  "macs2 command: " + macs2cmd, logf)
 		os.system(macs2cmd)
 		if not os.path.isfile(out + '/allSamples_temporary_peaks.narrowPeak'):
@@ -143,6 +143,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 			click.echo(gettime() + "Performing hichipper-modified background peak calling")
 			call(['Rscript', os.path.join(script_dir, 'lambdaProcess.R'), resfrags,  os.path.join(out, "allSamples_temporary_treat_pileup.bdg"), os.path.join(out,"allSamples_temporary_control_lambda.bdg"), out])
 			click.echo(gettime() + "Modified background signal; performing peak calling")
+			click.echo(gettime() +  "MACS2 TEXT OUTPUT INCOMING")
 			os.system("macs2 bdgcmp -t " + os.path.join(out,"adjustedTreatment.bdg.tmp") + " -c " + os.path.join(out, "adjustedBackground.bdg.tmp") + " -m qpois -o " + os.path.join(out,"hichipper_qvalue.bdg.tmp"))
 			os.system("macs2 bdgpeakcall -i " + os.path.join(out,"hichipper_qvalue.bdg.tmp") + " -c 2 -l 147 -g 100 -o " + os.path.join(out,"hichipper_peaks.bed"))
 			os.system("mv " + os.path.join(out,"hichipper_peaks.bed") + " " + os.path.join(out,"allSamples_temporary_hichipperPeaks.bed"))
@@ -158,7 +159,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 		    os.system('cat ' + hicprooutput + '/hic_results/data/' + sample + "/*SCPairs >> " + out + "/" + sample +"DEandSCpairs.Pairs.tmp")
 		    os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $2"\t"$3-RL"\t"$3+RL}' '''+ out + '''/''' + sample +'''DEandSCpairs.Pairs.tmp | awk '$2 > 0 {print $0}' >  ''' + out + '''/''' + sample +'''DEandSCpairs.bed.tmp''')
 		    os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $5"\t"$6-RL"\t"$6+RL}' '''+ out + '''/''' + sample +'''DEandSCpairs.Pairs.tmp | awk '$2 > 0 {print $0}' >> ''' + out + '''/''' + sample +'''DEandSCpairs.bed.tmp''')
-		    macs2cmd = 'macs2 callpeak -t ' + out + '/' + sample + 'DEandSCpairs.bed.tmp ' + macs2_string + " -B -f BED --verbose 0 -n " + out + '/' + sample + "_temporary"
+		    macs2cmd = 'macs2 callpeak -t ' + out + '/' + sample + 'DEandSCpairs.bed.tmp ' + macs2_string + " -g " + macs2_genome + " -B -f BED --verbose 0 -n " + out + '/' + sample + "_temporary"
 		    click.echo(gettime() +  "macs2 command: " + macs2cmd, logf)
 		    os.system(macs2cmd)
 		    if not os.path.isfile(out + '/' + sample + '_temporary_peaks.narrowPeak'):
@@ -169,6 +170,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 				click.echo(gettime() + "Performing hichipper-modified background peak calling")
 				os.system('Rscript ' + os.path.join(script_dir, 'lambdaProcess.R') + " " + resfrags + " " + out + '/' + sample + "_temporary_treat_pileup.bdg " + out + '/' + sample + "_temporary_control_lambda.bdg " + out)
 				click.echo(gettime() + "Modified background signal; performing peak calling")
+				click.echo(gettime() +  "MACS2 TEXT OUTPUT INCOMING")
 				os.system("macs2 bdgcmp -t " + os.path.join(out,"adjustedTreatment.bdg.tmp") + " -c " + os.path.join(out, "adjustedBackground.bdg.tmp") + " -m qpois -o " + os.path.join(out,"hichipper_qvalue.bdg.tmp"))
 				os.system("macs2 bdgpeakcall -i " + os.path.join(out,"hichipper_qvalue.bdg.tmp") + " -c 2 -l 147 -g 100 -o " + os.path.join(out,"hichipper_peaks.bed"))
 				os.system("mv " + os.path.join(out,"hichipper_peaks.bed") + " " + out + "/" + sample + "_temporary_hichipperPeaks.bed")
@@ -184,7 +186,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 		    os.system('cat ' + hicprooutput + '/hic_results/data/' + sample + "/*Pairs >> " + out + "/all.Pairs.tmp")
 		os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $2"\t"$3-RL"\t"$3+RL}' '''+ out + '''/all.Pairs.tmp | awk '$2 > 0 {print $0}' > ''' + out + '''/allpairs.bed.tmp''')
 		os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $5"\t"$6-RL"\t"$6+RL}' '''+ out + '''/all.Pairs.tmp | awk '$2 > 0 {print $0}' >> ''' + out + '''/allpairs.bed.tmp''')
-		macs2cmd = 'macs2 callpeak -t ' + out + '/allpairs.bed.tmp ' + macs2_string + " -B -f BED --verbose 0 -n " + out + '/allSamples_temporary'
+		macs2cmd = 'macs2 callpeak -t ' + out + '/allpairs.bed.tmp ' + macs2_string + " -g " + macs2_genome + " -B -f BED --verbose 0 -n " + out + '/allSamples_temporary'
 		click.echo(gettime() +  "macs2 command: " + macs2cmd, logf)
 		os.system(macs2cmd)
 		if not os.path.isfile(out + '/allSamples_temporary_peaks.narrowPeak'):
@@ -195,6 +197,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 			click.echo(gettime() + "Performing hichipper-modified background peak calling")
 			call(['Rscript', os.path.join(script_dir, 'lambdaProcess.R'), resfrags,  os.path.join(out, "allSamples_temporary_treat_pileup.bdg"), os.path.join(out,"allSamples_temporary_control_lambda.bdg"), out])
 			click.echo(gettime() + "Modified background signal; performing peak calling")
+			click.echo(gettime() +  "MACS2 TEXT OUTPUT INCOMING")
 			os.system("macs2 bdgcmp -t " + os.path.join(out,"adjustedTreatment.bdg.tmp") + " -c " + os.path.join(out, "adjustedBackground.bdg.tmp") + " -m qpois -o " + os.path.join(out,"hichipper_qvalue.bdg.tmp"))
 			os.system("macs2 bdgpeakcall -i " + os.path.join(out,"hichipper_qvalue.bdg.tmp") + " -c 2 -l 147 -g 100 -o " + os.path.join(out,"hichipper_peaks.bed"))
 			os.system("mv " + os.path.join(out,"hichipper_peaks.bed") + " " + os.path.join(out,"allSamples_temporary_hichipperPeaks.bed"))
@@ -209,7 +212,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 		    os.system('cat ' + hicprooutput + '/hic_results/data/' + sample + "/*Pairs >> " + out + "/" + sample +".all.Pairs.tmp")
 		    os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $2"\t"$3-RL"\t"$3+RL}' '''+ out + '''/''' + sample +'''.all.Pairs.tmp | awk '$2 > 0 {print $0}' >  ''' + out + '''/''' + sample +'''.all.Pairs.bed.tmp''')
 		    os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $5"\t"$6-RL"\t"$6+RL}' '''+ out + '''/''' + sample +'''.all.Pairs.tmp | awk '$2 > 0 {print $0}' >> ''' + out + '''/''' + sample +'''.all.Pairs.bed.tmp''')
-		    macs2cmd = 'macs2 callpeak -t ' + out + '/' + sample + '.all.Pairs.bed.tmp ' + macs2_string + " -B -f BED --verbose 0 -n " + out + '/' + sample + "_temporary"
+		    macs2cmd = 'macs2 callpeak -t ' + out + '/' + sample + '.all.Pairs.bed.tmp ' + macs2_string + " -g " + macs2_genome + " -B -f BED --verbose 0 -n " + out + '/' + sample + "_temporary"
 		    click.echo(gettime() +  "macs2 command: " + macs2cmd, logf)
 		    os.system(macs2cmd)
 		    if not os.path.isfile(out + '/' + sample + '_temporary_peaks.narrowPeak'):
@@ -220,6 +223,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 				click.echo(gettime() + "Performing hichipper-modified background peak calling")
 				os.system('Rscript ' + os.path.join(script_dir, 'lambdaProcess.R') + " " + resfrags + " " + out + '/' + sample + "_temporary_treat_pileup.bdg " + out + '/' + sample + "_temporary_control_lambda.bdg " + out)
 				click.echo(gettime() + "Modified background signal; performing peak calling")
+				click.echo(gettime() +  "MACS2 TEXT OUTPUT INCOMING")
 				os.system("macs2 bdgcmp -t " + os.path.join(out,"adjustedTreatment.bdg.tmp") + " -c " + os.path.join(out, "adjustedBackground.bdg.tmp") + " -m qpois -o " + os.path.join(out,"hichipper_qvalue.bdg.tmp"))
 				os.system("macs2 bdgpeakcall -i " + os.path.join(out,"hichipper_qvalue.bdg.tmp") + " -c 2 -l 147 -g 100 -o " + os.path.join(out,"hichipper_peaks.bed"))
 				os.system("mv " + os.path.join(out,"hichipper_peaks.bed") + " " + out + "/" + sample + "_temporary_hichipperPeaks.bed")
