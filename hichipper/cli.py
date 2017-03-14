@@ -38,13 +38,14 @@ def get_subdirectories(dir):
 @click.option('--skip-resfrag-pad', is_flag=True, help='Skip restriction fragment aware padding')
 @click.option('--skip-qc', is_flag=True, help='Skip QC report generation?')
 @click.option('--skip-diffloop', is_flag=True, help='Skip analyses in diffloop (e.g. Mango loop calling; .rds generation)')
+@click.option('--make-ucsc', is_flag=True, help='Make additional output files that can support viewing in UCSC genome browser; requires tabix and htslib tools.')
 @click.option('--keep-samples', default="ALL", help='Comma separated list of sample names to keep; ALL (special string) by default')
 @click.option('--ignore-samples', default="NONE", help='Comma separated list of sample names to ignore; NONE (special string) by default')
 @click.option('--read-length', default="75", help='Length of reads from sequencing runs')
 @click.argument('manifest')
 @click.version_option()
 
-def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad, merge_gap, keep_temp_files, skip_background_correction, skip_resfrag_pad, skip_qc, skip_diffloop, read_length, keep_samples, ignore_samples):
+def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad, merge_gap, keep_temp_files, skip_background_correction, skip_resfrag_pad, skip_qc, skip_diffloop, read_length, keep_samples, ignore_samples, make_ucsc):
 	"""A preprocessing and QC pipeline for HiChIP data."""
 	__version__ = get_distribution('hichipper').version
 	if os.path.exists(out):
@@ -260,10 +261,17 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 		peakfilespersample = [peakFile + "rf.tmp" for peakFile in peakfilespersample]
  	logf.close()
  	
+ 	# Check for UCSC Specification
+ 	if make_ucsc:
+ 		ucscoutput = "true"
+ 	else:
+ 		ucscoutput = "false"
+ 	
+ 	
  	# Call putative interactions
 	for i in range(len(samples)):
 		hichipperRun = os.path.join(script_dir, 'interactionsCall.sh')	
-		cmd = ['bash', hichipperRun, cwd, out, hicprooutput, samples[i], peakfilespersample[i], min_dist, max_dist, merge_gap, str(halfLength)]        
+		cmd = ['bash', hichipperRun, cwd, out, hicprooutput, samples[i], peakfilespersample[i], min_dist, max_dist, merge_gap, str(halfLength), ucscoutput]        
 		call(cmd)
 		if not os.path.isfile(out + "/" + samples[i] + ".stat"):
 			sys.exit('ERROR: something failed at the individual sample level; check the .log file for more info')

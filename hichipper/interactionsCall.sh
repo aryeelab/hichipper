@@ -10,13 +10,14 @@ MIN_DIST=$6
 MAX_DIST=$7
 MERGE_GAP=$8
 HALF_LEN=$9
+UCSC=${10}
 
 # Log from the shell script side
 LOG_FILE="${WK_DIR}/${OUT_NAME}/${OUT_NAME}.hichipper.log"
 echo "`date`: Processing ${SAMPLE}" | tee -a $LOG_FILE
 
 # Summary stats
-Total_PETs=`head -1 "${WK_DIR}/${HICPRO_OUT}/bowtie_results/bwt2/${SAMPLE}/"*pairstat | awk '$2 > 0 && $2 < 10000000000 {sum += $2}; {print sum}' | awk '{print $1}'`
+Total_PETs=`head -1 "${WK_DIR}/${HICPRO_OUT}/bowtie_results/bwt2/${SAMPLE}/"*pairstat | awk '$2 > 0 && $2 < 10000000000 {sum += $2}; {print sum}' | tail -n 1 | awk '{print $1}'`
 echo "`date`: Total_PETs=${Total_PETs}" | tee -a $LOG_FILE
 Mapped_unique_quality_pairs=`cat "${WK_DIR}/${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*Pairs | wc -l | awk '{print $1}'`
 echo "`date`: Mapped_unique_quality_pairs=${Mapped_unique_quality_pairs}" | tee -a $LOG_FILE
@@ -68,7 +69,17 @@ echo "`date`: Mapped_unique_intra_quality_anchor_large=${Mapped_unique_intra_qua
 # Produce final output
 awk '$1 != $4 {print $0}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.loop_counts.bedpe.tmp" > "${WK_DIR}/${OUT_NAME}/${SAMPLE}.inter.loop_counts.bedpe"
 awk '$1 == $4 {print $0}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.loop_counts.bedpe.tmp" > "${WK_DIR}/${OUT_NAME}/${SAMPLE}.intra.loop_counts.bedpe"
-awk -v MIN_DIST="$MIN_DIST" -v MAX_DIST="$MAX_DIST" '$1 == $4 && $2 != $5 && (($5+$6)/2 - ($2+$3)/2)>=MIN_DIST && (($5+$6)/2 - ($2+$3)/2)<=MAX_DIST {print $0}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.loop_counts.bedpe.tmp" > "${WK_DIR}/${OUT_NAME}/${SAMPLE}.filt.intra.loop_counts.bedpe"
+awk -v MIN_DIST="$MIN_DIST" -v MAX_DIST="$MAX_DIST" '$1 == $4 && $2 != $5 && (($5+$6)/2 - ($2+$3)/2)>=MIN_DIST && (($5+$6)/2 - ($2+$3)/2)<=MAX_DIST {print $0}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.loop_counts.bedpe.tmp" >  "${WK_DIR}/${OUT_NAME}/${SAMPLE}.filt.intra.loop_counts.bedpe"
+
+echo "$UCSC"
+# Produce UCSC Output if requested
+if [ "$UCSC" = true ] ; then
+    echo "`date`: Creating UCSC Compatible files; make sure tabix and bgzip are available in the environment" | tee -a $LOG_FILE
+    awk '{print $1"\t"$2"\t"$3"\t"$4":"$5"-"$6","$8"\t"(NR*2-1)"\t.\n"$4"\t"$5"\t"$6"\t"$1":"$2"-"$3","$8"\t"(NR*2)"\t."}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.filt.intra.loop_counts.bedpe" | sort -k1,1n -k2,2n  > "${WK_DIR}/${OUT_NAME}/${SAMPLE}.interaction.txt"
+    bgzip "${WK_DIR}/${OUT_NAME}/${SAMPLE}.interaction.txt"
+    tabix -p bed "${WK_DIR}/${OUT_NAME}/${SAMPLE}.interaction.txt.gz"
+fi
+
 
 # Finalize 
 Loop_PETs=`awk '{sum += $8} END {print sum}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.filt.intra.loop_counts.bedpe"`
