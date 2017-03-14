@@ -300,20 +300,34 @@ Usage: hichipper [OPTIONS] MANIFEST
   A preprocessing and QC pipeline for HiChIP data.
 
 Options:
-  --out TEXT           Output directory name  [required]
-  --min-dist TEXT      Minimum distance ; default = 5000
-  --max-dist TEXT      Peak padding width (applied on both left and right);
-                       default = 2000000
-  --macs2-string TEXT  String of arguments to pass to MACS2;
-                       default = "-q 0.01 --extsize 147 --nomodel"
-                       0.01 --nomodel"
-  --peak-pad TEXT      Peak padding width (applied on both left and right before 
-                       additional padding due to restriction fragments);
-                       default = 1000
-  --read-length TEXT   Length of reads from experiment; default = 75
-  --keep-temp-files    Keep temporary files?
-  --version            Show the version and exit.
-  --help               Show this message and exit.
+  --out TEXT                    Output directory name  [required]
+  --min-dist TEXT               Minimum distance ; default = 5000
+  --max-dist TEXT               Peak padding width (applied on both left and
+                                right); default = 2000000
+  --macs2-string TEXT           String of arguments to pass to MACS2; only is
+                                called when peaks are set to be called;
+                                default = "-q 0.01 --extsize 147 --nomodel"
+  --macs2-genome TEXT           Argument to pass to the -g variable in MACS2
+                                (mm for mouse genome; hs for human genome);
+                                default = "hs"
+  --peak-pad TEXT               Peak padding width (applied on both left and
+                                right); default = 500
+  --merge-gap TEXT              Merge nearby peaks (after all padding is
+                                complete); default = 500
+  --keep-temp-files             Keep temporary files?
+  --skip-background-correction  Skip restriction fragment aware background
+                                correction?
+  --skip-resfrag-pad            Skip restriction fragment aware padding
+  --skip-qc                     Skip QC report generation?
+  --skip-diffloop               Skip analyses in diffloop (e.g. Mango loop
+                                calling; .rds generation)
+  --keep-samples TEXT           Comma separated list of sample names to keep;
+                                ALL (special string) by default
+  --ignore-samples TEXT         Comma separated list of sample names to
+                                ignore; NONE (special string) by default
+  --read-length TEXT            Length of reads from sequencing runs
+  --version                     Show the version and exit.
+  --help                        Show this message and exit.
 ```
  
 Running
@@ -323,7 +337,7 @@ hichipper --version
 will show the version of this package currently installed. 
 
 ```
-hichipper, version 0.4.0
+hichipper, version 0.5.0
 ```
 Check the badge up top to see if a newer version is available or try directly through `pip`:
 
