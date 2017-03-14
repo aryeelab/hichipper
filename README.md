@@ -35,7 +35,13 @@ A higher resolution [slide of this image](media/Big.pptx) is in the [media](medi
 ## Workflow Overview<a name="ugo"></a>
 A simple graphical guide to processing HiChIP data is shown below. The role of **hichipper**
 is to import aligned read files from (e.g. [HiC-Pro](https://github.com/nservant/HiC-Pro))
-as well as a sample `.yaml` file and produce user-friendly output. 
+as well as location of restriction fragment files
+([available here](https://github.com/aryeelab/hichipper/tree/master/RestrictionFragmentFiles)) coordinated through a
+`.yaml` configuration file and produce user-friendly output. 
+
+In particular, **hichipper** allows users to pre-supply their own set of gold-standard peaks (e.g. from ChIP-Seq)
+or call peaks directly from HiChIP data using a novel background detection algorithm. In either case, interactions
+and chromatin loops can be called using a restriction fragment-aware approach that substantially increases read density in loops. 
  
 ![hichipper_overview](media/Overview.png)
 
@@ -71,15 +77,26 @@ or simply download [this R script](hichipper/requirementsInstall.R) and run:
 Rscript requirementsInstall.R
 ```
 
-Convenient [pandoc binaries](https://s3.amazonaws.com/rstudio-buildtools/pandoc-1.12.4.2.zip) for Linux, Mac and Windows are available for download from RStudio.
+Convenient [pandoc binaries](https://s3.amazonaws.com/rstudio-buildtools/pandoc-1.12.4.2.zip) for Linux, Mac and Windows are available for download from RStudio. If you prefer to install pandoc globally on your machine, installation instructions can be found [here](http://pandoc.org/installing.html).
 
 ## Installation<a name="installation"></a>
 
-To install **hichipper** given the dependencies above, simply run:
+To install **hichipper** given the dependencies above globally on your machine, simply run:
 
 ```
 pip install hichipper
 ```
+
+We've found success using a virtual python 2.7 environment when installing **hichipper**. A crash course of the commands required 
+is shown below. A more robust and informative discussion of virtual environments in python can be found [here](http://docs.python-guide.org/en/latest/dev/virtualenvs/).
+
+```
+virtualenv venv
+source venv/bin/activate
+pip install hichipper
+hichipper —version
+```
+
 
 ## Simple usage example<a name="sue"></a>
 
