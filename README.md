@@ -322,6 +322,9 @@ Options:
   --skip-qc                     Skip QC report generation?
   --skip-diffloop               Skip analyses in diffloop (e.g. Mango loop
                                 calling; .rds generation)
+  --make-ucsc                   Make additional output files that can support
+                                viewing in UCSC genome browser; requires tabix
+                                and htslib tools.
   --keep-samples TEXT           Comma separated list of sample names to keep;
                                 ALL (special string) by default
   --ignore-samples TEXT         Comma separated list of sample names to
