@@ -31,7 +31,7 @@ def get_subdirectories(dir):
 @click.option('--max-dist', default="2000000", help='Peak padding width (applied on both left and right); default = 2000000')
 @click.option('--macs2-string', default="-q 0.01 --extsize 147 --nomodel", help='String of arguments to pass to MACS2; only is called when peaks are set to be called; default = "-q 0.01 --extsize 147 --nomodel"')
 @click.option('--macs2-genome', default="hs", help='Argument to pass to the -g variable in MACS2 (mm for mouse genome; hs for human genome); default = "hs"')
-@click.option('--peak-pad', default="1000", help='Peak padding width (applied on both left and right); default = 500')
+@click.option('--peak-pad', default="500", help='Peak padding width (applied on both left and right); default = 500')
 @click.option('--merge-gap', default="500", help='Merge nearby peaks (after all padding is complete; default = 500')
 @click.option('--keep-temp-files', is_flag=True, help='Keep temporary files?')
 @click.option('--skip-background-correction', is_flag=True, help='Skip restriction fragment aware background correction?')
