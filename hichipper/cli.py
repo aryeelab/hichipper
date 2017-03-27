@@ -246,7 +246,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 	# Do the initial peak padding
 	if(int(peak_pad) > 0):
 		for peakFile in list(set(peakfilespersample)):
-			os.system('''awk -v RL=''' + peak_pad + r''' '{print $1"\t"$2-RL"\t"$2+RL}' '''+ peakFile + ''' | awk '$2 > 0 {print $0}' >  ''' + peakFile + '''_pad.bed.tmp''')
+			os.system('''awk -v RL=''' + peak_pad + r''' '{print $1"\t"$2-RL"\t"$3+RL}' '''+ peakFile + ''' | awk '$2 > 0 {print $0}' >  ''' + peakFile + '''_pad.bed.tmp''')
 		peakfilespersample = [peakFile + "_pad.bed.tmp" for peakFile in peakfilespersample]
 	else:
 		click.echo(gettime() + "No initial padding as --peak-pad set to 0 or less", logf)

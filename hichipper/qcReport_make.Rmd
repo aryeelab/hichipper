@@ -71,7 +71,7 @@ readstats$metric <- factor(rep(metrics, length(samples)), levels=metrics)
 # Organize summary tables
 
 tab <- suppressMessages(acast(readstats, metric~sample, sum))
-tab <- rbind(tab, Long_Range_Interactions = tab[6,] + tab[7,])
+tab <- rbind(tab, Long_Range_Interactions = tab[6,])
 tab_percent <- 100*sweep(tab, 2, tab["Total_PETs",], FUN="/")
 tab_summary <- rbind(format(tab_percent[c(9,11,2,10),,drop = FALSE], digits = 2, nsmall = 2), 
                      as.character(tab[1,,drop = FALSE]) )
