@@ -376,7 +376,7 @@ the `--out` flag and a `.yaml` file as shown in the example executions. Below ar
 additional parameters than can be configured when executing the pipeline. 
 
 
-## Peak inference from HiChIP data<a name="HPC"></a>
+## Peaks <a name="HPC"></a>
 
 To call peaks from HiChIP data directly, **hichipper** aggregates read density from either all samples or each sample individually. Additionally,
 users can specify whether all read density is used or if only self-ligation reads are used. To specify these options, put the appropriate 
@@ -406,7 +406,7 @@ hicpro_output:
 
 The figure below shows all four options for HiChIP-data peak inference in the table.  
 
-![param](media/peakParamPng.png)
+![peakParam](media/peakParamPng.png)
 
 Alternatively, users can pre-specify a set of peaks to used. In this case, a "connectome" will be inferred between the peaks
 specified in the `.bed` file. Of note, pre-specified peaks will still be padded either by fixed amounts or to the edges of the restriction 
@@ -430,8 +430,10 @@ macs2 should be fine.
 Most of the parameter options are fairly straight forward. Running `hichipper --version` or `hichipper --help`
 doesn't run the tool but supplies the information noted above. Otherwise, the default run mode requires 
 a `.yaml` file supplied in addition to the `--out` parameter, which specifies the output directory of the run. 
-Users can decide to customize final output by using boolean flags or supply variable text input. 
+Users can decide to customize final output by using boolean flags or supply variable text input. The following 
+cartoon shows a graphical overview of important parameters to consider when running **hichipper**.
 
+![genParam](media/peakParamPng.png)
 
 As noted in orange, defined peaks are automatically padded by some integer width from the `--peak-pad` flag. By default, 
 this pad extends 1500 base pairs in either direction. Padding the peaks boosts the number of PETs that can be mapped to loops. 
@@ -463,7 +465,6 @@ or other low RAM machine_ should likely skip the adaptive background correction.
 ```
 --skip-background-correction
 ```
-
 
 ## Quality control reports
 In the [qcReports folder](qcReports), we collect the `.html` QC report files associated with text annotations
