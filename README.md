@@ -319,8 +319,7 @@ Usage: hichipper [OPTIONS] MANIFEST
   A preprocessing and QC pipeline for HiChIP data.
 
 Options:
-  --out TEXT                    Output directory name; must not be already
-  								existing [Required]
+  --out TEXT                    Output directory name; must not be an already existing directory [Required]
   --min-dist TEXT               Minimum distance; default = 5000
   --max-dist TEXT               Peak padding width (applied on both left and
                                 right); default = 2000000
@@ -490,4 +489,5 @@ Specifying this flag will create the additional files `*.txt.gz` and `.txt.gz.tb
 (Shout out to Gary for helping us with this!)
 
 ## Questions/comments/feedback
-are always welcomed. Email [Caleb](mailto:caleblareau@g.harvard.edu) anytime! 
+are always welcomed. Email [Caleb](mailto:caleblareau@g.harvard.edu) anytime! The easiest way for us to have correspondence (if appropriate/interesting
+for the public) is through raising a [new issue](https://github.com/aryeelab/hichipper/issues/new).
