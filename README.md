@@ -55,9 +55,9 @@ A higher resolution [slide of this image](media/Overview.pptx) is in the [media]
 ## Dependencies<a name="dependencies"></a>
 
 The following dependencies need to be installed before running **hichipper**: [bedtools](http://bedtools.readthedocs.io/en/latest/content/installation.html), OpenSSL, libcurl, and libxml2.
-Except for `bedtools`, these other dependencies came out of the box with the unix/linux systems that we developed 
+Except for `bedtools`, these other dependencies came out of the box with the unix/linux systems that we've used **hichipper** on. 
 
-Just to be safe, on an Ubuntu system, these can be installed with:
+But just to be safe, on an Ubuntu system, all of the dependencies can be installed with:
 ```
 apt-get install bedtools libssl-dev libcurl4-openssl-dev libxml2-dev
 ```
