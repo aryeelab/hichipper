@@ -26,12 +26,12 @@ A higher resolution [slide of this image](media/Big.pptx) is in the [media](medi
 - [Installation](#installation)
 - [Simple Usage Example](#sue)
 - [More typical example](#moe)
-- [Split Input .fastq files](#sfqf)
 - [Output](#output)
 - [Peaks](#HPC)
 - [Configurations](#configuration)
+- [Restriction-fragment aware padding](#rfap)
 - [Parameter Explanations](#pe)
-- [User parameter recommendadtions](#ur)
+- [User parameter recommendations](#ur)
 - [Quality Control reports](#qcr)
 - [Interactive visualization of loops](#viz)
 - [Visualization in UCSC](#vizUCSC)
@@ -278,7 +278,7 @@ hichipper --out GM12878 config.yaml
 
 would yield the default output from **hichipper**. 
 
-## Split .fastq files as input to HiC-Pro <a name="sfqf"></a>
+### Split .fastq files as input to HiC-Pro
 
 As of version `0.5.3` of **hichipper**, users should be able to input split `.fastq` files into HiC-Pro
 and have **hichipper** function properly. No extra user flags are needed for this functionality. Thanks
@@ -424,6 +424,9 @@ Unless these flags are supplied, the pipeline will attempt to run. Minimally suf
 the `--out` flag and a `.yaml` file as shown in the example executions. Below are some explanations of the
 additional parameters than can be configured when executing the pipeline. 
 
+## Restriction-fragment aware padding<a name="rfap"></a>
+![peakParam](media/peakParamPng.png)
+
 ## Parameter explanations<a name="pe"></a>
 
 Most of the parameter options are fairly straight forward. Running `hichipper --version` or `hichipper --help`
@@ -454,7 +457,7 @@ are 5Kb and 2Mb as smaller reads are likely self-ligations whereas larger reads 
 Finally, the `--macs2-string` allows users to directly configure the `macs2` call when defining anchors. By default, we use
 use a model-free call. 
 
-##User parameter recommendations<a name="ur"></a>
+## User parameter recommendations<a name="ur"></a>
 - If `R` is not in the system or if the `R` package dependencies could not be installed, the following flags should be added:
 ```
 --skip-resfrag-pad --skip-diffloop --skip-qc --skip-background-correction
