@@ -338,7 +338,8 @@ hicpro_output:
   - hicpro
 ```
 
-The figure below shows all four options for HiChIP-data peak inference in the table.  
+The figure below shows all options for peak specification in **hichipper** including every option
+for inferring peaks which are noted in the table.
 
 ![peakParam](media/peakParamPng.png)
 
@@ -425,7 +426,7 @@ the `--out` flag and a `.yaml` file as shown in the example executions. Below ar
 additional parameters than can be configured when executing the pipeline. 
 
 ## Restriction-fragment aware padding<a name="rfap"></a>
-![peakParam](media/peakParamPng.png)
+![peakParam](media/RE_PAD.png)
 
 ## Parameter explanations<a name="pe"></a>
 
