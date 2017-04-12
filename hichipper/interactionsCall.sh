@@ -27,8 +27,13 @@ echo "`date`: Mapped_unique_quality_valid_pairs=${Mapped_unique_quality_valid_pa
 # Merge gaps; check bedtools
 echo "`date`: Intersecting PETs with anchors" | tee -a $LOG_FILE
 sortBed -i "${WK_DIR}/${PEAKFILE}" | bedtools merge -d $MERGE_GAP -i stdin > "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp"
-if [ ! -f  "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp" ] ; then
-    echo "Bedtools does not exist, but we need it" | tee -a $LOG_FILE
+
+minimumsize=100
+actualsize=$(wc -c < "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp")
+if [ $actualsize -ge $minimumsize ]; then
+    echo "`date`: Finished the anchor merging." | tee -a $LOG_FILE
+else
+    echo "`date`: Bedtools does not exist, but we need it" | tee -a $LOG_FILE
     exit
 fi
 
@@ -71,10 +76,9 @@ awk '$1 != $4 {print $0}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.loop_counts.bedpe.tmp
 awk '$1 == $4 {print $0}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.loop_counts.bedpe.tmp" > "${WK_DIR}/${OUT_NAME}/${SAMPLE}.intra.loop_counts.bedpe"
 awk -v MIN_DIST="$MIN_DIST" -v MAX_DIST="$MAX_DIST" '$1 == $4 && $2 != $5 && (($5+$6)/2 - ($2+$3)/2)>=MIN_DIST && (($5+$6)/2 - ($2+$3)/2)<=MAX_DIST {print $0}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.loop_counts.bedpe.tmp" >  "${WK_DIR}/${OUT_NAME}/${SAMPLE}.filt.intra.loop_counts.bedpe"
 
-echo "$UCSC"
 # Produce UCSC Output if requested
 if [ "$UCSC" = true ] ; then
-    echo "`date`: Creating UCSC Compatible files; make sure tabix and bgzip are available in the environment" | tee -a $LOG_FILE
+    echo "`date`: Creating UCSC Compatible files; make sure tabix and bgzip are available in the environment or this will not work." | tee -a $LOG_FILE
     awk '{print $1"\t"$2"\t"$3"\t"$4":"$5"-"$6","$8"\t"(NR*2-1)"\t.\n"$4"\t"$5"\t"$6"\t"$1":"$2"-"$3","$8"\t"(NR*2)"\t."}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.filt.intra.loop_counts.bedpe" | sort -k1,1n -k2,2n  > "${WK_DIR}/${OUT_NAME}/${SAMPLE}.interaction.txt"
     bgzip "${WK_DIR}/${OUT_NAME}/${SAMPLE}.interaction.txt"
     tabix -p bed "${WK_DIR}/${OUT_NAME}/${SAMPLE}.interaction.txt.gz"

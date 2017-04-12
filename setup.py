@@ -7,9 +7,9 @@ dependencies = ['click', 'PyYAML', 'Numpy', 'MACS2']
 
 setup(
     name='hichipper',
-    version='0.5.1',
+    version='0.5.2',
     url='https://github.com/aryeelab/hichipper',
-    license='BSD',
+    license='MIT',
     author='Caleb Lareau and Martin Aryee',
     author_email='caleblareau@g.harvard.edu',
     description='Processing HiChIP data into loops.',
