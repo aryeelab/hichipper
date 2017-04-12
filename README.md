@@ -433,7 +433,7 @@ a `.yaml` file supplied in addition to the `--out` parameter, which specifies th
 Users can decide to customize final output by using boolean flags or supply variable text input. The following 
 cartoon shows a graphical overview of important parameters to consider when running **hichipper**.
 
-![genParam](media/peakParamPng.png)
+![genParam](media/parameters.png)
 
 As noted in orange, defined peaks are automatically padded by some integer width from the `--peak-pad` flag. By default, 
 this pad extends 1500 base pairs in either direction. Padding the peaks boosts the number of PETs that can be mapped to loops. 
