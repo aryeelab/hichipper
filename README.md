@@ -28,8 +28,8 @@ A higher resolution [slide of this image](media/Big.pptx) is in the [media](medi
 - [More typical example](#moe)
 - [Split Input .fastq files](#sfqf)
 - [Output](#output)
+- [Peaks](#HPC)
 - [Configurations](#configuration)
-- [HiChIP Peak Calling](#HPC)
 - [Parameter Explanations](#pe)
 - [User parameter recommendadtions](#ur)
 - [Quality Control reports](#qcr)
@@ -310,6 +310,55 @@ immediately be imported for interactive visualization in [DNAlandscapeR](https:/
 So, outputs 4, 5, and 6 are identical except in presentation. These data are a subset of those presented in 3. Interchromosomal interactions from 2 are often discarded by other preprocessing pipelines, but they may hold value. 
 If the `qcReport` is generated, then the `.stat` file won't tell you anything new. However, if `R` is not installed on your machine, this will be a useful file for assessing the quality of your library.  
 
+## Peaks <a name="HPC"></a>
+
+To call peaks from HiChIP data directly, **hichipper** aggregates read density from either all samples or each sample individually. Additionally,
+users can specify whether all read density is used or if only self-ligation reads are used. To specify these options, put the appropriate 
+string of the form `{COMBINED,EACH},{ALL,SELF}` in the `peaks` slot of the `.yaml`.
+
+For example, to replicate the peak calling performed in Mumbach *et al.*, one would use the following `.yaml`: 
+
+```
+peaks:
+  - COMBINED,SELF
+resfrags:
+  - hg19_MboI_resfrag.bed.gz
+hicpro_output:
+  - hicpro
+```
+
+Alternatively, we can call peaks from the HiChIP data for each sample individually using all reads using this specification--
+
+```
+peaks:
+  - EACH,ALL
+resfrags:
+  - hg19_MboI_resfrag.bed.gz
+hicpro_output:
+  - hicpro
+```
+
+The figure below shows all four options for HiChIP-data peak inference in the table.  
+
+![peakParam](media/peakParamPng.png)
+
+Alternatively, users can pre-specify a set of peaks to used. In this case, a "connectome" will be inferred between the peaks
+specified in the `.bed` file. Of note, pre-specified peaks will still be padded either by fixed amounts or to the edges of the restriction 
+fragment pads (or both) unless the user specifies these flags differently (see below). 
+
+```
+peaks:
+  - predeterminedPeaks.bed
+resfrags:
+  - hg19_MboI_resfrag.bed.gz
+hicpro_output:
+  - hicpro
+```
+
+Note: the input of pre-determined peaks does not have to explicitly be a `.bed` file. Rather, any file name is acceptable so long
+as the first three columns indicate appropriate genomic loci as if it were a `.bed` file. For example, `.narrowPeak` files from 
+macs2 should be fine. 
+
 ## Configurations<a name="configuration"></a>
 Running
 ```
@@ -374,56 +423,6 @@ pip install hichipper --upgrade
 Unless these flags are supplied, the pipeline will attempt to run. Minimally sufficient parameters include
 the `--out` flag and a `.yaml` file as shown in the example executions. Below are some explanations of the
 additional parameters than can be configured when executing the pipeline. 
-
-
-## Peaks <a name="HPC"></a>
-
-To call peaks from HiChIP data directly, **hichipper** aggregates read density from either all samples or each sample individually. Additionally,
-users can specify whether all read density is used or if only self-ligation reads are used. To specify these options, put the appropriate 
-string of the form `{COMBINED,EACH},{ALL,SELF}` in the `peaks` slot of the `.yaml`.
-
-For example, to replicate the peak calling performed in Mumbach *et al.*, one would use the following `.yaml`: 
-
-```
-peaks:
-  - COMBINED,SELF
-resfrags:
-  - hg19_MboI_resfrag.bed.gz
-hicpro_output:
-  - hicpro
-```
-
-Alternatively, we can call peaks from the HiChIP data for each sample individually using all reads using this specification--
-
-```
-peaks:
-  - EACH,ALL
-resfrags:
-  - hg19_MboI_resfrag.bed.gz
-hicpro_output:
-  - hicpro
-```
-
-The figure below shows all four options for HiChIP-data peak inference in the table.  
-
-![peakParam](media/peakParamPng.png)
-
-Alternatively, users can pre-specify a set of peaks to used. In this case, a "connectome" will be inferred between the peaks
-specified in the `.bed` file. Of note, pre-specified peaks will still be padded either by fixed amounts or to the edges of the restriction 
-fragment pads (or both) unless the user specifies these flags differently (see below). 
-
-```
-peaks:
-  - predeterminedPeaks.bed
-resfrags:
-  - hg19_MboI_resfrag.bed.gz
-hicpro_output:
-  - hicpro
-```
-
-Note: the input of pre-determined peaks does not have to explicitly be a `.bed` file. Rather, any file name is acceptable so long
-as the first three columns indicate appropriate genomic loci as if it were a `.bed` file. For example, `.narrowPeak` files from 
-macs2 should be fine. 
 
 ## Parameter explanations<a name="pe"></a>
 
