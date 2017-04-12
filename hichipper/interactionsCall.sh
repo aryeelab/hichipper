@@ -28,7 +28,7 @@ echo "`date`: Mapped_unique_quality_valid_pairs=${Mapped_unique_quality_valid_pa
 echo "`date`: Intersecting PETs with anchors" | tee -a $LOG_FILE
 sortBed -i "${WK_DIR}/${PEAKFILE}" | bedtools merge -d $MERGE_GAP -i stdin > "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp"
 
-minimumsize=100
+minimumsize=10
 actualsize=$(wc -c < "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp")
 if [ $actualsize -ge $minimumsize ]; then
     echo "`date`: Finished the anchor merging." | tee -a $LOG_FILE

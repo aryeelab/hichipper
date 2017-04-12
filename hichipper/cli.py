@@ -109,7 +109,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 	def verify_sample(sample, boo):
 		bt = os.popen('ls ' + hicprooutput + '/bowtie_results/bwt2/' + sample + "/*.pairstat").read().strip().split("\n")
 		hc1 = os.popen('ls ' + hicprooutput + '/hic_results/data/' + sample + "/*.RSstat").read().strip().split("\n")
-		hc2 = os.popen('ls ' + hicprooutput + '/hic_results/data/' + sample + "/*Pairs").read().strip().split("\n")
+		hc2 = os.popen('ls ' + hicprooutput + '/hic_results/data/' + sample + "/*.*Pairs").read().strip().split("\n")
 		if(boo):
 			return((len(bt) > 0) and (len(hc1) > 0) and (len(hc2) % 5) == 0)
 	
