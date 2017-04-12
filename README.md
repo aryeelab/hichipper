@@ -1,7 +1,7 @@
 # hichipper
 This package is maintained by [Caleb Lareau](mailto:caleblareau@g.harvard.edu) in the [Aryee Lab](http://aryee.mgh.harvard.edu/). Source code is made freely available here and a packaged install version is provided through [PyPi](https://pypi.python.org/pypi/hichipper/).
 
-[![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper) [![PyPI version](https://img.shields.io/badge/pypi-0.5.0-brightgreen.svg)](https://img.shields.io/badge/pypi-0.5.0-brightgreen.svg) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) 
+[![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper) [![PyPI version](https://img.shields.io/badge/pypi-0.5.3-brightgreen.svg)](https://img.shields.io/badge/pypi-0.5.3-brightgreen.svg) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) 
 
 ## About<a name="about"></a>
 
@@ -24,6 +24,7 @@ A higher resolution [slide of this image](media/Big.pptx) is in the [media](medi
 - [Installation](#installation)
 - [Simple Usage Example](#sue)
 - [More typical example](#moe)
+- [Split Input .fastq files](#sfqf)
 - [Output](#output)
 - [Configurations](#configuration)
 - [HiChIP Peak Calling](#HPC)
@@ -127,7 +128,7 @@ cd hichipper/tests
    ```
   Note: This file is available as `example.yaml` in the `hichipper/tests` directory.
   
-  In this example, we call loops from two GM12878 samples using just chromosome 22.  
+  In this example, we call loops from two GM12878 samples using just chromosome 22 using pre-determined peaks from a ChIP-Seq file.   
   
   
 2. Run the pipeline:
@@ -263,6 +264,10 @@ hichipper --out GM12878 config.yaml
 
 would yield the default output from **hichipper**. 
 
+## Split .fastq files as input to HiC-Pro <a name="sfqf"></a>
+
+
+
 ## Output<a name="output"></a>
 
 ### Per-run output files
@@ -341,7 +346,7 @@ hichipper --version
 will show the version of this package currently installed. 
 
 ```
-hichipper, version 0.5.0
+hichipper, version 0.5.3
 ```
 Check the badge up top to see if a newer version is available or try directly through `pip`:
 
@@ -354,18 +359,54 @@ the `--out` flag and a `.yaml` file as shown in the example executions. Below ar
 additional parameters than can be configured when executing the pipeline. 
 
 
-## HiChIP Peak Calling<a name="HPC"></a>
-Noting that HiChIP peak calls may be untrustworthy due to systematic bias where reads localize near 
-restriction fragment cutsites, 
+## Peak inference from HiChIP data<a name="HPC"></a>
+
+To call peaks from HiChIP data directly, **hichipper** aggregates read density from either all samples or each sample individually. Additionally,
+users can specify whether all read density is used or if only self-ligation reads are used. To specify these options, put the appropriate 
+string of the form `{COMBINED,EACH},{ALL,SELF}` in the `peaks` slot of the `.yaml`.
+
+For example, to replicate the peak calling performed in Mumbach *et al.*, one would use the following `.yaml`: 
 
 ```
 peaks:
-  - NONE
+  - COMBINED,SELF
 resfrags:
   - hg19_MboI_resfrag.bed.gz
 hicpro_output:
   - hicpro
 ```
+
+Alternatively, we can call peaks from the HiChIP data for each sample individually using all reads using this specification--
+
+```
+peaks:
+  - EACH,ALL
+resfrags:
+  - hg19_MboI_resfrag.bed.gz
+hicpro_output:
+  - hicpro
+```
+
+The figure below shows all four options for HiChIP-data peak inference in the table.  
+
+![param](media/peakParamPng.png)
+
+Alternatively, users can pre-specify a set of peaks to used. In this case, a "connectome" will be inferred between the peaks
+specified in the `.bed` file. Of note, pre-specified peaks will still be padded either by fixed amounts or to the edges of the restriction 
+fragment pads (or both) unless the user specifies these flags differently (see below). 
+
+```
+peaks:
+  - predeterminedPeaks.bed
+resfrags:
+  - hg19_MboI_resfrag.bed.gz
+hicpro_output:
+  - hicpro
+```
+
+Note: the input of pre-determined peaks does not have to explicitly be a `.bed` file. Rather, any file name is acceptable so long
+as the first three columns indicate appropriate genomic loci as if it were a `.bed` file. For example, `.narrowPeak` files from 
+macs2 should be fine. 
 
 ## Parameter explanations<a name="pe"></a>
 
