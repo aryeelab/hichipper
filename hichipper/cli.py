@@ -26,7 +26,7 @@ def get_subdirectories(dir):
             if os.path.isdir(os.path.join(dir, name))]
 
 @click.command()
-@click.option('--out', default="hichipper_out", required=True, help='Output directory name')
+@click.option('--out', default="hichipper_out", required=True, help='Output directory name; must not be already existing [Required]')
 @click.option('--min-dist', default="5000", help='Minimum distance ; default = 5000')
 @click.option('--max-dist', default="2000000", help='Peak padding width (applied on both left and right); default = 2000000')
 @click.option('--macs2-string', default="-q 0.01 --extsize 147 --nomodel", help='String of arguments to pass to MACS2; only is called when peaks are set to be called; default = "-q 0.01 --extsize 147 --nomodel"')
@@ -41,7 +41,7 @@ def get_subdirectories(dir):
 @click.option('--make-ucsc', is_flag=True, help='Make additional output files that can support viewing in UCSC genome browser; requires tabix and htslib tools.')
 @click.option('--keep-samples', default="ALL", help='Comma separated list of sample names to keep; ALL (special string) by default')
 @click.option('--ignore-samples', default="NONE", help='Comma separated list of sample names to ignore; NONE (special string) by default')
-@click.option('--read-length', default="75", help='Length of reads from sequencing runs')
+@click.option('--read-length', default="75", help='Length of reads from sequencing runs; default = 75')
 @click.argument('manifest')
 @click.version_option()
 

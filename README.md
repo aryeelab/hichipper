@@ -8,7 +8,8 @@ This package is maintained by [Caleb Lareau](mailto:caleblareau@g.harvard.edu) i
 The **hichipper** package implements our data processing and quality control pipeline for 
 [HiChIP](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3999.html) data.
 This package takes output from a [HiC-Pro](https://github.com/nservant/HiC-Pro) run and a sample manifest file (`.yaml`) that coordinates optional high-quality peaks (identified through ChIP-Seq) and restriction fragment locations (see [folder here](RestrictionFragmentFiles))
-as input and produces output that can be used to 1) determine library quality, 2) identify and characterize DNA loops and 3) interactively visualize loops. Loops are assigned strength and confidence metrics that can be used to evaluate samples individually or for differential analysis in downstream tools like [diffloop](http://github.com/aryeelab/diffloop). We have used the library QC metrics with as few as 1 million reads, enabling library quality to be assessed through shallow (and cheap) sequencing before performing a full depth sequencing run.
+as input and produces output that can be used to 1) determine library quality, 2) identify and characterize DNA loops and 3) interactively visualize loops. Loops are assigned strength and confidence metrics that can be used to evaluate samples individually or for differential analysis in downstream tools like [diffloop](http://github.com/aryeelab/diffloop).
+We have used the library QC metrics with as few as 1 million reads, enabling library quality to be assessed through shallow (and cheap) sequencing before performing a full depth sequencing run.
 
 A graphical overview showing how **hichipper** integrates with other tools in the analysis of raw HiChIP data is shown in the overview figure below. Detailed descriptions of the different branches of output from **hichipper** are discussed at the bottom of this guide. 
 ![big1](media/Big1.png)
@@ -51,9 +52,10 @@ A higher resolution [slide of this image](media/Overview.pptx) is in the [media]
 
 ## Dependencies<a name="dependencies"></a>
 
-The following dependencies need to be installed before running **hichipper**: [bedtools](http://bedtools.readthedocs.io/en/latest/content/installation.html), OpenSSL, libcurl, and libxml2
+The following dependencies need to be installed before running **hichipper**: [bedtools](http://bedtools.readthedocs.io/en/latest/content/installation.html), OpenSSL, libcurl, and libxml2.
+Except for `bedtools`, these other dependencies came out of the box with the unix/linux systems that we developed 
 
-On an Ubuntu system these can be installed with:
+Just to be safe, on an Ubuntu system, these can be installed with:
 ```
 apt-get install bedtools libssl-dev libcurl4-openssl-dev libxml2-dev
 ```
@@ -97,22 +99,27 @@ is shown below. A more robust and informative discussion of virtual environments
 virtualenv venv
 source venv/bin/activate
 pip install hichipper
-hichipper —version
+hichipper --version
 ```
 
 
 ## Simple usage example<a name="sue"></a>
 
-The example below uses the test dataset bundled with the **hichipper** package source code. Download the package and change to the test directory with:
+The example below uses the test dataset bundled with the **hichipper** package source code. Download the package, change to the test directory, and execute the basic working example with:
 
 ```
 git clone https://github.com/aryeelab/hichipper.git
 cd hichipper/tests
+hichipper --out output1 example.yaml
 ```
+
+Here's a more detailed description of what just happened. First, we had to create a sample description file that specifies how peaks are to be inferred (in this example, they are pre-specified from a ChIP-Seq experiment). 
+Next, one must specify the location of a restriction fragment file. Finally, a path to the HiC-Pro output folder must be designated. These are encoded
+through the `peaks`, `resfrags`, and `hicpro_output` variables that will be parsed from the `.yaml` format. 
 
 1. Create a sample description file:
   
-  Sample description files can be created with the `.yaml` format. 
+  Description files can be created with the `.yaml` format. 
 
   **Processing `.yaml` format**
    
@@ -126,15 +133,19 @@ cd hichipper/tests
    hicpro_output:
     - hicpro
    ```
+   
   Note: This file is available as `example.yaml` in the `hichipper/tests` directory.
   
   In this example, we call loops from two GM12878 samples using just chromosome 22 using pre-determined peaks from a ChIP-Seq file.   
   
   
 2. Run the pipeline:
+
 	```
 	hichipper --out output1 example.yaml
 	```
+
+Additional 
 
 ## More typical example<a name="moe"></a>
 While the example above references files that are part of the **hichipper** distribution,
@@ -266,7 +277,9 @@ would yield the default output from **hichipper**.
 
 ## Split .fastq files as input to HiC-Pro <a name="sfqf"></a>
 
-
+As of version `0.5.3` of **hichipper**, users should be able to input split `.fastq` files into HiC-Pro
+and have **hichipper** function properly. No extra user flags are needed for this functionality. Thanks
+to our early users for helping us figure this out. 
 
 ## Output<a name="output"></a>
 
@@ -306,8 +319,9 @@ Usage: hichipper [OPTIONS] MANIFEST
   A preprocessing and QC pipeline for HiChIP data.
 
 Options:
-  --out TEXT                    Output directory name  [required]
-  --min-dist TEXT               Minimum distance ; default = 5000
+  --out TEXT                    Output directory name; must not be already
+  								existing [Required]
+  --min-dist TEXT               Minimum distance; default = 5000
   --max-dist TEXT               Peak padding width (applied on both left and
                                 right); default = 2000000
   --macs2-string TEXT           String of arguments to pass to MACS2; only is
@@ -334,7 +348,7 @@ Options:
                                 ALL (special string) by default
   --ignore-samples TEXT         Comma separated list of sample names to
                                 ignore; NONE (special string) by default
-  --read-length TEXT            Length of reads from sequencing runs
+  --read-length TEXT            Length of reads from sequencing runs; default = 75
   --version                     Show the version and exit.
   --help                        Show this message and exit.
 ```
@@ -429,14 +443,17 @@ it does overlap with the padded peak, so it is retained. When two peaks are clos
 Note that this can lead to some PETs becoming self-ligation (e.g. `1` and `3`). Note, the `--merge-gap` command is equivalent to running 
 [bedtools merge -d](http://bedtools.readthedocs.io/en/latest/content/tools/merge.html) on the padded anchors. 
 
-We compared various parameter settings [for the same sample here](https://cdn.rawgit.com/aryeelab/hichipper/master/qcReports/Parameters/peakPlay.hichipper.html). Each sample was processed with a peak pad and merge gap of 250, 500, 1000, and 1500. By default, we've set these parameters at 1500 to mirror those established in ChIA-PET preprocessing. However, the strong retention of reads near the called anchor loci suggest that using smaller parameter values (i.e. 250 or 500 bp) may be optimal for HiChIP analyses to maximize resolution of loop contact loci. 
+We compared various parameter settings [for the same sample here](https://cdn.rawgit.com/aryeelab/hichipper/master/qcReports/Parameters/peakPlay.hichipper.html).
+Each sample was processed with a peak pad and merge gap of 250, 500, 1000, and 1500. By default, we've set these parameters at 1500 to mirror those established in
+ChIA-PET preprocessing. However, the strong retention of reads near the called anchor loci suggest that using smaller parameter values (i.e. 250 or 500 bp) may be
+optimal for HiChIP analyses to maximize resolution of loop contact loci. 
 
 The `dist` or distance between two peaks is noted in black as the center of two peaks. The `--min-dist` flag is the smallest
 and `--max-dist` is the largest integer number that ensures this distance falls between to be considered in a loop. These defaults
 are 5Kb and 2Mb as smaller reads are likely self-ligations whereas larger reads are unlikely to be biologically real loops.
 
 Finally, the `--macs2-string` allows users to directly configure the `macs2` call when defining anchors. By default, we use
-a lenient threshold for anchors and use a model-free call. 
+use a model-free call. 
 
 ## Quality control reports
 In the [qcReports folder](qcReports), we collect the `.html` QC report files associated with text annotations
