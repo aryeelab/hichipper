@@ -8,7 +8,8 @@ This package is maintained by [Caleb Lareau](mailto:caleblareau@g.harvard.edu) i
 The **hichipper** package implements our data processing and quality control pipeline for 
 [HiChIP](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3999.html) data.
 This package takes output from a [HiC-Pro](https://github.com/nservant/HiC-Pro) run and a sample manifest file (`.yaml`) that coordinates optional high-quality peaks (identified through ChIP-Seq) and restriction fragment locations (see [folder here](RestrictionFragmentFiles))
-as input and produces output that can be used to 1) determine library quality, 2) identify and characterize DNA loops and 3) interactively visualize loops. Loops are assigned strength and confidence metrics that can be used to evaluate samples individually or for differential analysis in downstream tools like [diffloop](http://github.com/aryeelab/diffloop).
+as input and produces output that can be used to 1) determine library quality, 2) identify and characterize DNA loops and 3) interactively visualize loops. Loops are assigned strength and confidence metrics that can be used to evaluate samples individually or for differential analysis in
+downstream tools like [diffloop](http://github.com/aryeelab/diffloop).
 We have used the library QC metrics with as few as 1 million reads, enabling library quality to be assessed through shallow (and cheap) sequencing before performing a full depth sequencing run.
 
 A graphical overview showing how **hichipper** integrates with other tools in the analysis of raw HiChIP data is shown in the overview figure below. Detailed descriptions of the different branches of output from **hichipper** are discussed at the bottom of this guide. 
@@ -30,6 +31,7 @@ A higher resolution [slide of this image](media/Big.pptx) is in the [media](medi
 - [Configurations](#configuration)
 - [HiChIP Peak Calling](#HPC)
 - [Parameter Explanations](#pe)
+- [User parameter recommendadtions](#ur)
 - [Quality Control reports](#qcr)
 - [Interactive visualization of loops](#viz)
 - [Visualization in UCSC](#vizUCSC)
@@ -110,7 +112,7 @@ The example below uses the test dataset bundled with the **hichipper** package s
 ```
 git clone https://github.com/aryeelab/hichipper.git
 cd hichipper/tests
-hichipper --out output1 example.yaml
+hichipper --out output1 yaml/one.yaml 
 ```
 
 Here's a more detailed description of what just happened. First, we had to create a sample description file that specifies how peaks are to be inferred (in this example, they are pre-specified from a ChIP-Seq experiment). 
@@ -142,7 +144,7 @@ through the `peaks`, `resfrags`, and `hicpro_output` variables that will be pars
 2. Run the pipeline:
 
 	```
-	hichipper --out output1 example.yaml
+	hichipper --out output1 yaml/one.yaml 
 	```
 
 Additional 
@@ -248,14 +250,15 @@ hicpro/
 |  |  |  |-- SRR3467178*Pairs # 5 Files
 GM12878_SMC3_ChIPSeq.narrowPeak
 hg19_MboI_resfrag.bed.gz
-config.yaml
+yaml/
+|-- one.yaml
 config-hicpro-mboi-ext12.txt
 ```
 where the results in the `hicpro` directory could have been obtained by running: 
 ```
 HiC-Pro -i fastq/ -o hicpro/ -c config-hicpro-mboi-ext12.txt -p
 ```
-and subsequently executing the resulting `HiCPro_step1_hic.sh`.  Thus, the `config.yaml` file
+and subsequently executing the resulting `HiCPro_step1_hic.sh`.  Thus, the `yaml/one.yaml` file
 needed for **hichipper** when executed from the current working directory would look like this:
 
 ```
@@ -301,7 +304,8 @@ Per sample, six (yes, 6, but don't worry-- there's lots of redundancy) output fi
 
 5. `*interactions.all.mango` The same set of loops as 4 but with per-loop FDR measures from the loop proximity bias correction algorithm originally implemented in [Mango](https://github.com/dphansti/mango) and presented in the same format. 
 
-6. `*.rds` The same set of loops as 4 but in an R binary compressed format of a `loops()` S4 object from [diffloop](http://bioconductor.org/packages/release/bioc/html/diffloop.html). Can immediately be imported for interactive visualization in [DNAlandscapeR](https://dnalandscaper.aryeelab.org).
+6. `*.rds` The same set of loops as 4 but in an R binary compressed format of a `loops()` S4 object from [diffloop](http://bioconductor.org/packages/release/bioc/html/diffloop.html). Can
+immediately be imported for interactive visualization in [DNAlandscapeR](https://dnalandscaper.aryeelab.org).
 
 So, outputs 4, 5, and 6 are identical except in presentation. These data are a subset of those presented in 3. Interchromosomal interactions from 2 are often discarded by other preprocessing pipelines, but they may hold value. 
 If the `qcReport` is generated, then the `.stat` file won't tell you anything new. However, if `R` is not installed on your machine, this will be a useful file for assessing the quality of your library.  
@@ -426,13 +430,8 @@ macs2 should be fine.
 Most of the parameter options are fairly straight forward. Running `hichipper --version` or `hichipper --help`
 doesn't run the tool but supplies the information noted above. Otherwise, the default run mode requires 
 a `.yaml` file supplied in addition to the `--out` parameter, which specifies the output directory of the run. 
-Users can decide to customize final output by using boolean flags  `--keep-temp-files`, `--skip-qc`, and  `--skip-diffloop`. 
-If the `R` dependencies noted above could not be successfully installed, these last two flags may be useful. Only 
-reads that pass the `--min-qual` flag (default = `30`) will be retained in downstream analyses. 
+Users can decide to customize final output by using boolean flags or supply variable text input. 
 
-The figure below shows a cartoon of loops, PETs, and anchors and how the various parameters pertain to padding anchors. 
-
-![param](media/param1.png)
 
 As noted in orange, defined peaks are automatically padded by some integer width from the `--peak-pad` flag. By default, 
 this pad extends 1500 base pairs in either direction. Padding the peaks boosts the number of PETs that can be mapped to loops. 
@@ -453,6 +452,18 @@ are 5Kb and 2Mb as smaller reads are likely self-ligations whereas larger reads 
 
 Finally, the `--macs2-string` allows users to directly configure the `macs2` call when defining anchors. By default, we use
 use a model-free call. 
+
+##User parameter recommendations<a name="ur"></a>
+- If `R` is not in the system or if the `R` package dependencies could not be installed, the following flags should be added:
+```
+--skip-resfrag-pad --skip-diffloop --skip-qc --skip-background-correction
+```
+- In the current version of **hichipper**, the novel background correction implementation is quite memory intense. Thus, _users running **hichipper** on a laptop
+or other low RAM machine_ should likely skip the adaptive background correction. 
+```
+--skip-background-correction
+```
+
 
 ## Quality control reports
 In the [qcReports folder](qcReports), we collect the `.html` QC report files associated with text annotations
