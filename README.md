@@ -190,18 +190,22 @@ SRR3467175  SRR3467176  SRR3467177  SRR3467178
 ./hicpro/hic_results/data/SRR3467175:
 SRR3467175_hg19.bwt2pairs.DEPairs*    SRR3467175_hg19.bwt2pairs.RSstat*   SRR3467175_hg19.bwt2pairs.SinglePairs*
 SRR3467175_hg19.bwt2pairs.DumpPairs*  SRR3467175_hg19.bwt2pairs.SCPairs*  SRR3467175_hg19.bwt2pairs.validPairs*
+SRR3467175_allValidPairs*
 
 ./hicpro/hic_results/data/SRR3467176:
 SRR3467176_hg19.bwt2pairs.DEPairs*    SRR3467176_hg19.bwt2pairs.RSstat*   SRR3467176_hg19.bwt2pairs.SinglePairs*
 SRR3467176_hg19.bwt2pairs.DumpPairs*  SRR3467176_hg19.bwt2pairs.SCPairs*  SRR3467176_hg19.bwt2pairs.validPairs*
+SRR3467176_allValidPairs*
 
 ./hicpro/hic_results/data/SRR3467177:
 SRR3467177_hg19.bwt2pairs.DEPairs*    SRR3467177_hg19.bwt2pairs.RSstat*   SRR3467177_hg19.bwt2pairs.SinglePairs*
 SRR3467177_hg19.bwt2pairs.DumpPairs*  SRR3467177_hg19.bwt2pairs.SCPairs*  SRR3467177_hg19.bwt2pairs.validPairs*
+SRR3467177_allValidPairs*
 
 ./hicpro/hic_results/data/SRR3467178:
 SRR3467178_hg19.bwt2pairs.DEPairs*    SRR3467178_hg19.bwt2pairs.RSstat*   SRR3467178_hg19.bwt2pairs.SinglePairs*
 SRR3467178_hg19.bwt2pairs.DumpPairs*  SRR3467178_hg19.bwt2pairs.SCPairs*  SRR3467178_hg19.bwt2pairs.validPairs*
+SRR3467178_allValidPairs*
 
 ...
 
@@ -239,15 +243,19 @@ hicpro/
 |  |  |-- SRR3467175
 |  |  |  |-- SRR3467175*RSstat
 |  |  |  |-- SRR3467175*Pairs # 5 Files
+|  |  |  |-- SRR3467175_allValidPairs
 |  |  |-- SRR3467176
 |  |  |  |-- SRR3467176*RSstat
 |  |  |  |-- SRR3467176*Pairs # 5 Files
+|  |  |  |-- SRR3467175_allValidPairs
 |  |  |-- SRR3467177
 |  |  |  |-- SRR3467177*RSstat
 |  |  |  |-- SRR3467177*Pairs # 5 Files
+|  |  |  |-- SRR3467175_allValidPairs
 |  |  |-- SRR3467178
 |  |  |  |-- SRR3467178*RSstat
 |  |  |  |-- SRR3467178*Pairs # 5 Files
+|  |  |  |-- SRR3467175_allValidPairs
 GM12878_SMC3_ChIPSeq.narrowPeak
 hg19_MboI_resfrag.bed.gz
 yaml/
@@ -258,7 +266,9 @@ where the results in the `hicpro` directory could have been obtained by running:
 ```
 HiC-Pro -i fastq/ -o hicpro/ -c config-hicpro-mboi-ext12.txt -p
 ```
-and subsequently executing the resulting `HiCPro_step1_hic.sh`.  Thus, the `yaml/one.yaml` file
+and subsequently executing the resulting `HiCPro_step1_hic.sh` and `HiCPro_step2_hic.sh`. 
+
+Thus, the `yaml/one.yaml` file
 needed for **hichipper** when executed from the current working directory would look like this:
 
 ```
@@ -283,6 +293,12 @@ would yield the default output from **hichipper**.
 As of version `0.5.3` of **hichipper**, users should be able to input split `.fastq` files into HiC-Pro
 and have **hichipper** function properly. No extra user flags are needed for this functionality. Thanks
 to our early users for helping us figure this out. 
+
+### PCR Duplicates Bug
+
+In certain versions (`0.4.4` to `0.5.3`) of **hichipper**, users should be able to input split `.fastq` files into HiC-Pro
+and have **hichipper** function properly. No extra user flags are needed for this functionality. Thanks
+to our early users (in particular, Kelvin Chen) for helping us figure this out. 
 
 ## Output<a name="output"></a>
 
@@ -439,24 +455,19 @@ cartoon shows a graphical overview of important parameters to consider when runn
 ![genParam](media/parameters.png)
 
 As noted in orange, defined peaks are automatically padded by some integer width from the `--peak-pad` flag. By default, 
-this pad extends 1500 base pairs in either direction. Padding the peaks boosts the number of PETs that can be mapped to loops. 
-For example, `PET 1` would not be considered in loop since the left end of the read does not overlap with the called anchor. However,
-it does overlap with the padded peak, so it is retained. When two peaks are close to one another, they may be merged using the 
-`--merge-gap` command. As noted in purple, the padded peaks `B` and `C` are sufficiently close to be merged into a single anchor. 
-Note that this can lead to some PETs becoming self-ligation (e.g. `1` and `3`). Note, the `--merge-gap` command is equivalent to running 
-[bedtools merge -d](http://bedtools.readthedocs.io/en/latest/content/tools/merge.html) on the padded anchors. 
-
-We compared various parameter settings [for the same sample here](https://cdn.rawgit.com/aryeelab/hichipper/master/qcReports/Parameters/peakPlay.hichipper.html).
-Each sample was processed with a peak pad and merge gap of 250, 500, 1000, and 1500. By default, we've set these parameters at 1500 to mirror those established in
-ChIA-PET preprocessing. However, the strong retention of reads near the called anchor loci suggest that using smaller parameter values (i.e. 250 or 500 bp) may be
-optimal for HiChIP analyses to maximize resolution of loop contact loci. 
+this pad extends 500 base pairs in either direction. Padding the peaks boosts the number of PETs that can be mapped to loops. 
+For example, `PET II` would not be considered in loop since the left end of the read does not overlap with the called peak (black).
+However, it does overlap with the padded peak, so it is retained with padding. When two peaks are close to one another, they may be merged using the `--merge-gap` command. As suggested in the figure, the padded peaks `B` and `C` may be sufficiently close to be merged into a single anchor. 
+Note that this can lead to some PETs becoming self-ligation (e.g. `I-III`). Note, the `--merge-gap` command is equivalent to running 
+[bedtools merge -d](http://bedtools.readthedocs.io/en/latest/content/tools/merge.html) on the padded anchors. By default, the `merge-gap` is 500 base pairs. Specifying this to `0` can cause issues, particularly when the width of a `PET` spans multiple peaks.
 
 The `dist` or distance between two peaks is noted in black as the center of two peaks. The `--min-dist` flag is the smallest
 and `--max-dist` is the largest integer number that ensures this distance falls between to be considered in a loop. These defaults
 are 5Kb and 2Mb as smaller reads are likely self-ligations whereas larger reads are unlikely to be biologically real loops.
 
-Finally, the `--macs2-string` allows users to directly configure the `macs2` call when defining anchors. By default, we use
-use a model-free call. 
+From our inspection of the HiChIP data, we determined that reads for putative loops localize to the edges of restriciton fragments and that increasing the padding to the edges of fragments can prove beneficial for maximizing the read density associated with loops. By default, **hichipper** adds additional padding to the edges of restriction fragments unless the `--skip-resfrag-pad` pad is thrown. To give an example, consider peak `C`. Under the default options, the anchor corresponding to this peak would span restriction fragments `7` and `9` (assuming that the `merge-gap` is small enough such that `B` and `C` are not merged). This is because the additional restriction fragment padding occurs after the original padding (orange), and **hichipper** padds to the edges of whatever fragment pads are overlapping the peak. However, if the user specified `--peak-pad 0`, the anchor corresponding to `C` would only span restriction motifs `8` and `9` since the peak only sits on that singular fragment. While we have found the default options to be sensible, the user can adjust these padding parameters to potentially increase precision of anchors calls possibly at the expense of PET density or vice-versa.  
+
+Finally, we note the `--macs2-genome` and `--macs2-string` which by default has parameters that we felt were suited appropriately for processing HiChIP data. However, users can modify these when performing peak-calling from HiChIP data directly. 
 
 ## User parameter recommendations<a name="ur"></a>
 - If `R` is not in the system or if the `R` package dependencies could not be installed, the following flags should be added:
