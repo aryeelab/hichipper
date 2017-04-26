@@ -190,18 +190,22 @@ SRR3467175  SRR3467176  SRR3467177  SRR3467178
 ./hicpro/hic_results/data/SRR3467175:
 SRR3467175_hg19.bwt2pairs.DEPairs*    SRR3467175_hg19.bwt2pairs.RSstat*   SRR3467175_hg19.bwt2pairs.SinglePairs*
 SRR3467175_hg19.bwt2pairs.DumpPairs*  SRR3467175_hg19.bwt2pairs.SCPairs*  SRR3467175_hg19.bwt2pairs.validPairs*
+SRR3467175_allValidPairs*
 
 ./hicpro/hic_results/data/SRR3467176:
 SRR3467176_hg19.bwt2pairs.DEPairs*    SRR3467176_hg19.bwt2pairs.RSstat*   SRR3467176_hg19.bwt2pairs.SinglePairs*
 SRR3467176_hg19.bwt2pairs.DumpPairs*  SRR3467176_hg19.bwt2pairs.SCPairs*  SRR3467176_hg19.bwt2pairs.validPairs*
+SRR3467176_allValidPairs*
 
 ./hicpro/hic_results/data/SRR3467177:
 SRR3467177_hg19.bwt2pairs.DEPairs*    SRR3467177_hg19.bwt2pairs.RSstat*   SRR3467177_hg19.bwt2pairs.SinglePairs*
 SRR3467177_hg19.bwt2pairs.DumpPairs*  SRR3467177_hg19.bwt2pairs.SCPairs*  SRR3467177_hg19.bwt2pairs.validPairs*
+SRR3467177_allValidPairs*
 
 ./hicpro/hic_results/data/SRR3467178:
 SRR3467178_hg19.bwt2pairs.DEPairs*    SRR3467178_hg19.bwt2pairs.RSstat*   SRR3467178_hg19.bwt2pairs.SinglePairs*
 SRR3467178_hg19.bwt2pairs.DumpPairs*  SRR3467178_hg19.bwt2pairs.SCPairs*  SRR3467178_hg19.bwt2pairs.validPairs*
+SRR3467178_allValidPairs*
 
 ...
 
@@ -239,15 +243,19 @@ hicpro/
 |  |  |-- SRR3467175
 |  |  |  |-- SRR3467175*RSstat
 |  |  |  |-- SRR3467175*Pairs # 5 Files
+|  |  |  |-- SRR3467175_allValidPairs
 |  |  |-- SRR3467176
 |  |  |  |-- SRR3467176*RSstat
 |  |  |  |-- SRR3467176*Pairs # 5 Files
+|  |  |  |-- SRR3467175_allValidPairs
 |  |  |-- SRR3467177
 |  |  |  |-- SRR3467177*RSstat
 |  |  |  |-- SRR3467177*Pairs # 5 Files
+|  |  |  |-- SRR3467175_allValidPairs
 |  |  |-- SRR3467178
 |  |  |  |-- SRR3467178*RSstat
 |  |  |  |-- SRR3467178*Pairs # 5 Files
+|  |  |  |-- SRR3467175_allValidPairs
 GM12878_SMC3_ChIPSeq.narrowPeak
 hg19_MboI_resfrag.bed.gz
 yaml/
@@ -258,7 +266,9 @@ where the results in the `hicpro` directory could have been obtained by running:
 ```
 HiC-Pro -i fastq/ -o hicpro/ -c config-hicpro-mboi-ext12.txt -p
 ```
-and subsequently executing the resulting `HiCPro_step1_hic.sh`.  Thus, the `yaml/one.yaml` file
+and subsequently executing the resulting `HiCPro_step1_hic.sh` and `HiCPro_step2_hic.sh`. 
+
+Thus, the `yaml/one.yaml` file
 needed for **hichipper** when executed from the current working directory would look like this:
 
 ```
@@ -283,6 +293,12 @@ would yield the default output from **hichipper**.
 As of version `0.5.3` of **hichipper**, users should be able to input split `.fastq` files into HiC-Pro
 and have **hichipper** function properly. No extra user flags are needed for this functionality. Thanks
 to our early users for helping us figure this out. 
+
+### PCR Duplicates Bug
+
+In certain versions (`0.4.4` to `0.5.3`) of **hichipper**, users should be able to input split `.fastq` files into HiC-Pro
+and have **hichipper** function properly. No extra user flags are needed for this functionality. Thanks
+to our early users (in particular, Kelvin Chen) for helping us figure this out. 
 
 ## Output<a name="output"></a>
 
