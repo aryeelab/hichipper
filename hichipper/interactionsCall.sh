@@ -21,7 +21,7 @@ Total_PETs=`head -1 "${WK_DIR}/${HICPRO_OUT}/bowtie_results/bwt2/${SAMPLE}/"*pai
 echo "`date`: Total_PETs=${Total_PETs}" | tee -a $LOG_FILE
 Mapped_unique_quality_pairs=`cat "${WK_DIR}/${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*Pairs | wc -l | awk '{print $1}'`
 echo "`date`: Mapped_unique_quality_pairs=${Mapped_unique_quality_pairs}" | tee -a $LOG_FILE
-Mapped_unique_quality_valid_pairs=`cat "${WK_DIR}/${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*validPairs | wc -l | awk '{print $1}'`
+Mapped_unique_quality_valid_pairs=`cat "${WK_DIR}/${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*_allValidPairs | wc -l | awk '{print $1}'`
 echo "`date`: Mapped_unique_quality_valid_pairs=${Mapped_unique_quality_valid_pairs}"| tee -a $LOG_FILE
 
 # Merge gaps; check bedtools
@@ -40,7 +40,7 @@ fi
 # Count reads in anchors; spit out only valid pairs sorted and pretty
 cat "${WK_DIR}/${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*Pairs | awk -v RL="$HALF_LEN" '{print $2 "\t" $3 - RL "\t" $3 + RL}' | awk '$2 > 0 {print $0}' | coverageBed -a stdin -b "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp" -counts | awk '{sum += $4} END {print sum}' > "${WK_DIR}/${OUT_NAME}/${SAMPLE}.peakReads.tmp"
 cat "${WK_DIR}/${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*Pairs | awk -v RL="$HALF_LEN" '{print $5 "\t" $6 - RL "\t" $6 + RL}' | awk '$2 > 0 {print $0}' | coverageBed -a stdin -b "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp" -counts | awk '{sum += $4} END {print sum}' >> "${WK_DIR}/${OUT_NAME}/${SAMPLE}.peakReads.tmp"
-cat "${WK_DIR}/${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*validPairs | awk -v RL="$HALF_LEN" '{if ($2<$5 || ($2==$5 && $3<=$6)) print $2,$3-RL,$3+RL,$5,$6-RL,$6+RL; else print $5,$6-RL,$6+RL,$2,$3-RL,$3+RL}' 'OFS=\t' | awk '$2 > 0 && $5 > 0 {print $0}' | sort -k1,1n -k2,2n -k4,4n -k5,5n > "${WK_DIR}/${OUT_NAME}/${SAMPLE}_interactions.bedpe.tmp"
+cat "${WK_DIR}/${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*_allValidPairs | awk -v RL="$HALF_LEN" '{if ($2<$5 || ($2==$5 && $3<=$6)) print $2,$3-RL,$3+RL,$5,$6-RL,$6+RL; else print $5,$6-RL,$6+RL,$2,$3-RL,$3+RL}' 'OFS=\t' | awk '$2 > 0 && $5 > 0 {print $0}' | sort -k1,1n -k2,2n -k4,4n -k5,5n > "${WK_DIR}/${OUT_NAME}/${SAMPLE}_interactions.bedpe.tmp"
 READS_IN_ANCHORS=`awk '{sum += $1} END {print sum}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.peakReads.tmp" | awk '{print $1}'`
 
 # Valid interaction statistics
