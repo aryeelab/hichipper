@@ -387,7 +387,7 @@ as a function of distance to the nearest restriction fragment locus. Note the pl
 
 ![hichipPlot](media/hichip_bias.png)
 
-A more detailed description of this bias and our analysis is contained in this [writeup.](hichipper_supplement.pdf)
+A more detailed description of this bias and our analysis is contained in this [writeup.](media/hichipper_supplement.pdf)
 
 ## Configurations<a name="configuration"></a>
 Running
