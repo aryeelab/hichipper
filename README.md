@@ -28,6 +28,7 @@ A higher resolution [slide of this image](media/Big.pptx) is in the [media](medi
 - [More typical example](#moe)
 - [Output](#output)
 - [Peaks](#HPC)
+- [HiChIP-Specific Bias Correction](#hcsbc)
 - [Configurations](#configuration)
 - [Restriction-fragment aware padding](#rfap)
 - [Parameter Explanations](#pe)
@@ -375,6 +376,18 @@ hicpro_output:
 Note: the input of pre-determined peaks does not have to explicitly be a `.bed` file. Rather, any file name is acceptable so long
 as the first three columns indicate appropriate genomic loci as if it were a `.bed` file. For example, `.narrowPeak` files from 
 macs2 should be fine. 
+
+## HiChIP-Specific Bias Correction<a name="hcsbc"></a>
+
+A key difference of HiChIP data compared to ChIA-PET, ChIP-Seq, and related
+immunoprecipitation assays is the a notable bias where a greater read density
+accumulates near the motif used in the restriction enzyme digestion. The image below
+shows the ratio of the treatment to the background (the statistic used in macs2 to call peaks)
+as a function of distance to the nearest restriction fragment locus. Note the plot below-- 
+
+![hichipPlot](media/hichip_bias.png)
+
+A more detailed description of this bias and our analysis is contained in this [writeup.](hichipper_supplement.pdf)
 
 ## Configurations<a name="configuration"></a>
 Running
