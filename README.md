@@ -1,7 +1,7 @@
 # hichipper
 This package is maintained by [Caleb Lareau](mailto:caleblareau@g.harvard.edu) in the [Aryee Lab](http://aryee.mgh.harvard.edu/). Source code is made freely available here and a packaged install version is provided through [PyPi](https://pypi.python.org/pypi/hichipper/).
 
-[![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper) [![PyPI version](https://img.shields.io/badge/pypi-0.5.3-brightgreen.svg)](https://img.shields.io/badge/pypi-0.5.3-brightgreen.svg) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) 
+[![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper) [![PyPI version](https://img.shields.io/badge/pypi-0.6.0-brightgreen.svg)](https://img.shields.io/badge/pypi-0.5.3-brightgreen.svg) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) 
 
 ## About<a name="about"></a>
 
@@ -148,7 +148,7 @@ through the `peaks`, `resfrags`, and `hicpro_output` variables that will be pars
 	hichipper --out output1 yaml/one.yaml 
 	```
 
-Additional 
+Additional details concerning user configuration options are shown below. 
 
 ## More typical example<a name="moe"></a>
 While the example above references files that are part of the **hichipper** distribution,
@@ -295,11 +295,10 @@ As of version `0.5.3` of **hichipper**, users should be able to input split `.fa
 and have **hichipper** function properly. No extra user flags are needed for this functionality. Thanks
 to our early users for helping us figure this out. 
 
-### PCR Duplicates Bug
+### A note on duplicates
 
-In certain versions (`0.4.4` to `0.5.3`) of **hichipper**, users should be able to input split `.fastq` files into HiC-Pro
-and have **hichipper** function properly. No extra user flags are needed for this functionality. Thanks
-to our early users (in particular, Kelvin Chen) for helping us figure this out. 
+In certain versions (`0.4.4` to `0.5.3`) of **hichipper**, duplicates were not being filtered out 
+by default. 
 
 ## Output<a name="output"></a>
 
@@ -442,7 +441,7 @@ hichipper --version
 will show the version of this package currently installed. 
 
 ```
-hichipper, version 0.5.3
+hichipper, version 0.6.0
 ```
 Check the badge up top to see if a newer version is available or try directly through `pip`:
 
@@ -478,7 +477,11 @@ The `dist` or distance between two peaks is noted in black as the center of two 
 and `--max-dist` is the largest integer number that ensures this distance falls between to be considered in a loop. These defaults
 are 5Kb and 2Mb as smaller reads are likely self-ligations whereas larger reads are unlikely to be biologically real loops.
 
-From our inspection of the HiChIP data, we determined that reads for putative loops localize to the edges of restriciton fragments and that increasing the padding to the edges of fragments can prove beneficial for maximizing the read density associated with loops. By default, **hichipper** adds additional padding to the edges of restriction fragments unless the `--skip-resfrag-pad` pad is thrown. To give an example, consider peak `C`. Under the default options, the anchor corresponding to this peak would span restriction fragments `7` and `9` (assuming that the `merge-gap` is small enough such that `B` and `C` are not merged). This is because the additional restriction fragment padding occurs after the original padding (orange), and **hichipper** padds to the edges of whatever fragment pads are overlapping the peak. However, if the user specified `--peak-pad 0`, the anchor corresponding to `C` would only span restriction motifs `8` and `9` since the peak only sits on that singular fragment. While we have found the default options to be sensible, the user can adjust these padding parameters to potentially increase precision of anchors calls possibly at the expense of PET density or vice-versa.  
+From our inspection of the HiChIP data, we determined that reads for putative loops localize to the edges of restriciton fragments and that increasing the padding to the edges of fragments can prove beneficial for maximizing the read density associated with loops.
+By default, **hichipper** adds additional padding to the edges of restriction fragments unless the `--skip-resfrag-pad` pad is thrown. To give an example, consider peak `C`. Under the default options, the anchor corresponding to this peak would span restriction
+fragments `7` and `9` (assuming that the `merge-gap` is small enough such that `B` and `C` are not merged). This is because the additional restriction fragment padding occurs after the original padding (orange), and **hichipper** padds to the edges of whatever
+fragment pads are overlapping the peak. However, if the user specified `--peak-pad 0`, the anchor corresponding to `C` would only span restriction motifs `8` and `9` since the peak only sits on that singular fragment. While we have found the default options to be
+sensible, the user can adjust these padding parameters to potentially increase precision of anchors calls possibly at the expense of PET density or vice-versa.  
 
 Finally, we note the `--macs2-genome` and `--macs2-string` which by default has parameters that we felt were suited appropriately for processing HiChIP data. However, users can modify these when performing peak-calling from HiChIP data directly. 
 
