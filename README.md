@@ -1,4 +1,8 @@
-# hichipper
+<p align="left">
+  <br><br><br>
+  <img src="media/hichipper_logo.png" width="50%"/>
+</p>
+
 This package is maintained by [Caleb Lareau](mailto:caleblareau@g.harvard.edu) in the [Aryee Lab](http://aryee.mgh.harvard.edu/). Source code is made freely available here and a packaged install version is provided through [PyPi](https://pypi.python.org/pypi/hichipper/).
 
 [![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper)
