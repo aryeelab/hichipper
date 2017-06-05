@@ -1,7 +1,9 @@
 # hichipper
 This package is maintained by [Caleb Lareau](mailto:caleblareau@g.harvard.edu) in the [Aryee Lab](http://aryee.mgh.harvard.edu/). Source code is made freely available here and a packaged install version is provided through [PyPi](https://pypi.python.org/pypi/hichipper/).
 
-[![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper) [![PyPI version](https://img.shields.io/badge/pypi-0.6.0-brightgreen.svg)](https://img.shields.io/badge/pypi-0.5.3-brightgreen.svg) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) 
+[![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper)
+[![PyPI version](https://img.shields.io/badge/pypi-0.6.0-brightgreen.svg)](https://pypi.python.org/pypi/hichipper/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## About<a name="about"></a>
 
