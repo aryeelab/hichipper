@@ -49,7 +49,6 @@ and chromatin loops can be called using a restriction fragment-aware approach th
 are always welcomed. The easiest way for us to have correspondence (if appropriate/interesting
 for the public) is through raising a [new issue](https://github.com/aryeelab/hichipper/issues/new).
 Otherwise, email [Caleb](mailto:caleblareau@g.harvard.edu) with any private concerns.
-
 <br><br>
 **hichipper** logo made with [autowide font](http://www.1001freefonts.com/audiowide.font) these
 [blue](http://www.color-hex.com/color/4b96c6) and [red](http://www.color-hex.com/color/bf5150)
