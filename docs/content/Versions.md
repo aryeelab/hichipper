@@ -10,3 +10,5 @@ to our early users for helping us figure this out.
 
 In certain versions (`0.4.4` to `0.5.3`) of **hichipper**, duplicates were not being filtered out 
 by default. 
+
+<br><br>
