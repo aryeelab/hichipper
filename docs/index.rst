@@ -9,8 +9,10 @@ Calling loops from HiChIP data
     
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
     :target: https://opensource.org/licenses/MIT
-    
  
+.. image:: https://zenodo.org/badge/70860290.svg
+    :target: https://zenodo.org/badge/latestdoi/70860290  
+
 ================
 About
 ================
