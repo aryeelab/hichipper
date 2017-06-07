@@ -45,7 +45,10 @@ Version control
 ================
 .. toctree:: content/Versions
 
-
+================
+Configuration
+================
+.. toctree:: content/Configuration
    
 ================
 Author
