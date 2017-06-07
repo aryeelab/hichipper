@@ -1,4 +1,5 @@
 # hichipper parameters 
+
 Running
 ```
 hichipper --help
@@ -64,7 +65,7 @@ the `--out` flag and a `.yaml` file as shown in the example executions. Below ar
 additional parameters than can be configured when executing the pipeline. 
 
 ## Restriction-fragment aware padding
-![peakParam](media/RE_PAD.png)
+<img src="media/RE_PAD.png" width="100%">
 
 ## Parameter explanations
 
@@ -74,7 +75,7 @@ a `.yaml` file supplied in addition to the `--out` parameter, which specifies th
 Users can decide to customize final output by using boolean flags or supply variable text input. The following 
 cartoon shows a graphical overview of important parameters to consider when running **hichipper**.
 
-![genParam](media/parameters.png)
+<img src="media/parameters.png" width="100%">
 
 As noted in orange, defined peaks are automatically padded by some integer width from the `--peak-pad` flag. By default, 
 this pad extends 500 base pairs in either direction. Padding the peaks boosts the number of PETs that can be mapped to loops. 
@@ -102,7 +103,7 @@ sensible, the user can adjust these padding parameters to potentially increase p
 Finally, we note the `--macs2-genome` and `--macs2-string` which by default has parameters that we felt were suited appropriately for processing HiChIP data.
 However, users can modify these when performing peak-calling from HiChIP data directly. 
 
-## User parameter recommendations<a name="ur"></a>
+## User parameter recommendations
 - If `R` is not in the system or if the `R` package dependencies could not be installed, the following flags should be added:
 ```
 --skip-resfrag-pad --skip-diffloop --skip-qc --skip-background-correction
@@ -113,4 +114,4 @@ or other low RAM machine_ should likely skip the adaptive background correction.
 --skip-background-correction
 ```
 
-
+<br><br><br>
