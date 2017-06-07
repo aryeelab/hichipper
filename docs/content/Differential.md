@@ -1,4 +1,4 @@
-# Finding differences
+# Finding differential loops
 
 Have you generated a bunch of HiChIP samples and want to see what's different between them? Check out
 the [diffloop vignette](https://rpubs.com/caleblareau/diffloop_vignette) for an example analysis

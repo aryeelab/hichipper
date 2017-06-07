@@ -61,6 +61,11 @@ Output
 .. toctree:: content/Output
   
 ================
+Differential
+================
+.. toctree:: content/Differential
+  
+================
 Visualization
 ================
 .. toctree:: content/Visualization
