@@ -67,7 +67,7 @@ the `--out` flag and a `.yaml` file as shown in the example executions. Below ar
 additional parameters than can be configured when executing the pipeline. 
 
 ## Restriction-fragment aware padding
-![repad](images/RE_PAD.png) <!-- .element width="100%" -->
+![repad](images/RE_PAD.png) <!-- .element style="width: 100%" -->
 
 ## Parameter explanations
 
@@ -77,7 +77,7 @@ a `.yaml` file supplied in addition to the `--out` parameter, which specifies th
 Users can decide to customize final output by using boolean flags or supply variable text input. The following 
 cartoon shows a graphical overview of important parameters to consider when running **hichipper**.
 
-![param](images/parameters.png) <!-- .element width="20%" -->
+![param](images/parameters.png) <!-- .element style="width: 20%" -->
 
 As noted in orange, defined peaks are automatically padded by some integer width from the `--peak-pad` flag. By default, 
 this pad extends 500 base pairs in either direction. Padding the peaks boosts the number of PETs that can be mapped to loops. 
