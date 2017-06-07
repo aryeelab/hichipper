@@ -41,9 +41,11 @@ Dependencies
 .. toctree:: content/Dependencies
 
 ================
-Revisions
+Version control
 ================
-.. toctree:: content/revision-history
+.. toctree:: content/Versions
+
+
    
 ================
 Author
