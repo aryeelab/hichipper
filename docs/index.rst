@@ -81,7 +81,7 @@ in the `Aryee Lab <https://aryee.mgh.harvard.edu/>`_.
 Citation
 ================
 
-If you use **proatac** in your research, please cite our tool at the following URL:
+If you use **hichipper** in your research, please cite our tool at the following URL:
 	
 	``http://aryeelab.org/hichipper``
 	
