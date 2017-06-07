@@ -11,17 +11,29 @@
 [![DOI](https://zenodo.org/badge/70860290.svg)](https://zenodo.org/badge/latestdoi/70860290)
 
 
-This package is maintained by [Caleb Lareau](mailto:caleblareau@g.harvard.edu) in the [Aryee Lab](http://aryee.mgh.harvard.edu/). Source code is made freely available here and a packaged install version is provided through [PyPi](https://pypi.python.org/pypi/hichipper/).
+This package is maintained by [Caleb Lareau](mailto:caleblareau@g.harvard.edu) in
+the [Aryee Lab](http://aryee.mgh.harvard.edu/). Source code is made freely available
+here and a packaged install version is provided through [PyPi](https://pypi.python.org/pypi/hichipper/).
 
 ## About
 The **hichipper** package implements our data processing and quality control pipeline for 
 [HiChIP](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3999.html) data.
-This package takes output from a [HiC-Pro](https://github.com/nservant/HiC-Pro) run and a sample manifest file (`.yaml`) that coordinates optional high-quality peaks (identified through ChIP-Seq) and restriction fragment locations (see [folder here](RestrictionFragmentFiles))
-as input and produces output that can be used to 1) determine library quality, 2) identify and characterize DNA loops and 3) interactively visualize loops. Loops are assigned strength and confidence metrics that can be used to evaluate samples individually or for differential analysis in
+This package takes output from a [HiC-Pro](https://github.com/nservant/HiC-Pro)
+run and a sample manifest file (`.yaml`)
+that coordinates optional high-quality peaks (identified through ChIP-Seq) and
+restriction fragment locations (see [folder here](RestrictionFragmentFiles))
+as input and produces output that can be used to 1) determine library quality,
+2) identify and characterize DNA loops and 3) interactively visualize loops.
+Loops are assigned strength and confidence metrics that can be used to evaluate samples
+individually or for differential analysis in
 downstream tools like [diffloop](https://bioconductor.org/packages/release/bioc/html/diffloop.html).
-We have used the library QC metrics with as few as 1 million reads, enabling library quality to be assessed through shallow (and cheap) sequencing before performing a full depth sequencing run.
 
-A graphical overview showing how **hichipper** integrates with other tools in the analysis of raw HiChIP data is shown in the overview figure below. Detailed descriptions of the different branches of
+
+We have used the library QC metrics with as few as 1 million reads, enabling library quality
+to be assessed through shallow (and cheap) sequencing before performing a full depth sequencing run.
+
+A graphical overview showing how **hichipper** integrates with other tools in the analysis of raw HiChIP data
+is shown in the overview figure below. Detailed descriptions of the different branches of
 input, output, and configuration for **hichipper** are discussed in the [documentation](http://hichipper.readthedocs.io).
 
 ![big1](docs/content/media/Big1.png)
@@ -52,7 +64,7 @@ are always welcomed. The easiest way for us to have correspondence (if appropria
 for the public) is through raising a [new issue](https://github.com/aryeelab/hichipper/issues/new).
 Otherwise, email [Caleb](mailto:caleblareau@g.harvard.edu) with any private concerns.
 <br><br>
-**hichipper** logo made with [autowide font](http://www.1001freefonts.com/audiowide.font) these
+**hichipper** logo made with [autowide font](http://www.1001freefonts.com/audiowide.font) with these
 [blue](http://www.color-hex.com/color/4b96c6) and [red](http://www.color-hex.com/color/bf5150)
 color definitions.
 <br><br><br>
