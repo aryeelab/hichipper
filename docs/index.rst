@@ -49,6 +49,21 @@ Version control
 Configuration
 ================
 .. toctree:: content/Configuration
+
+================
+Peaks
+================
+.. toctree:: content/Peaks
+
+================
+Output
+================
+.. toctree:: content/Output
+  
+================
+Visualization
+================
+.. toctree:: content/Visualization
    
 ================
 Author

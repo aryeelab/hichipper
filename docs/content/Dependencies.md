@@ -41,3 +41,4 @@ Convenient [pandoc binaries](https://s3.amazonaws.com/rstudio-buildtools/pandoc-
 Mac and Windows are available for download from RStudio. If you prefer to install pandoc globally
 on your machine, installation instructions can be found [here](http://pandoc.org/installing.html).
 
+<br><br>

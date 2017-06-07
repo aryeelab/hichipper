@@ -30,3 +30,4 @@ pip3 install git+ssh://git@github.com/aryeelab/search/tree/master/hichipper
 While installing **hichipper** is obviously a great first step, make sure that all of the 
 [dependencies](http://hichipper.readthedocs.io/en/latest/content/Dependencies.html) are met. 
 Check out the next page for more detail. 
+<br><br>

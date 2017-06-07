@@ -65,7 +65,7 @@ the `--out` flag and a `.yaml` file as shown in the example executions. Below ar
 additional parameters than can be configured when executing the pipeline. 
 
 ## Restriction-fragment aware padding
-<img src="https://github.com/aryeelab/hichipper/blob/master/docs/content/media/parameters.png?raw=True" style="width:100%;"><br>
+<img src="https://github.com/aryeelab/hichipper/blob/master/docs/content/media/RE_PAD.png?raw=True" style="width:100%;"><br>
 
 ## Parameter explanations
 
@@ -114,4 +114,4 @@ or other low RAM machine_ should likely skip the adaptive background correction.
 --skip-background-correction
 ```
 
-<br><br><br>
+<br><br>
