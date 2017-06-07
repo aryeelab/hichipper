@@ -1,46 +1,43 @@
-# Getting proatac running
-**proatac** has a few dependencies that are listed below with relevant hyperlinks for 
-installation instructions from the source. To quickly determine what may be lacking in
-your system, try running **proatac** with the [default.yaml](yaml/CLmac.yaml) file
-(more on that [here](#yaml)) using the `--check` flag. To do this, we'll first clone
-the repository
+# Required software for hichipper
 
+The following dependencies need to be installed before running **hichipper**:
+[bedtools](http://bedtools.readthedocs.io/en/latest/content/installation.html), OpenSSL, libcurl, libxml2,
+and [samtools](http://www.htslib.org/download/). Depending on if you want some bonus functionality,
+you may need to download additional requirements. 
+
+Except for `bedtools` and `samtools`, these other dependencies came out of the
+box with the unix/linux systems that we've used **hichipper** on. 
+
+But just to be safe, on an Ubuntu system, all of the dependencies can be installed with:
 ```
-git clone https://github.com/buenrostrolab/proatac.git
-proatac yaml/default --check
-```
-
-If you get a message saying that the check was succesful, then you're most likely
-ready to begin analyzing data. However, if you run into one or more error messages, 
-you are likely missing the necessarily software. Make sure that
-
-- [bedtools](http://bedtools.readthedocs.io/en/latest/content/installation.html)
-- [bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) and relevant index for analysis. 
-- [java language](https://www3.ntu.edu.sg/home/ehchua/programming/howto/JDK_Howto.html)
-- [macs2](https://github.com/taoliu/MACS)
-
-We note that macs2 though also a PyPi package is only compatible with Python 2.7
-whereas **proatac** is a Python 3 package. There's a good chance that macs2
-is already living in your environment if you are reading this help page, which can
-be tested using the following--
-
-```
-which macs2
+apt-get install bedtools libssl-dev libcurl4-openssl-dev libxml2-dev
 ```
 
-and hopefully seeing a valid path. If not, one solution for macs2 install is to create
-a separate python2 virtual environment using the following commands -- 
+Additionally, `R` must be available in the environment as well as a reasonably recent
+version of [pandoc](http://pandoc.org) and a few packages that can be downloaded running the following
+in an 'R' environment. :
 
 ```
-python2 -m venv venv2
-source venv2/bin/active
+install_pkgs <- function(pkg){
+    new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+    if (length(new.pkg)) install.packages(new.pkg, dependencies = TRUE)
+}
+install_pkgs(c("DT", "data.table", "devtools", "foreach", "ggplot2", "knitr", "networkD3", "readr", "reshape2"))
 
-pip install numpy
-pip install wheel
-pip install macs2
+source("https://bioconductor.org/biocLite.R")
+install_pkgs_bioc <- function(pkg){
+    new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+    if (length(new.pkg)) biocLite(new.pkg, dependencies = TRUE)
+}
+install_pkgs_bioc(c("diffloop"))
 ```
 
-- [R language](https://www.r-project.org/) and package dependencies
-(see [wiki/Rpackages](https://github.com/buenrostrolab/proatac/wiki/Rpackages) for more information). 
+or simply download [this R script](https://github.com/aryeelab/hichipper/blob/master/hichipper/requirementsInstall.R) and run:
+```
+Rscript requirementsInstall.R
+```
 
-- [samtools](http://www.htslib.org/download/)
+Convenient [pandoc binaries](https://s3.amazonaws.com/rstudio-buildtools/pandoc-1.12.4.2.zip) for Linux,
+Mac and Windows are available for download from RStudio. If you prefer to install pandoc globally
+on your machine, installation instructions can be found [here](http://pandoc.org/installing.html).
+

@@ -17,9 +17,15 @@ Calling loops from HiChIP data
 About
 ================
 
-**hichipper** is an open-source command-line toolkit that performs robust and scalable 
-preprocessing of `ATAC-Seq data <http://www.nature.com/nmeth/journal/v10/n12/full/nmeth.2688.html>`_. 
-Specifically, we've implemented our workflow using 
+**hichipper** is an open-source command-line toolkit that performs restriction fragment bias-aware
+preprocessing of `HiChIP data <https://www.nature.com/nmeth/journal/v13/n11/full/nmeth.3999.html>`_. 
+This package takes output from a `HiC-Pro >https://github.com/nservant/HiC-Pro>`_ run and a sample manifest
+file (``.yaml``) that coordinates optional high-quality peaks (identified through ChIP-Seq) and restriction
+fragment locations as input and produces output that can be used to 1) determine library quality, 2) identify
+and characterize DNA loops and 3) interactively visualize loops. Loops are assigned strength and confidence
+metrics that can be used to evaluate samples individually or for differential analysis in
+downstream tools.
+
 
 .. image:: content/media/overview.png
    :width: 100%

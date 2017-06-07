@@ -1,18 +1,19 @@
 # Install stable version through PyPi
-There are a few [dependencies](http://proatac.readthedocs.io/en/latest/content/Dependencies.html)
-needed to get **proatac** to run. All are 
+There are a few [dependencies](http://hichipper.readthedocs.io/en/latest/content/Dependencies.html)
+needed to get **hichipper** to run. All are 
 very common bioinformatics tools / languages and should be readily available in
-most systems. However, **note that the current implementation of proatac is not supported
+most systems. However, **note that the current implementation of hichipper is not supported
 on Windows platforms**. 
 
 Depending on your python environment, we generally recommend using a virtual environment
-to keep python dependencies tidy. An example of installing **proatac** inside a new
-python virtual environment called `venv3` using the following sequence of commands--
+to keep python dependencies tidy. An example of installing **hichipper** inside a new
+python virtual environment called `venv` using the following sequence of commands--
 
 ```
-python3 -m venv venv3
-source venv3/bin/active
-pip3 install proatac
+virtualenv -p /usr/bin/python2.7 venv
+source venv/bin/active
+pip install hichipper
+hichipper --version
 ```
 
 # Install via GitHub
@@ -21,11 +22,11 @@ Though **not recommended**, a bleeding-edge (development) version can be install
 directly from Git. Again using a virtual environment--
 
 ```
-python3 -m venv venv3
-source venv3/bin/active
-pip3 install git+ssh://git@github.com/buenrostrolab/search/tree/master/proatac
+virtualenv -p /usr/bin/python2.7 venv
+source venv/bin/active
+pip3 install git+ssh://git@github.com/aryeelab/search/tree/master/hichipper
 ```
 
-While installing **proatac** is obviously a great first step, make sure that all of the 
-[dependencies](http://proatac.readthedocs.io/en/latest/content/Dependencies.html) are met. 
+While installing **hichipper** is obviously a great first step, make sure that all of the 
+[dependencies](http://hichipper.readthedocs.io/en/latest/content/Dependencies.html) are met. 
 Check out the next page for more detail. 
