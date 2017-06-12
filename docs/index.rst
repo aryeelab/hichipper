@@ -41,6 +41,11 @@ Dependencies
 .. toctree:: content/Dependencies
 
 ================
+Usage
+================
+.. toctree:: content/Usage
+
+================
 Version control
 ================
 .. toctree:: content/Versions
