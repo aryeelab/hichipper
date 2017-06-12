@@ -1,0 +1,5 @@
+Sun Jun 11 22:41:07 EDT 2017: Starting hichipper pipeline v0.6.1
+Sun Jun 11 22:41:07 EDT 2017: Executed from: /Volumes/dat/Research/AryeeResearch/hichip/hichipper
+Sun Jun 11 22:41:07 EDT 2017: Output folder: /Volumes/dat/Research/AryeeResearch/hichip/hichipper/output1
+Sun Jun 11 22:41:07 EDT 2017: Parsed manifest as follows: 
+{'peaks': ['chipseq/GM12878_SMC3_ChIPSeq_chr22.narrowPeak'], 'hicpro_output': ['hicpro_one'], 'resfrags': ['resfrag/hg19_MboI_resfrag_chr22.bed.gz']}
