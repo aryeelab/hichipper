@@ -46,9 +46,13 @@ hicpro_output:
 
 Note: the input of pre-determined peaks does not have to explicitly be a `.bed` file. Rather, any file name is acceptable so long
 as the first three columns indicate appropriate genomic loci as if it were a `.bed` file. For example, `.narrowPeak` files from 
-macs2 should be fine. 
+`macs2` should be fine. 
 
-## HiChIP-Specific Bias Correction
+# Multiple ChIP-Seq peaks as input
+
+As raised in this [issue](https://github.com/aryeelab/hichipper/issues/18), if you have multiple samples and multiple ChIP-Seq or related high-quality peak definitions to be used as an input, the way to do this is to create two or more `.yaml` files, each one specifying its own bed file of peaks. Then, execute `hichipper` such that you restrict the analysis to the sample you want per bed file using the `--keep-samples` or `--ignore-samples` flags. Thanks to user **sb5169** for bringing this up. 
+
+# HiChIP-Specific Bias Correction
 
 A key difference of HiChIP data compared to ChIA-PET, ChIP-Seq, and related
 immunoprecipitation assays is the a notable bias where a greater read density
