@@ -8,6 +8,7 @@ import shutil
 import random
 import string
 import time
+import re
 from pkg_resources import get_distribution
 from subprocess import call, check_call
 
@@ -110,6 +111,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 		bt = os.popen('ls ' + hicprooutput + '/bowtie_results/bwt2/' + sample + "/*.pairstat").read().strip().split("\n")
 		hc1 = os.popen('ls ' + hicprooutput + '/hic_results/data/' + sample + "/*.RSstat").read().strip().split("\n")
 		hc2 = os.popen('ls ' + hicprooutput + '/hic_results/data/' + sample + "/*.*Pairs").read().strip().split("\n")
+                hc2 = [a for a in hc2 if re.search("DEPairs|SCPairs|validPairs|SinglePairs|DumpPairs",a) is not None]
 		hc3 = os.popen('ls ' + hicprooutput + '/hic_results/data/' + sample + "/*_allValidPairs").read().strip().split("\n")
 		
 		if(boo):
