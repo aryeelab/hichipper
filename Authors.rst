@@ -15,4 +15,6 @@ Supervisor
 Contributors
 ------------
 
-None yet. Make yours today!
+* Alejandro Reyes <alejandro.reyes.ds@gmail.com>
+
+

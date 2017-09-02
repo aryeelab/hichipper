@@ -7,7 +7,7 @@ dependencies = ['click', 'PyYAML', 'Numpy', 'MACS2']
 
 setup(
     name='hichipper',
-    version='0.6.1v2',
+    version='0.7.0',
     url='https://github.com/aryeelab/hichipper',
     license='MIT',
     author='Caleb Lareau and Martin Aryee',

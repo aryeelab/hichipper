@@ -1,3 +1,6 @@
+# 0.6.2
+- Fixed error associated with new files being produced from newer versions of HiC-Pro
+
 # 0.6.0
 - Fixed inconsistencies with duplicates
 
