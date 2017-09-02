@@ -70,7 +70,7 @@ interactive tables and figures between existing libraries.
 
 ### Questions/comments/feedback
 are always welcomed. The easiest way for us to have correspondence (if appropriate/interesting
-for the public) is through raising a [new issue](https://github.com/aryeelab/hichipper/issues/new).
+for the public) is through raising a [new issue](https://github.com/aryeelab/hichipper/issues/new) or our [hichipper chat room on gitter](https://gitter.im/aryeelab/hichipper).
 Otherwise, email [Caleb](mailto:caleblareau@g.harvard.edu) with any private concerns.
 <br><br>
 **hichipper** logo made with [autowide font](http://www.1001freefonts.com/audiowide.font) with these
