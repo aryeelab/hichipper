@@ -16,6 +16,8 @@ the [Aryee Lab](http://aryee.mgh.harvard.edu/). Source code is made freely avail
 here and a packaged install version is provided through [PyPi](https://pypi.python.org/pypi/hichipper/).
 
 ## About
+
+[![Join the chat at https://gitter.im/aryeelab/hichipper](https://badges.gitter.im/aryeelab/hichipper.svg)](https://gitter.im/aryeelab/hichipper?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 The **hichipper** package implements our data processing and quality control pipeline for 
 [HiChIP](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3999.html) data.
 This package takes output from a [HiC-Pro](https://github.com/nservant/HiC-Pro)
