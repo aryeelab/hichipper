@@ -10,8 +10,8 @@ Calling loops from HiChIP data with hichipper
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
     :target: https://opensource.org/licenses/MIT
  
-.. image:: https://zenodo.org/badge/70860290.svg
-    :target: https://zenodo.org/badge/latestdoi/70860290  
+.. image:: https://img.shields.io/badge/DOI-bioRxiv-red.svg
+    :target: https://www.biorxiv.org/content/early/2017/09/21/192302 
 
 ================
 About
