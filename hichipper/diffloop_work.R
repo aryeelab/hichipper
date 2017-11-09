@@ -5,8 +5,8 @@ cwd <- args[1]
 outdir <- args[2]
 samples <- unlist(strsplit(args[c(-1,-2)], split = " "))
 
-suppressMessages(library(diffloop))
-suppressMessages(library(foreach))
+suppressMessages(suppressWarnings(library(diffloop)))
+suppressMessages(suppressWarnings(library(foreach)))
 
 message("Processing: ", samples)
 

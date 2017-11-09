@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
-suppressMessages(suppressWarnings(require(GenomicRanges)))
-suppressMessages(suppressWarnings(require(data.table)))
+suppressMessages(suppressWarnings(library(GenomicRanges)))
+suppressMessages(suppressWarnings(library(data.table)))
 
 args <- commandArgs(trailingOnly = TRUE)
 resfile <- args[1]

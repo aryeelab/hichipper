@@ -3,9 +3,9 @@
 # File / set of functions that takes restriction enzyme fragment positions
 # and bedgraph pileup files from MACS2 and writes modified files
 
-suppressMessages(suppressWarnings(require(GenomicRanges)))
-suppressMessages(suppressWarnings(require(data.table)))
-suppressMessages(suppressWarnings(require(reshape2)))
+suppressMessages(suppressWarnings(library(GenomicRanges)))
+suppressMessages(suppressWarnings(library(data.table)))
+suppressMessages(suppressWarnings(library(reshape2)))
 
 args <- commandArgs(trailingOnly = TRUE)
 resfile <- args[1]

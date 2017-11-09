@@ -17,13 +17,12 @@ vignette: >
 ---
 
 ```{r, echo=FALSE, message=TRUE, warning=TRUE}
-suppressMessages(library(ggplot2))
-suppressMessages(library(foreach))
-suppressMessages(library(reshape2))
-suppressMessages(library(readr))
-suppressMessages(library(knitr))
-suppressMessages(library(DT))
-suppressMessages(library(networkD3))
+suppressWarnings(suppressMessages(library(ggplot2)))
+suppressWarnings(suppressMessages(library(foreach)))
+suppressWarnings(suppressMessages(library(reshape2)))
+suppressWarnings(suppressMessages(library(readr)))
+suppressWarnings(suppressMessages(library(knitr)))
+suppressWarnings(suppressMessages(library(networkD3)))
 
 options(scipen=999)
 
@@ -148,14 +147,14 @@ for(sample in samples){
 
 ## Summary Tables
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
-datatable(tab_summary, class = 'cell-border stripe')
+kable(tab_summary)
 ```
 
 
 The first summary table notes how many PETs are in each sample and what fraction were mapped with high-quality. First, the "% Reads in Anchors" takes all unique, mappable pairs (whether they are valid, dangling, self-circle, etc. doesn't matter) and determines what fraction have both overlapping with anchor loci. Note, this numer should give an indication of the ChIP quality, but it may be sensitive to how peaks are determined with padding, etc. While the "% HQ Unique Mapped" reads should be self explanatory, the "% Long Range Interaction" value represents the number of intrachromosomal reads longer than the minimum length (default 5Kb) specified by the user and is a good approximation for the efficacy of the in situ ligation. Finally, the "% in Loops" is the fraction of total reads that are in loops, defined by high-quality, mapped intrachromosomal, anchor-mapped, between min and max lengths (default 5Kb and 2Mb). If the proportion of loops reads is low but the proportion of long range interactions is high, this suggests that the ChIP efficiency is relatively low. <br><br><br>
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
-datatable(tab_summary2, class = 'cell-border stripe')
+kable(tab_summary2, class = 'cell-border stripe')
 ```
 
 
@@ -192,19 +191,19 @@ Above is a histogram of the loop widths greater than the minimum distance suppli
 
 ## Raw Read Stats
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
-datatable(format(acast(readstats, metric~sample, sum), big.mark=",")[-8,, drop = FALSE], class = 'cell-border stripe')
+kable(format(acast(readstats, metric~sample, sum), big.mark=",")[-8,, drop = FALSE])
 ```
 <br>
 
 ## Proportional Read Stats
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
-datatable(format(tab_percent[c(-8,-10),,drop = FALSE], digits=2, nsmall=2), class = 'cell-border stripe')
+kable(format(tab_percent[c(-8,-10),,drop = FALSE], digits=2, nsmall=2))
 ```
 <br>
 
 ## Number of Anchor Peaks
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
-datatable(anchors, rownames = FALSE, class = 'cell-border stripe')
+kable(anchors, rownames = FALSE)
 ```
 
 
