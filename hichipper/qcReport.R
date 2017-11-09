@@ -1,5 +1,6 @@
 #!/usr/bin/env Rscript
 args <- commandArgs(trailingOnly = TRUE)
+options(warn=-1)
 
 scriptdir <- args[1]
 outdir <- args[2]
@@ -14,5 +15,5 @@ rmarkdown::render(paste0(outdir,"/qcReport_make.Rmd"), params = list(
   cwd = cwd, 
   samples = samples,
   version = version
-), output_file=paste0(outdir, ".hichipper.qcreport.html"))
+), quiet = TRUE, output_file=paste0(outdir, ".hichipper.qcreport.html"))
 

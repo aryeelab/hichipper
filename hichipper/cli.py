@@ -137,7 +137,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 		    os.system('cat ' + hicprooutput + '/hic_results/data/' + sample + "/*SCPairs >> " + out + "/allDEandSCpairs.Pairs.tmp")
 		os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $2"\t"$3-RL"\t"$3+RL}' '''+ out + '''/allDEandSCpairs.Pairs.tmp | awk '$2 > 0 {print $0}' > ''' + out + '''/allDEandSCpairs.bed.tmp''')
 		os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $5"\t"$6-RL"\t"$6+RL}' '''+ out + '''/allDEandSCpairs.Pairs.tmp | awk '$2 > 0 {print $0}' >> ''' + out + '''/allDEandSCpairs.bed.tmp''')
-		macs2cmd = 'macs2 callpeak -t ' + out + '/allDEandSCpairs.bed.tmp ' + macs2_string + " -g " + macs2_genome + " -B -f BED --verbose 0 -n " + out + '/allSamples_temporary'
+		macs2cmd = 'macs2 callpeak -t ' + out + '/allDEandSCpairs.bed.tmp --keep-dup all ' + macs2_string + " -g " + macs2_genome + " -B -f BED --verbose 0 -n " + out + '/allSamples_temporary'
 		click.echo(gettime() +  "macs2 command: " + macs2cmd, logf)
 		os.system(macs2cmd)
 		if not os.path.isfile(out + '/allSamples_temporary_peaks.narrowPeak'):
@@ -164,7 +164,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 		    os.system('cat ' + hicprooutput + '/hic_results/data/' + sample + "/*SCPairs >> " + out + "/" + sample +"DEandSCpairs.Pairs.tmp")
 		    os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $2"\t"$3-RL"\t"$3+RL}' '''+ out + '''/''' + sample +'''DEandSCpairs.Pairs.tmp | awk '$2 > 0 {print $0}' >  ''' + out + '''/''' + sample +'''DEandSCpairs.bed.tmp''')
 		    os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $5"\t"$6-RL"\t"$6+RL}' '''+ out + '''/''' + sample +'''DEandSCpairs.Pairs.tmp | awk '$2 > 0 {print $0}' >> ''' + out + '''/''' + sample +'''DEandSCpairs.bed.tmp''')
-		    macs2cmd = 'macs2 callpeak -t ' + out + '/' + sample + 'DEandSCpairs.bed.tmp ' + macs2_string + " -g " + macs2_genome + " -B -f BED --verbose 0 -n " + out + '/' + sample + "_temporary"
+		    macs2cmd = 'macs2 callpeak -t ' + out + '/' + sample + 'DEandSCpairs.bed.tmp  --keep-dup all ' + macs2_string + " -g " + macs2_genome + " -B -f BED --verbose 0 -n " + out + '/' + sample + "_temporary"
 		    click.echo(gettime() +  "macs2 command: " + macs2cmd, logf)
 		    os.system(macs2cmd)
 		    if not os.path.isfile(out + '/' + sample + '_temporary_peaks.narrowPeak'):
@@ -191,7 +191,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 		    os.system('cat ' + hicprooutput + '/hic_results/data/' + sample + "/*Pairs >> " + out + "/all.Pairs.tmp")
 		os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $2"\t"$3-RL"\t"$3+RL}' '''+ out + '''/all.Pairs.tmp | awk '$2 > 0 {print $0}' > ''' + out + '''/allpairs.bed.tmp''')
 		os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $5"\t"$6-RL"\t"$6+RL}' '''+ out + '''/all.Pairs.tmp | awk '$2 > 0 {print $0}' >> ''' + out + '''/allpairs.bed.tmp''')
-		macs2cmd = 'macs2 callpeak -t ' + out + '/allpairs.bed.tmp ' + macs2_string + " -g " + macs2_genome + " -B -f BED --verbose 0 -n " + out + '/allSamples_temporary'
+		macs2cmd = 'macs2 callpeak -t ' + out + '/allpairs.bed.tmp  --keep-dup all ' + macs2_string + " -g " + macs2_genome + " -B -f BED --verbose 0 -n " + out + '/allSamples_temporary'
 		click.echo(gettime() +  "macs2 command: " + macs2cmd, logf)
 		os.system(macs2cmd)
 		if not os.path.isfile(out + '/allSamples_temporary_peaks.narrowPeak'):
@@ -217,7 +217,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 		    os.system('cat ' + hicprooutput + '/hic_results/data/' + sample + "/*Pairs >> " + out + "/" + sample +".all.Pairs.tmp")
 		    os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $2"\t"$3-RL"\t"$3+RL}' '''+ out + '''/''' + sample +'''.all.Pairs.tmp | awk '$2 > 0 {print $0}' >  ''' + out + '''/''' + sample +'''.all.Pairs.bed.tmp''')
 		    os.system('''awk -v RL=''' + str(halfLength)+r''' '{print $5"\t"$6-RL"\t"$6+RL}' '''+ out + '''/''' + sample +'''.all.Pairs.tmp | awk '$2 > 0 {print $0}' >> ''' + out + '''/''' + sample +'''.all.Pairs.bed.tmp''')
-		    macs2cmd = 'macs2 callpeak -t ' + out + '/' + sample + '.all.Pairs.bed.tmp ' + macs2_string + " -g " + macs2_genome + " -B -f BED --verbose 0 -n " + out + '/' + sample + "_temporary"
+		    macs2cmd = 'macs2 callpeak -t ' + out + '/' + sample + '.all.Pairs.bed.tmp  --keep-dup all ' + macs2_string + " -g " + macs2_genome + " -B -f BED --verbose 0 -n " + out + '/' + sample + "_temporary"
 		    click.echo(gettime() +  "macs2 command: " + macs2cmd, logf)
 		    os.system(macs2cmd)
 		    if not os.path.isfile(out + '/' + sample + '_temporary_peaks.narrowPeak'):

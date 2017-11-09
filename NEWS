@@ -1,3 +1,13 @@
+
+# 0.7.1
+- Clean up spurious output from R execution
+- Hard stop/fail for package importing failure
+- Keep duplicates in peak calling when data-driven
+- Remove reliance on HTML-style figures/tables in QC repot
+
+# 0.7.0
+- Production version in conjunction with bioRxiv paper
+
 # 0.6.2
 - Fixed error associated with new files being produced from newer versions of HiC-Pro
 

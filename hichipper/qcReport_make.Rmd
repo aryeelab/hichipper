@@ -100,6 +100,7 @@ colnames(tab_summary2) <- colnames(tab_summary)
 
 ```
 
+<!--
 ## Sankey Diagrams
 Hover your mouse on any edge of the network to see the proportion of PETs that each edge represents. 100 defines the total number of reads originally used as input contained in the `.bam` file while the proportion at the end that is "In Anchors" corresponds to the number of loops. <br><br><br> 
 
@@ -144,6 +145,7 @@ for(sample in samples){
 }
 
 ```
+-->
 
 ## Summary Tables
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width='\\textwidth'}
