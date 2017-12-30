@@ -4,6 +4,16 @@ In this folder hierarchy, we hub all QC Reports from HiChIP that we can get our 
 
 When planning a HiChIP experiment and sequencing run, we consider three key factors: 1) cellular input, 2) read length, and 3) read count.  
 
+## H3K27ac
+
+A [paper published in late 2017 in Nature Genetics](https://www.ncbi.nlm.nih.gov/pubmed/28945252) used
+K27ac for HiChIP. See the loop call QC reports from `hichipper` here:
+
+- [GM12878](Good/NatureGenetics/GM12878_H3K27ac.hichipper.qcreport.html)
+- [K562](Good/NatureGenetics/K562_H3K27ac.hichipper.qcreport.html)
+- [HCASMC](Good/NatureGenetics/HCASMC_H3K27ac.hichipper.qcreport.html)
+- [MyLA](Good/NatureGenetics/MyLa_H3K27ac.hichipper.qcreport.html)
+
 ## Variable Cell Input
 Compiled HTML for [1 million](Good/Mumbach_etal/1mil.hichipper.qcreport.html) [5 million](Good/Mumbach_etal/5mil.hichipper.qcreport.html) [10 million](Good/Mumbach_etal/10mil.hichipper.qcreport.html)
 
