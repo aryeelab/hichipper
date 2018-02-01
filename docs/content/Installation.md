@@ -11,7 +11,7 @@ python virtual environment called `venv` using the following sequence of command
 
 ```
 virtualenv -p /usr/bin/python2.7 venv
-source venv/bin/active
+source venv/bin/activate
 pip install hichipper
 hichipper --version
 ```
