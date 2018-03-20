@@ -79,7 +79,7 @@ awk -v MIN_DIST="$MIN_DIST" -v MAX_DIST="$MAX_DIST" '$1 == $4 && $2 != $5 && (($
 # Produce UCSC Output if requested
 if [ "$UCSC" = true ] ; then
     echo "`date`: Creating UCSC Compatible files; make sure tabix and bgzip are available in the environment or this will not work." | tee -a $LOG_FILE
-    awk '{print $1"\t"$2"\t"$3"\t"$4":"$5"-"$6","$8"\t"(NR*2-1)"\t.\n"$4"\t"$5"\t"$6"\t"$1":"$2"-"$3","$8"\t"(NR*2)"\t."}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.filt.intra.loop_counts.bedpe" | sort -k1,1n -k2,2n  > "${WK_DIR}/${OUT_NAME}/${SAMPLE}.interaction.txt"
+    awk '{print $1"\t"$2"\t"$3"\t"$4":"$5"-"$6","$8"\t"(NR*2-1)"\t.\n"$4"\t"$5"\t"$6"\t"$1":"$2"-"$3","$8"\t"(NR*2)"\t."}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.filt.intra.loop_counts.bedpe" | bedtools sort  > "${WK_DIR}/${OUT_NAME}/${SAMPLE}.interaction.txt"
     bgzip "${WK_DIR}/${OUT_NAME}/${SAMPLE}.interaction.txt"
     tabix -p bed "${WK_DIR}/${OUT_NAME}/${SAMPLE}.interaction.txt.gz"
 fi

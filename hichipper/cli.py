@@ -42,7 +42,7 @@ def get_subdirectories(dir):
 @click.option('--read-length', "-l", default="75", help='Length of reads from sequencing runs; default = 75')
 
 # Loop Distance options
-@click.option('--min-dist', "-mi" default="5000", help='Minimum distance for loop calls; default = 5000')
+@click.option('--min-dist', "-mi", default="5000", help='Minimum distance for loop calls; default = 5000')
 @click.option('--max-dist', "-ma", default="2000000", help='Maximum distance for loop calls; default = 2000000')
 
 # MACS2 Configurations
