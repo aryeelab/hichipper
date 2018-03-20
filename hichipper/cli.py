@@ -32,7 +32,7 @@ def get_subdirectories(dir):
 @click.argument('mode', help = "Run mode. Input either .yaml file name or 'call'")
 
 @click.option('--out', "-o", default="hichipper_out", required=True, help='Output directory name; must not be already existing [Required]')
-@click.option('--keep-temp-files', "-z" is_flag=True, help='Keep temporary files?')
+@click.option('--keep-temp-files', "-z", is_flag=True, help='Keep temporary files?')
 
 @click.version_option()
 
@@ -84,7 +84,7 @@ def main(mode, out, keep_temp_files,
 	# If it is a manifest file, handle it as such; otherwise check for the loop call mode
 	#------------------------------
 	if mode.endswith(('.yaml', '.yml')):
-		m = parse_manifest(manifest)
+		m = parse_manifest(mode)
 		click.echo(gettime() + ".yaml file detected"
 		click.echo(gettime() + "Parsed manifest as follows: ", logf)
 		click.echo(m, logf)
