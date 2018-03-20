@@ -1,5 +1,5 @@
 """
-Preprocessing HiChIP data
+hichipper: http://hichipper.readthedocs.io
 """
 from setuptools import find_packages, setup
 
@@ -7,7 +7,7 @@ dependencies = ['click', 'PyYAML', 'Numpy', 'MACS2']
 
 setup(
     name='hichipper',
-    version='0.7.1',
+    version='0.7.19999',
     url='https://github.com/aryeelab/hichipper',
     license='MIT',
     author='Caleb Lareau and Martin Aryee',

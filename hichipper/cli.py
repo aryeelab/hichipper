@@ -27,53 +27,99 @@ def get_subdirectories(dir):
             if os.path.isdir(os.path.join(dir, name))]
 
 @click.command()
-@click.option('--out', default="hichipper_out", required=True, help='Output directory name; must not be already existing [Required]')
-@click.option('--min-dist', default="5000", help='Minimum distance ; default = 5000')
-@click.option('--max-dist', default="2000000", help='Peak padding width (applied on both left and right); default = 2000000')
-@click.option('--macs2-string', default="-q 0.01 --extsize 147 --nomodel", help='String of arguments to pass to MACS2; only is called when peaks are set to be called; default = "-q 0.01 --extsize 147 --nomodel"')
-@click.option('--macs2-genome', default="hs", help='Argument to pass to the -g variable in MACS2 (mm for mouse genome; hs for human genome); default = "hs"')
-@click.option('--peak-pad', default="500", help='Peak padding width (applied on both left and right); default = 500')
-@click.option('--merge-gap', default="500", help='Merge nearby peaks (after all padding is complete; default = 500')
-@click.option('--keep-temp-files', is_flag=True, help='Keep temporary files?')
-@click.option('--skip-background-correction', is_flag=True, help='Skip restriction fragment aware background correction?')
-@click.option('--skip-resfrag-pad', is_flag=True, help='Skip restriction fragment aware padding')
-@click.option('--skip-qc', is_flag=True, help='Skip QC report generation?')
-@click.option('--skip-diffloop', is_flag=True, help='Skip analyses in diffloop (e.g. Mango loop calling; .rds generation)')
-@click.option('--make-ucsc', is_flag=True, help='Make additional output files that can support viewing in UCSC genome browser; requires tabix and htslib tools.')
+
+# User I/O
+@click.argument('mode', help = "Run mode. Input either .yaml file name or 'call'")
+
+@click.option('--out', "-o" default="hichipper_out", required=True, help='Output directory name; must not be already existing [Required]')
+@click.option('--keep-temp-files', "-z" is_flag=True, help='Keep temporary files?')
+
+@click.version_option()
+
+# Essential options
 @click.option('--keep-samples', default="ALL", help='Comma separated list of sample names to keep; ALL (special string) by default')
 @click.option('--ignore-samples', default="NONE", help='Comma separated list of sample names to ignore; NONE (special string) by default')
 @click.option('--read-length', default="75", help='Length of reads from sequencing runs; default = 75')
-@click.argument('manifest')
-@click.version_option()
 
-def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad, merge_gap, keep_temp_files, skip_background_correction, skip_resfrag_pad, skip_qc, skip_diffloop, read_length, keep_samples, ignore_samples, make_ucsc):
-	"""A preprocessing and QC pipeline for HiChIP data."""
-	__version__ = get_distribution('hichipper').version
-	if os.path.exists(out):
-		sys.exit("ERROR: Output path (%s) already exists." % out)
+# Loop Distance options
+@click.option('--min-dist', "-mi" default="5000", help='Minimum distance ; default = 5000')
+@click.option('--max-dist', "-ma", default="2000000", help='Peak padding width (applied on both left and right); default = 2000000')
+
+# MACS2 Configurations
+@click.option('--macs2-string', default="-q 0.01 --extsize 147 --nomodel", help='String of arguments to pass to MACS2; only is called when peaks are set to be called; default = "-q 0.01 --extsize 147 --nomodel"')
+@click.option('--macs2-genome', default="hs", help='Argument to pass to the -g variable in MACS2 (mm for mouse genome; hs for human genome); default = "hs"')
+
+# Loop anchor options
+@click.option('--peak-pad', default="500", help='Peak padding width (applied on both left and right); default = 500')
+@click.option('--merge-gap', default="500", help='Merge nearby peaks (after all padding is complete; default = 500')
+@click.option('--skip-resfrag-pad', is_flag=True, help='Skip restriction fragment aware padding')
+@click.option('--skip-background-correction', is_flag=True, help='Skip restriction fragment aware background correction?')
+
+# Externa Dependencies
+@click.option('--basic-qc', is_flag=True, help='Create a simple QC report without Pandoc')
+@click.option('--skip-diffloop', is_flag=True, help='Skip analyses in diffloop (e.g. Mango loop calling; .rds generation)')
+@click.option('--make-ucsc', is_flag=True, help='Make additional output files that can support viewing in UCSC genome browser; requires tabix and htslib tools.')
+
+
+def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad, merge_gap,
+	keep_temp_files, skip_background_correction, skip_resfrag_pad, skip_qc, skip_diffloop,
+	read_length, keep_samples, ignore_samples, make_ucsc):
 	
+	
+	"""
+	hichipper: a preprocessing and QC pipeline for HiChIP data. \n
+	(c) Aryee Lab, 2018 \n
+	See https://hichipper.readthedocs.io for more details.\n
+	"""
+	
+	# Staples
+	__version__ = get_distribution('hichipper').version
 	def gettime(): # Matches `date` in Linux
 		return(time.strftime("%a ") + time.strftime("%b ") + time.strftime("%d ") + time.strftime("%X ") + time.strftime("%Z ") + time.strftime("%Y")+ ": ")
 	
+	#------------------------------
+	# If it is a manifest file, handle it as such; otherwise check for the loop call mode
+	#------------------------------
+	if mode.endswith(('.yaml', '.yml')):
+		m = parse_manifest(manifest)
+		click.echo(gettime() + ".yaml file detected"
+		click.echo(gettime() + "Parsed manifest as follows: ", logf)
+		click.echo(m, logf)
+		peaks = m['peaks'][0]
+		resfrags = m['resfrags'][0]
+		hicprooutput = m['hicpro_output'][0]
+		
+	elif(mode == "call"):
+		click.echo(gettime() + "Direct loop call option detected".)
+	else:
+		sys.exit("ERROR:Mode option (%s) is invalid. Choose either 'call' or specify a valid path to a .yaml file." % mode)
+	
+	if os.path.exists(out):
+		sys.exit("ERROR: Output path (%s) already exists; remove it or specify a new location." % out)
+
+	#------------------------------
+	# Handle initial QC reporting
+	#------------------------------
 	os.mkdir(out)
 	logf = open(out + "/" + out + ".hichipper.log", 'w')
 	click.echo(gettime() + "Starting hichipper pipeline v%s" % __version__, file = logf)
 	click.echo(gettime() + "Starting hichipper pipeline v%s" % __version__)
 	click.echo(gettime() + "Parsing user parameters")
+	
+	# Handle directories
 	script_dir = os.path.dirname(os.path.realpath(__file__))
 	outfolder = os.path.abspath(out)  
 	cwd = os.getcwd()
 	click.echo(gettime() + "Executed from: %s" % cwd, logf)
 	click.echo(gettime() + "Output folder: %s" % outfolder, logf) 
-	m = parse_manifest(manifest)
-	click.echo(gettime() + "Parsed manifest as follows: ", logf)
-	click.echo(m, logf)
 	
-	peaks = m['peaks'][0]
-	resfrags = m['resfrags'][0]
-	hicprooutput = m['hicpro_output'][0]
-	
+
+
+
+	#------------------------------
 	# Determine if restriction fragment calling is happening or not
+	#------------------------------
+
 	if not (skip_resfrag_pad or skip_background_correction):
 		if not os.path.isfile(resfrags):
 			sys.exit('ERROR: Could not find the restriction fragment file ' + resfrags + '; either correctly specify file in .yaml or use the --skip-resfrag-pad and --skip-background-correction flags')
@@ -81,6 +127,11 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 	# Determine samples from user-defined input
 	bwt_samples = os.popen('ls ' + hicprooutput + '/bowtie_results/bwt2').read().strip().split("\n")
 	hic_samples = os.popen('ls ' + hicprooutput + '/hic_results/data').read().strip().split("\n")
+	
+	
+	#------------------------------
+	# Filter samples based on logic
+	#------------------------------
 	
 	def intersect(a, b):
 		return list(set(a) & set(b))
@@ -284,7 +335,7 @@ def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad
 	logf = open(out + "/" + out + ".hichipper.log", 'a')
 		
 	# QC Report			
-	if skip_qc:
+	if basic_qc:
 		click.echo(gettime() + "Skipping QC report generation since --skip-qc was specified", logf)
 	else:
 		click.echo(gettime() + "Creating QC report", logf)

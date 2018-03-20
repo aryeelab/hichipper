@@ -1,6 +1,6 @@
 install_pkgs <- function(pkg){
     new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
-    if (length(new.pkg)) install.packages(new.pkg, dependencies = TRUE)
+    if (length(new.pkg)) install.packages(new.pkg, dependencies = TRUE, repos="https://cloud.r-project.org")
 }
 install_pkgs(c("data.table", "devtools", "foreach", "ggplot2", "knitr", "networkD3", "readr", "reshape2"))
 
