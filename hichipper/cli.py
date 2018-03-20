@@ -31,27 +31,27 @@ def get_subdirectories(dir):
 # User I/O
 @click.argument('mode', help = "Run mode. Input either .yaml file name or 'call'")
 
-@click.option('--out', "-o" default="hichipper_out", required=True, help='Output directory name; must not be already existing [Required]')
+@click.option('--out', "-o", default="hichipper_out", required=True, help='Output directory name; must not be already existing [Required]')
 @click.option('--keep-temp-files', "-z" is_flag=True, help='Keep temporary files?')
 
 @click.version_option()
 
 # Essential options
-@click.option('--keep-samples', default="ALL", help='Comma separated list of sample names to keep; ALL (special string) by default')
-@click.option('--ignore-samples', default="NONE", help='Comma separated list of sample names to ignore; NONE (special string) by default')
-@click.option('--read-length', default="75", help='Length of reads from sequencing runs; default = 75')
+@click.option('--keep-samples', "-k", default="ALL", help='Comma separated list of sample names to keep; ALL (special string) by default')
+@click.option('--ignore-samples', "-x", default="NONE", help='Comma separated list of sample names to ignore; NONE (special string) by default')
+@click.option('--read-length', "-l", default="75", help='Length of reads from sequencing runs; default = 75')
 
 # Loop Distance options
-@click.option('--min-dist', "-mi" default="5000", help='Minimum distance ; default = 5000')
-@click.option('--max-dist', "-ma", default="2000000", help='Peak padding width (applied on both left and right); default = 2000000')
+@click.option('--min-dist', "-mi" default="5000", help='Minimum distance for loop calls; default = 5000')
+@click.option('--max-dist', "-ma", default="2000000", help='Maximum distance for loop calls; default = 2000000')
 
 # MACS2 Configurations
 @click.option('--macs2-string', default="-q 0.01 --extsize 147 --nomodel", help='String of arguments to pass to MACS2; only is called when peaks are set to be called; default = "-q 0.01 --extsize 147 --nomodel"')
 @click.option('--macs2-genome', default="hs", help='Argument to pass to the -g variable in MACS2 (mm for mouse genome; hs for human genome); default = "hs"')
 
 # Loop anchor options
-@click.option('--peak-pad', default="500", help='Peak padding width (applied on both left and right); default = 500')
-@click.option('--merge-gap', default="500", help='Merge nearby peaks (after all padding is complete; default = 500')
+@click.option('--peak-pad', "-p", default="500", help='Peak padding width (applied on both left and right); default = 500')
+@click.option('--merge-gap', "-m", default="500", help='Merge nearby peaks (after all padding is complete; default = 500')
 @click.option('--skip-resfrag-pad', is_flag=True, help='Skip restriction fragment aware padding')
 @click.option('--skip-background-correction', is_flag=True, help='Skip restriction fragment aware background correction?')
 
@@ -61,9 +61,12 @@ def get_subdirectories(dir):
 @click.option('--make-ucsc', is_flag=True, help='Make additional output files that can support viewing in UCSC genome browser; requires tabix and htslib tools.')
 
 
-def main(manifest, out, min_dist, max_dist, macs2_string, macs2_genome, peak_pad, merge_gap,
-	keep_temp_files, skip_background_correction, skip_resfrag_pad, skip_qc, skip_diffloop,
-	read_length, keep_samples, ignore_samples, make_ucsc):
+def main(mode, out, keep_temp_files, 
+	keep_samples, ignore_samples, read_length,
+	min_dist, max_dist,
+	macs2_string, macs2_genome,
+	peak_pad, merge_gap, skip_resfrag_pad, skip_background_correction,
+	basic_qc, skip_diffloop, make_ucsc):
 	
 	
 	"""
