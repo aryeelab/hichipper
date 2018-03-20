@@ -27,14 +27,14 @@ def get_subdirectories(dir):
             if os.path.isdir(os.path.join(dir, name))]
 
 @click.command()
+@click.version_option()
 
 # User I/O
-@click.argument('mode', help = "Run mode. Input either .yaml file name or 'call'")
+@click.argument('mode')
 
 @click.option('--out', "-o", default="hichipper_out", required=True, help='Output directory name; must not be already existing [Required]')
 @click.option('--keep-temp-files', "-z", is_flag=True, help='Keep temporary files?')
 
-@click.version_option()
 
 # Essential options
 @click.option('--keep-samples', "-k", default="ALL", help='Comma separated list of sample names to keep; ALL (special string) by default')
@@ -56,9 +56,9 @@ def get_subdirectories(dir):
 @click.option('--skip-background-correction', is_flag=True, help='Skip restriction fragment aware background correction?')
 
 # Externa Dependencies
+@click.option('--make-ucsc', "-mu",is_flag=True, help='Make additional output files that can support viewing in UCSC genome browser; requires tabix and htslib tools.')
 @click.option('--basic-qc', is_flag=True, help='Create a simple QC report without Pandoc')
 @click.option('--skip-diffloop', is_flag=True, help='Skip analyses in diffloop (e.g. Mango loop calling; .rds generation)')
-@click.option('--make-ucsc', is_flag=True, help='Make additional output files that can support viewing in UCSC genome browser; requires tabix and htslib tools.')
 
 
 def main(mode, out, keep_temp_files, 
@@ -73,6 +73,8 @@ def main(mode, out, keep_temp_files,
 	hichipper: a preprocessing and QC pipeline for HiChIP data. \n
 	(c) Aryee Lab, 2018 \n
 	See https://hichipper.readthedocs.io for more details.\n
+	
+	hichipper mode: [call, *.yaml]
 	"""
 	
 	# Staples
@@ -81,11 +83,22 @@ def main(mode, out, keep_temp_files,
 		return(time.strftime("%a ") + time.strftime("%b ") + time.strftime("%d ") + time.strftime("%X ") + time.strftime("%Z ") + time.strftime("%Y")+ ": ")
 	
 	#------------------------------
+	# Handle initial QC reporting
+	#------------------------------
+	if os.path.exists(out):
+		sys.exit("ERROR: Output path (%s) already exists; remove it or specify a new location." % out)
+	os.mkdir(out)
+	logf = open(out + "/" + out + ".hichipper.log", 'w')
+	click.echo(gettime() + "Starting hichipper pipeline v%s" % __version__, file = logf)
+	click.echo(gettime() + "Starting hichipper pipeline v%s" % __version__)
+	click.echo(gettime() + "Parsing user parameters")
+	
+	#------------------------------
 	# If it is a manifest file, handle it as such; otherwise check for the loop call mode
 	#------------------------------
 	if mode.endswith(('.yaml', '.yml')):
 		m = parse_manifest(mode)
-		click.echo(gettime() + ".yaml file detected"
+		click.echo(gettime() + ".yaml file detected")
 		click.echo(gettime() + "Parsed manifest as follows: ", logf)
 		click.echo(m, logf)
 		peaks = m['peaks'][0]
@@ -93,22 +106,10 @@ def main(mode, out, keep_temp_files,
 		hicprooutput = m['hicpro_output'][0]
 		
 	elif(mode == "call"):
-		click.echo(gettime() + "Direct loop call option detected".)
+		click.echo(gettime() + "Direct loop call option detected.")
 	else:
 		sys.exit("ERROR:Mode option (%s) is invalid. Choose either 'call' or specify a valid path to a .yaml file." % mode)
-	
-	if os.path.exists(out):
-		sys.exit("ERROR: Output path (%s) already exists; remove it or specify a new location." % out)
 
-	#------------------------------
-	# Handle initial QC reporting
-	#------------------------------
-	os.mkdir(out)
-	logf = open(out + "/" + out + ".hichipper.log", 'w')
-	click.echo(gettime() + "Starting hichipper pipeline v%s" % __version__, file = logf)
-	click.echo(gettime() + "Starting hichipper pipeline v%s" % __version__)
-	click.echo(gettime() + "Parsing user parameters")
-	
 	# Handle directories
 	script_dir = os.path.dirname(os.path.realpath(__file__))
 	outfolder = os.path.abspath(out)  
