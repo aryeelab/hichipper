@@ -18,8 +18,7 @@ Per sample, six (yes, 6, but don't worry-- there's lots of redundancy) output fi
 
 5. `*interactions.all.mango` The same set of loops as 4 but with per-loop FDR measures from the loop proximity bias correction algorithm originally implemented in [Mango](https://github.com/dphansti/mango) and presented in the same format. 
 
-6. `*.rds` The same set of loops as 4 but in an R binary compressed format of a `loops()` S4 object from [diffloop](http://bioconductor.org/packages/release/bioc/html/diffloop.html). Can
-immediately be imported for interactive visualization in [DNAlandscapeR](https://dnalandscaper.aryeelab.org).
+6. `*.interaction.txt.gz` The same set of loops as 4 but in a compressed format for visualizing with WashU and UCSC Genome Browser tools.
 
 So, outputs 4, 5, and 6 are identical except in presentation. These data are a subset of those presented in 3. Interchromosomal interactions from 2 are often discarded by other preprocessing pipelines, but they may hold value. 
 If the `qcReport` is generated, then the `.stat` file won't tell you anything new. However, if `R` is not installed on your machine, this will be a useful file for assessing the quality of your library.  
