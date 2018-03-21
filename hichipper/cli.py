@@ -75,6 +75,8 @@ def main(mode, out, keep_temp_files,
 	See https://hichipper.readthedocs.io for more details.\n
 	
 	hichipper mode: [call, *.yaml]
+	^ either specify the word "call" and feed in a valid interactions file
+	OR specify the .yaml format for options to be parsed from a manifest file
 	"""
 	
 	# Staples
