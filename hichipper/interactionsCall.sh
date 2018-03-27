@@ -33,7 +33,7 @@ actualsize=$(wc -c < "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed
 if [ $actualsize -ge $minimumsize ]; then
     echo "`date`: Finished the anchor merging." | tee -a $LOG_FILE
 else
-    echo "`date`: Bedtools does not exist, but we need it" | tee -a $LOG_FILE
+    echo "`date`: Something went wrong in determining peaks for anchor inference; rerun with the `--keep-temp-files` flag to debug." | tee -a $LOG_FILE
     exit
 fi
 

@@ -3,7 +3,7 @@ hichipper: http://hichipper.readthedocs.io
 """
 from setuptools import find_packages, setup
 
-dependencies = ['click', 'PyYAML', 'Numpy', 'MACS2']
+dependencies = ['click', 'PyYAML', 'Numpy', 'MACS2', 'whichcraft']
 
 setup(
     name='hichipper',
