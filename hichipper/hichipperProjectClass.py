@@ -12,7 +12,7 @@ import yaml
 from .hichipperHelp import *
 
 class hichipperProject():
-	def __init__(self, script_dir, mode, out, 
+	def __init__(self, script_dir, mode, out, peaks, restriction_frags,
 		skip_resfrag_pad, skip_background_correction):
 		
 		#-----------------------------------------
@@ -26,6 +26,8 @@ class hichipperProject():
 			self.go = "yaml"
 		else:
 			self.go = "call"
+			self.peaks = peaks
+			self.resfrags = restriction_frags
 		
 		#------------------------------
 		# Determine if restriction fragment calling is happening or not

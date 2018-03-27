@@ -29,7 +29,7 @@ def peakHelper(peaks, hicprooutput, resfrags, halfLength, peak_pad, out, samples
 		# Run hichipper modified background correction for all samples combined using self ligation reads
 		if (not skip_background_correction):
 			click.echo(gettime() + "Performing hichipper-modified background peak calling")
-			call(['Rscript', os.path.join(script_dir, 'lambdaProcess.R'), resfrags,  os.path.join(out, "allSamples_temporary_treat_pileup.bdg"), os.path.join(out,"allSamples_temporary_control_lambda.bdg"), out])
+			call([Rscript, os.path.join(script_dir, 'lambdaProcess.R'), resfrags,  os.path.join(out, "allSamples_temporary_treat_pileup.bdg"), os.path.join(out,"allSamples_temporary_control_lambda.bdg"), out])
 			click.echo(gettime() + "Modified background signal; performing peak calling")
 			click.echo(gettime() +  "MACS2 TEXT OUTPUT INCOMING")
 			os.system("macs2 bdgcmp -t " + os.path.join(out,"adjustedTreatment.bdg.tmp") + " -c " + os.path.join(out, "adjustedBackground.bdg.tmp") + " -m qpois -o " + os.path.join(out,"hichipper_qvalue.bdg.tmp"))
@@ -83,7 +83,7 @@ def peakHelper(peaks, hicprooutput, resfrags, halfLength, peak_pad, out, samples
 		# Run hichipper modified background correction for all samples combined using all
 		if (not skip_background_correction):
 			click.echo(gettime() + "Performing hichipper-modified background peak calling")
-			call(['Rscript', os.path.join(script_dir, 'lambdaProcess.R'), resfrags,  os.path.join(out, "allSamples_temporary_treat_pileup.bdg"), os.path.join(out,"allSamples_temporary_control_lambda.bdg"), out])
+			call([Rscript, os.path.join(script_dir, 'lambdaProcess.R'), resfrags,  os.path.join(out, "allSamples_temporary_treat_pileup.bdg"), os.path.join(out,"allSamples_temporary_control_lambda.bdg"), out])
 			click.echo(gettime() + "Modified background signal; performing peak calling")
 			click.echo(gettime() +  "MACS2 TEXT OUTPUT INCOMING")
 			os.system("macs2 bdgcmp -t " + os.path.join(out,"adjustedTreatment.bdg.tmp") + " -c " + os.path.join(out, "adjustedBackground.bdg.tmp") + " -m qpois -o " + os.path.join(out,"hichipper_qvalue.bdg.tmp"))
@@ -109,7 +109,7 @@ def peakHelper(peaks, hicprooutput, resfrags, halfLength, peak_pad, out, samples
 			# Run hichipper modified background correction for each sample using self-ligation reads
 			if (not skip_background_correction):
 				click.echo(gettime() + "Performing hichipper-modified background peak calling")
-				os.system('Rscript ' + os.path.join(script_dir, 'lambdaProcess.R') + " " + resfrags + " " + out + '/' + sample + "_temporary_treat_pileup.bdg " + out + '/' + sample + "_temporary_control_lambda.bdg " + out)
+				os.system(Rscript + ' ' + os.path.join(script_dir, 'lambdaProcess.R') + " " + resfrags + " " + out + '/' + sample + "_temporary_treat_pileup.bdg " + out + '/' + sample + "_temporary_control_lambda.bdg " + out)
 				click.echo(gettime() + "Modified background signal; performing peak calling")
 				click.echo(gettime() +  "MACS2 TEXT OUTPUT INCOMING")
 				os.system("macs2 bdgcmp -t " + os.path.join(out,"adjustedTreatment.bdg.tmp") + " -c " + os.path.join(out, "adjustedBackground.bdg.tmp") + " -m qpois -o " + os.path.join(out,"hichipper_qvalue.bdg.tmp"))
@@ -140,7 +140,7 @@ def peakHelper(peaks, hicprooutput, resfrags, halfLength, peak_pad, out, samples
 	else:
 		click.echo(gettime() + "Performing restriction fragment-aware padding", logf)
 		for peakFile in list(set(peakfilespersample)):
-			call(['Rscript', os.path.join(script_dir, 'resFragAnchorProcess.R'), resfrags, peakFile])
+			call([Rscript, os.path.join(script_dir, 'resFragAnchorProcess.R'), resfrags, peakFile])
 		peakfilespersample = [peakFile + "rf.tmp" for peakFile in peakfilespersample]
 	return(peakfilespersample)
 	

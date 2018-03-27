@@ -146,7 +146,7 @@ def main(mode, out, keep_temp_files,
 		sys.exit("ERROR:Mode option (%s) is invalid. Choose either 'call' or specify a valid path to a .yaml file." % mode)
 
 	# Project
-	p = hichipperProject(script_dir, mode, out, 
+	p = hichipperProject(script_dir, mode, out, peaks, restriction_frags,
 		skip_resfrag_pad, skip_background_correction)
 	peaks = p.peaks
 	
@@ -179,7 +179,11 @@ def main(mode, out, keep_temp_files,
 				sys.exit('ERROR: something failed at the individual sample level; check the .log file for more info')
 
 	else:
-		# do the new implementation
+		# do the new implementation for `call`
+		samples = "one"
+		peakfilespersample = peakHelper(p.peaks, "", p.resfrags, halfLength, peak_pad, out, samples,
+			Rscript, skip_resfrag_pad, skip_background_correction,
+			logf, macs2_string, macs2_genome, script_dir)
 		print("not supported yet!")
 	
 
