@@ -6,8 +6,16 @@ hichipper --out output1 --peak-pad 1000 --skip-resfrag-pad --basic-qc --skip-dif
 ```
 and testing the output against something we think is correct
 
+## Verify the `call` mode
 
-## Other useful commands
+```
+hichipper call --out outputCallBAM --restriction-frags ../RestrictionFragmentFiles/hg19_MboI_resfrag.bed.gz --peaks chipseq/GM12878_SMC3_ChIPSeq_chr22.narrowPeak --skip-resfrag-pad --basic-qc --skip-diffloop --input-bam call_inputs/HiCUP_chr22.bam
+ 
+ 
+```
+
+
+## Other useful commands -- peak calling
 ```
 hichipper --out combinedall --skip-diffloop yaml/example_COMBINED_ALL.yaml
 hichipper --out combinedself --skip-diffloop yaml/example_COMBINED_SELF.yaml

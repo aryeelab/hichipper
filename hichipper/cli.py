@@ -27,7 +27,7 @@ from .hicproHelper import *
 @click.option('--input-bam', '-ib', default = "", help='Comma-separted list of .bam files for loop calling; option valid only in `call` mode')
 @click.option('--input-vi', '-ii', default = "", help='Comma-separted list of interactions files for loop calling; option valid only in `call` mode')
 @click.option('--restriction-frags', '-rf', default = "", help='Filepath to restriction fragment files; will overwrite specification of this file when a .yaml is supplied for mode')
-@click.option('--peaks', '-p', default = "", help='Filepath to restriction fragment files; will overwrite specification of this file when a .yaml is supplied for mode')
+@click.option('--peaks', '-p', default = "", help='Either 1 of 4 peak logic strings or a valid filepath to a .bed (or similary formatted) file; defers to what is in the .yaml')
 
 # Essential options
 @click.option('--keep-samples', "-k", default="ALL", help='Comma separated list of sample names to keep; ALL (special string) by default')
@@ -142,6 +142,8 @@ def main(mode, out, keep_temp_files,
 		click.echo(m, logf)
 	elif(mode == "call"):
 		click.echo(gettime() + "Direct loop call option detected.")
+		if not os.path.exists(out):
+			sys.exit("ERROR: Peaks file (%s) cannot be found; with the `call` option, one must supply peaks" % out)
 	else:
 		sys.exit("ERROR:Mode option (%s) is invalid. Choose either 'call' or specify a valid path to a .yaml file." % mode)
 
@@ -180,11 +182,23 @@ def main(mode, out, keep_temp_files,
 
 	else:
 		# do the new implementation for `call`
-		samples = "one"
-		peakfilespersample = peakHelper(p.peaks, "", p.resfrags, halfLength, peak_pad, out, samples,
+		if(input_bam == "" and os.path.isfile(input_vi)):
+			click.echo(gettime() + "Verified valid interations file: %s" % input_vi, logf) 
+		elif(input_vi == "" and os.path.isfile(input_bam)):
+			click.echo(gettime() + "Verified .bam file: %s" % input_bam, logf) 
+		else:
+			sys.exit('ERROR: in `call` mode, specify exactly one of `--input-bam` or `--input-vi`')
+		
+		samples = ["one"]
+		hicprooutput = ""
+		
+		# Most of this isn't needed but we'll call it for simplicity with the other parameters
+		peakfilespersample = peakHelper(p.peaks, hicprooutput, p.resfrags, halfLength, peak_pad, out, samples,
 			Rscript, skip_resfrag_pad, skip_background_correction,
 			logf, macs2_string, macs2_genome, script_dir)
-		print("not supported yet!")
+			
+		print(peakfilespersample)
+		print("Not fully supported yet!")
 	
 
 	# Back to Python

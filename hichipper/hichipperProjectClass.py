@@ -34,7 +34,7 @@ class hichipperProject():
 		#------------------------------
 		if not (skip_resfrag_pad or skip_background_correction):
 			if not os.path.isfile(self.resfrags):
-				sys.exit('ERROR: Could not find the restriction fragment file ' + self.resfrags + '; either correctly specify file in .yaml or use the --skip-resfrag-pad and --skip-background-correction flags')
+				sys.exit('ERROR: Could not find the restriction fragment file ' + self.resfrags + '; either correctly specify file in .yaml; use the --skip-resfrag-pad and --skip-background-correction flags; or supply them directly with the `--restriction-frags` flag')
 	
 		#----------------------------------
 		# Assign straightforward attributes
