@@ -5,7 +5,7 @@ The following dependencies need to be installed before running **hichipper**:
 and [samtools](http://www.htslib.org/download/). Depending on if you want some bonus functionality,
 you may need to download additional requirements. 
 
-Except for `bedtools` and `samtools`, these other dependencies came out of the
+Except for `bedtools`, these other dependencies came out of the
 box with the unix/linux systems that we've used **hichipper** on. 
 
 But just to be safe, on an Ubuntu system, all of the dependencies can be installed with:

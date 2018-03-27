@@ -56,7 +56,6 @@ from .hichipperProjectClass import *
 
 # Software options
 @click.option('--bedtools-path', default = "", help='Path to bedtools; by default, assumes that bedtools is in PATH')
-@click.option('--samtools-path', default = "", help='Path to samtools; by default, assumes that bowtie2 is in PATH')
 @click.option('--macs2-path',    default = "", help='Path to macs2; by default, assumes that macs2 is in PATH')
 @click.option('--tabix-path',    default = "", help='Path to samtools; by default, assumes that tabix is in PATH')
 @click.option('--bgzip-path',    default = "", help='Path to macs2; by default, assumes that bgzip is in PATH')
@@ -70,7 +69,7 @@ def main(mode, out, keep_temp_files,
 	macs2_string, macs2_genome,
 	peak_pad, merge_gap, skip_resfrag_pad, skip_background_correction,
 	basic_qc, skip_diffloop, make_ucsc, make_washu,
-	bedtools_path, samtools_path, macs2_path, tabix_path, bgzip_path, r_path):
+	bedtools_path,  macs2_path, tabix_path, bgzip_path, r_path):
 	
 	
 	"""
@@ -96,7 +95,6 @@ def main(mode, out, keep_temp_files,
 		tabix = ""
 		bgzip = ""
 	bedtools = get_software_path("bedtools", bedtools_path)
-	samtools = get_software_path("samtools", samtools_path)
 
 	# Rscript = get_software_path("R", r_path) + "script"
 	
@@ -155,12 +153,13 @@ def main(mode, out, keep_temp_files,
 
 	if(p.go == "yaml"):
 	
+		#------------------------------------------------------------------
+		# Determine samples from user-defined input for .yaml configuration
+		#------------------------------------------------------------------
 		
-		# Determine samples from user-defined input
 		bwt_samples = os.popen('ls ' + p.hicprooutput + '/bowtie_results/bwt2').read().strip().split("\n")
 		hic_samples = os.popen('ls ' + p.hicprooutput + '/hic_results/data').read().strip().split("\n")
-	
-	
+
 		samples = intersect(bwt_samples, hic_samples)
 	
 		if(keep_samples != "ALL"):
@@ -176,7 +175,6 @@ def main(mode, out, keep_temp_files,
 	
 		if not len(samples) > 0:
 			sys.exit('ERROR: Could not import any samples from the user specification; check flags, logs and .yaml configuration; quitting')
-	
 
 		for sample in samples:
 			if not verify_sample_hichipper_old(sample, True, p.hicprooutput):
