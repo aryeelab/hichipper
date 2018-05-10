@@ -8,4 +8,4 @@ associated with the HiChIP library prep.
 - [mm10 MboI Digest](mm10_MboI_resfrag.bed.gz)
 
 ### For Additional Restriction Fragment Files
-Check out the [https://github.com/nservant/HiC-Pro/tree/master/annotation](HiC-Pro) documentation on annotation. 
+Check out the [HiC Pro](https://github.com/nservant/HiC-Pro/tree/master/annotation) documentation on annotation. 
