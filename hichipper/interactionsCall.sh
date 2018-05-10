@@ -84,6 +84,8 @@ if [ "$UCSC" = true ] ; then
     tabix -p bed "${WK_DIR}/${OUT_NAME}/${SAMPLE}.interaction.txt.gz"
 fi
 
+# Move final peaks 
+cp "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp" "${WK_DIR}/${OUT_NAME}/${SAMPLE}.anchors.bed"
 
 # Finalize 
 Loop_PETs=`awk '{sum += $8} END {print sum}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.filt.intra.loop_counts.bedpe"`

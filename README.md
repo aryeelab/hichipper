@@ -5,7 +5,7 @@
 
 
 [![Build Status](https://travis-ci.org/aryeelab/hichipper.svg?branch=master)](https://travis-ci.org/aryeelab/hichipper)
-[![PyPI version](https://img.shields.io/badge/pypi-0.7.0-brightgreen.svg)](https://pypi.python.org/pypi/hichipper/)
+[![PyPI version](https://img.shields.io/badge/pypi-0.7.2-brightgreen.svg)](https://pypi.python.org/pypi/hichipper/)
 [![Documentation Status](https://readthedocs.org/projects/hichipper/badge/?version=latest)](http://hichipper.readthedocs.io/en/latest/?badge=latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![DOI](https://img.shields.io/badge/DOI-bioRxiv-red.svg)](https://www.biorxiv.org/content/early/2017/09/21/192302)

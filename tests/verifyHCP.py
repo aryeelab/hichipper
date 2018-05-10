@@ -8,7 +8,7 @@ opts = OptionParser()
 usage = "usage: %prog [options] [inputs] Script to verify HiC-Pro architecture for a given sample"
 opts = OptionParser(usage=usage)
 opts.add_option("--hicpro", help="Path to HiC-Pro directory")
-opts.add_option("--sample", help="Path to HiC-Pro directory")
+opts.add_option("--sample", help="sample name within the HiC-Pro directory")
 
 options, arguments = opts.parse_args()
 
