@@ -3,6 +3,10 @@
 equivalent to running
 ```
 hichipper --out output1 --peak-pad 1000 --skip-resfrag-pad --basic-qc --skip-diffloop yaml/one.yaml
+
+# Now with absolute file paths
+hichipper --out output1 --peak-pad 1000 --skip-resfrag-pad --basic-qc --skip-diffloop yaml/one_abs.yaml
+
 ```
 and testing the output against something we think is correct
 
@@ -12,7 +16,6 @@ and testing the output against something we think is correct
 hichipper call --out outputCallBAM --restriction-frags ../RestrictionFragmentFiles/hg19_MboI_resfrag.bed.gz --peaks chipseq/GM12878_SMC3_ChIPSeq_chr22.narrowPeak --skip-resfrag-pad --basic-qc --skip-diffloop --input-bam call_inputs/HiCUP_chr22.bam
 hichipper call --out outputCallvi --restriction-frags ../RestrictionFragmentFiles/hg19_MboI_resfrag.bed.gz --peaks chipseq/GM12878_SMC3_ChIPSeq_chr22.narrowPeak --skip-resfrag-pad --basic-qc --skip-diffloop --input-bam call_inputs/dSRR3467177_allValidPairs 
 
- 
 ```
 
 

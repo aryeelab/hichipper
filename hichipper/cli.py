@@ -151,7 +151,7 @@ def main(mode, out, keep_temp_files,
 	p = hichipperProject(script_dir, mode, out, peaks, restriction_frags,
 		skip_resfrag_pad, skip_background_correction)
 	peaks = p.peaks
-	
+		
 	peakopts = ["COMBINED,ALL", "EACH,ALL", "COMBINED,SELF", "EACH,SELF"]
 	if(p.peaks in peakopts):
 		macs2 = get_software_path("macs2", macs2_path)

@@ -1,4 +1,7 @@
 
+# 0.7.3
+- Support for absolute file paths
+
 # 0.7.2
 - Refactoring for additional inputs (call still pending)
 - Makes a stable output of final anchors

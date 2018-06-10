@@ -1,0 +1,6 @@
+peaks:
+  - /Volumes/dat/Research/AryeeResearch/hichip/hichipper/tests/chipseq/GM12878_SMC3_ChIPSeq_chr22.narrowPeak
+resfrags:
+  - /Volumes/dat/Research/AryeeResearch/hichip/hichipper/tests/resfrag/hg19_MboI_resfrag_chr22.bed.gz
+hicpro_output:
+  - /Volumes/dat/Research/AryeeResearch/hichip/hichipper/tests/hicpro_one
