@@ -87,22 +87,22 @@ SRR3467175  SRR3467176  SRR3467177  SRR3467178
 ./hicpro/hic_results/data/SRR3467175:
 SRR3467175_hg19.bwt2pairs.DEPairs*    SRR3467175_hg19.bwt2pairs.RSstat*   SRR3467175_hg19.bwt2pairs.SinglePairs*
 SRR3467175_hg19.bwt2pairs.DumpPairs*  SRR3467175_hg19.bwt2pairs.SCPairs*  SRR3467175_hg19.bwt2pairs.validPairs*
-SRR3467175_allValidPairs*
+SRR3467175.allValidPairs*
 
 ./hicpro/hic_results/data/SRR3467176:
 SRR3467176_hg19.bwt2pairs.DEPairs*    SRR3467176_hg19.bwt2pairs.RSstat*   SRR3467176_hg19.bwt2pairs.SinglePairs*
 SRR3467176_hg19.bwt2pairs.DumpPairs*  SRR3467176_hg19.bwt2pairs.SCPairs*  SRR3467176_hg19.bwt2pairs.validPairs*
-SRR3467176_allValidPairs*
+SRR3467176.allValidPairs*
 
 ./hicpro/hic_results/data/SRR3467177:
 SRR3467177_hg19.bwt2pairs.DEPairs*    SRR3467177_hg19.bwt2pairs.RSstat*   SRR3467177_hg19.bwt2pairs.SinglePairs*
 SRR3467177_hg19.bwt2pairs.DumpPairs*  SRR3467177_hg19.bwt2pairs.SCPairs*  SRR3467177_hg19.bwt2pairs.validPairs*
-SRR3467177_allValidPairs*
+SRR3467177.allValidPairs*
 
 ./hicpro/hic_results/data/SRR3467178:
 SRR3467178_hg19.bwt2pairs.DEPairs*    SRR3467178_hg19.bwt2pairs.RSstat*   SRR3467178_hg19.bwt2pairs.SinglePairs*
 SRR3467178_hg19.bwt2pairs.DumpPairs*  SRR3467178_hg19.bwt2pairs.SCPairs*  SRR3467178_hg19.bwt2pairs.validPairs*
-SRR3467178_allValidPairs*
+SRR3467178.allValidPairs*
 
 ...
 
@@ -140,19 +140,19 @@ hicpro/
 |  |  |-- SRR3467175
 |  |  |  |-- SRR3467175*RSstat
 |  |  |  |-- SRR3467175*Pairs # 5 Files
-|  |  |  |-- SRR3467175_allValidPairs
+|  |  |  |-- SRR3467175.allValidPairs
 |  |  |-- SRR3467176
 |  |  |  |-- SRR3467176*RSstat
 |  |  |  |-- SRR3467176*Pairs # 5 Files
-|  |  |  |-- SRR3467175_allValidPairs
+|  |  |  |-- SRR3467175.allValidPairs
 |  |  |-- SRR3467177
 |  |  |  |-- SRR3467177*RSstat
 |  |  |  |-- SRR3467177*Pairs # 5 Files
-|  |  |  |-- SRR3467175_allValidPairs
+|  |  |  |-- SRR3467175.allValidPairs
 |  |  |-- SRR3467178
 |  |  |  |-- SRR3467178*RSstat
 |  |  |  |-- SRR3467178*Pairs # 5 Files
-|  |  |  |-- SRR3467175_allValidPairs
+|  |  |  |-- SRR3467175.allValidPairs
 GM12878_SMC3_ChIPSeq.narrowPeak
 hg19_MboI_resfrag.bed.gz
 yaml/

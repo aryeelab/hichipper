@@ -229,7 +229,7 @@ def verify_sample_hichipper_old(sample, boo, hicprooutput):
 	hc1 = glob.glob(hicprooutput + '/hic_results/data/' + sample + '/*.RSstat')
 	hc2 = glob.glob(hicprooutput + '/hic_results/data/' + sample + '/*.*Pairs')
 	hc2 = [a for a in hc2 if re.search("DEPairs|SCPairs|validPairs|SinglePairs|DumpPairs",a) is not None]
-	hc3 = glob.glob(hicprooutput + '/hic_results/data/' + sample + '/*_allValidPairs')
+	hc3 = glob.glob(hicprooutput + '/hic_results/data/' + sample + '/*[_,.]allValidPairs')
 	
 	if(boo):
 		return((len(bt) > 0) and (len(hc1) > 0) and (len(hc2) % 5) == 0 and (len(hc3) > 0))

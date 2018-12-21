@@ -20,7 +20,7 @@ bt = glob.glob(hicprooutput + '/bowtie_results/bwt2/' + sample + '/*.pairstat')
 hc1 = glob.glob(hicprooutput + '/hic_results/data/' + sample + '/*.RSstat')
 hc2 = glob.glob(hicprooutput + '/hic_results/data/' + sample + '/*.*Pairs')
 hc2 = [a for a in hc2 if re.search("DEPairs|SCPairs|validPairs|SinglePairs|DumpPairs",a) is not None]
-hc3 = glob.glob(hicprooutput + '/hic_results/data/' + sample + '/*_allValidPairs')
+hc3 = glob.glob(hicprooutput + '/hic_results/data/' + sample + '/*[_,.]allValidPairs')
 
 print(bt)
 print(hc1)
