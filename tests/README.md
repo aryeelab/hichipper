@@ -14,7 +14,7 @@ and testing the output against something we think is correct
 
 ```
 hichipper call --out outputCallBAM --restriction-frags ../RestrictionFragmentFiles/hg19_MboI_resfrag.bed.gz --peaks chipseq/GM12878_SMC3_ChIPSeq_chr22.narrowPeak --skip-resfrag-pad --basic-qc --skip-diffloop --input-bam call_inputs/HiCUP_chr22.bam
-hichipper call --out outputCallvi --restriction-frags ../RestrictionFragmentFiles/hg19_MboI_resfrag.bed.gz --peaks chipseq/GM12878_SMC3_ChIPSeq_chr22.narrowPeak --skip-resfrag-pad --basic-qc --skip-diffloop --input-bam call_inputs/dSRR3467177_allValidPairs 
+hichipper call --out outputCallvi --restriction-frags ../RestrictionFragmentFiles/hg19_MboI_resfrag.bed.gz --peaks chipseq/GM12878_SMC3_ChIPSeq_chr22.narrowPeak --skip-resfrag-pad --basic-qc --skip-diffloop --input-bam call_inputs/dSRR3467177.allValidPairs 
 
 ```
 

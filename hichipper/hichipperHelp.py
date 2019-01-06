@@ -1,3 +1,4 @@
+import glob
 import itertools
 import time
 from whichcraft import which
@@ -224,11 +225,11 @@ def available_cpu_count():
 
 # Make sure that files are present
 def verify_sample_hichipper_old(sample, boo, hicprooutput):
-	bt = os.popen('ls ' + hicprooutput + '/bowtie_results/bwt2/' + sample + "/*.pairstat").read().strip().split("\n")
-	hc1 = os.popen('ls ' + hicprooutput + '/hic_results/data/' + sample + "/*.RSstat").read().strip().split("\n")
-	hc2 = os.popen('ls ' + hicprooutput + '/hic_results/data/' + sample + "/*.*Pairs").read().strip().split("\n")
+	bt = glob.glob(hicprooutput + '/bowtie_results/bwt2/' + sample + '/*.pairstat')
+	hc1 = glob.glob(hicprooutput + '/hic_results/data/' + sample + '/*.RSstat')
+	hc2 = glob.glob(hicprooutput + '/hic_results/data/' + sample + '/*.*Pairs')
 	hc2 = [a for a in hc2 if re.search("DEPairs|SCPairs|validPairs|SinglePairs|DumpPairs",a) is not None]
-	hc3 = os.popen('ls ' + hicprooutput + '/hic_results/data/' + sample + "/*_allValidPairs").read().strip().split("\n")
+	hc3 = glob.glob(hicprooutput + '/hic_results/data/' + sample + '/*[_,.]allValidPairs')
 	
 	if(boo):
 		return((len(bt) > 0) and (len(hc1) > 0) and (len(hc2) % 5) == 0 and (len(hc3) > 0))
