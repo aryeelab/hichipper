@@ -32,19 +32,19 @@ from .hicproHelper import *
 # Essential options
 @click.option('--keep-samples', "-k", default="ALL", help='Comma separated list of sample names to keep; ALL (special string) by default')
 @click.option('--ignore-samples', "-x", default="NONE", help='Comma separated list of sample names to ignore; NONE (special string) by default')
-@click.option('--read-length', "-l", default=75, help='Length of reads from sequencing runs; default = 75')
+@click.option('--read-length', "-l", default="75", help='Length of reads from sequencing runs; default = 75')
 
 # Loop Distance options
-@click.option('--min-dist', "-mi", default=5000, help='Minimum distance for loop calls; default = 5000')
-@click.option('--max-dist', "-ma", default=2000000, help='Maximum distance for loop calls; default = 2000000')
+@click.option('--min-dist', "-mi", default="5000", help='Minimum distance for loop calls; default = 5000')
+@click.option('--max-dist', "-ma", default="2000000", help='Maximum distance for loop calls; default = 2000000')
 
 # MACS2 Configurations
 @click.option('--macs2-string', default="-q 0.01 --extsize 147 --nomodel", help='String of arguments to pass to MACS2; only is called when peaks are set to be called; default = "-q 0.01 --extsize 147 --nomodel"')
 @click.option('--macs2-genome', default="hs", help='Argument to pass to the -g variable in MACS2 (mm for mouse genome; hs for human genome); default = "hs"')
 
 # Loop anchor options
-@click.option('--peak-pad', "-pp", default=500, help='Peak padding width (applied on both left and right); default = 500')
-@click.option('--merge-gap', "-mg", default=500, help='Merge nearby peaks (after all padding is complete; default = 500')
+@click.option('--peak-pad', "-pp", default="500", help='Peak padding width (applied on both left and right); default = 500')
+@click.option('--merge-gap', "-mg", default="500", help='Merge nearby peaks (after all padding is complete; default = 500')
 @click.option('--skip-resfrag-pad', is_flag=True, help='Skip restriction fragment aware padding')
 @click.option('--skip-background-correction', is_flag=True, help='Skip restriction fragment aware background correction?')
 
