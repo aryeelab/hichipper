@@ -16,5 +16,5 @@ Contributors
 ------------
 
 * Alejandro Reyes <alejandro.reyes.ds@gmail.com>
-
+* Afif Elghraoui
 

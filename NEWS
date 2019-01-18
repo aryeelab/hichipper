@@ -1,4 +1,7 @@
 
+# 0.7.5
+- Thanks to Afif Elghraoui for fixing the new HiC-Pro formatting via pull request
+
 # 0.7.3
 - Support for absolute file paths
 
