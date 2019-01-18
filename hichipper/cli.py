@@ -24,7 +24,6 @@ from .hicproHelper import *
 @click.option('--keep-temp-files', "-z", is_flag=True, help='Keep temporary files?')
 
 # User input
-@click.option('--input-bam', '-ib', default = "", help='Comma-separted list of .bam files for loop calling; option valid only in `call` mode')
 @click.option('--input-vi', '-ii', default = "", help='Comma-separted list of interactions files for loop calling; option valid only in `call` mode')
 @click.option('--restriction-frags', '-rf', default = "", help='Filepath to restriction fragment files; will overwrite specification of this file when a .yaml is supplied for mode')
 @click.option('--peaks', '-p', default = "", help='Either 1 of 4 peak logic strings or a valid filepath to a .bed (or similary formatted) file; defers to what is in the .yaml')
@@ -64,7 +63,7 @@ from .hicproHelper import *
 
 
 def main(mode, out, keep_temp_files, 
-	input_bam, input_vi, restriction_frags, peaks,
+	input_vi, restriction_frags, peaks,
 	keep_samples, ignore_samples, read_length,
 	min_dist, max_dist,
 	macs2_string, macs2_genome,
@@ -79,7 +78,7 @@ def main(mode, out, keep_temp_files,
 	See https://hichipper.readthedocs.io for more details.\n
 	
 	hichipper mode: [call, *.yaml]
-	^ either specify the word `call` and feed in a valid interactions/.bam file
+	^ either specify the word `call` and feed in a valid interactions file
 	OR specify the .yaml format for options to be parsed from a manifest file (see documentation)
 	"""
 	
@@ -145,7 +144,7 @@ def main(mode, out, keep_temp_files,
 		if not os.path.exists(out):
 			sys.exit("ERROR: Peaks file (%s) cannot be found; with the `call` option, one must supply peaks" % out)
 	else:
-		sys.exit("ERROR:Mode option (%s) is invalid. Choose either 'call' or specify a valid path to a .yaml file." % mode)
+		sys.exit("ERROR: Mode option (%s) is invalid. Choose either 'call' or specify a valid path to a .yaml file." % mode)
 
 	# Project
 	p = hichipperProject(script_dir, mode, out, peaks, restriction_frags,
@@ -182,12 +181,10 @@ def main(mode, out, keep_temp_files,
 
 	else:
 		# do the new implementation for `call`
-		if(input_bam == "" and os.path.isfile(input_vi)):
+		if(os.path.isfile(input_vi)):
 			click.echo(gettime() + "Verified valid interations file: %s" % input_vi, logf) 
-		elif(input_vi == "" and os.path.isfile(input_bam)):
-			click.echo(gettime() + "Verified .bam file: %s" % input_bam, logf) 
 		else:
-			sys.exit('ERROR: in `call` mode, specify exactly one of `--input-bam` or `--input-vi`')
+			sys.exit('ERROR: in `call` mode, specify `--input-vi`')
 		
 		samples = ["one"]
 		hicprooutput = ""

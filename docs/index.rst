@@ -56,6 +56,11 @@ Configuration
 .. toctree:: content/Configuration
 
 ================
+Data inputs
+================
+.. toctree:: content/AlternativeInputs
+
+================
 Peaks
 ================
 .. toctree:: content/Peaks
