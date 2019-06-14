@@ -11,6 +11,7 @@ MAX_DIST=$7
 MERGE_GAP=$8
 HALF_LEN=$9
 UCSC=${10}
+NO_MERGE=${11}
 
 # Log from the shell script side
 LOG_FILE="${WK_DIR}/${OUT_NAME}/${OUT_NAME}.hichipper.log"
@@ -26,7 +27,11 @@ echo "`date`: Mapped_unique_quality_valid_pairs=${Mapped_unique_quality_valid_pa
 
 # Merge gaps; check bedtools
 echo "`date`: Intersecting PETs with anchors" | tee -a $LOG_FILE
-bedtools sort -i "${PEAKFILE}" | bedtools merge -d $MERGE_GAP -i stdin > "${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp"
+if [ "$NO_MERGE" = true ] ; then
+	bedtools sort -i "${PEAKFILE}" | awk '{print $1"\t"$2"\t"$3}' > "${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp"
+else
+	bedtools sort -i "${PEAKFILE}" | bedtools merge -d $MERGE_GAP -i stdin > "${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp"
+fi
 
 minimumsize=10
 actualsize=$(wc -c < "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp")

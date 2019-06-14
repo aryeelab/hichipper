@@ -44,6 +44,8 @@ from .hicproHelper import *
 # Loop anchor options
 @click.option('--peak-pad', "-pp", default="500", help='Peak padding width (applied on both left and right); default = 500')
 @click.option('--merge-gap', "-mg", default="500", help='Merge nearby peaks (after all padding is complete; default = 500')
+@click.option('--no-merge', "-nm", is_flag=True, help='Completely skip anchor merging; will affect summary statistics. Not recommended unless understood what is happening.')
+
 @click.option('--skip-resfrag-pad', is_flag=True, help='Skip restriction fragment aware padding')
 @click.option('--skip-background-correction', is_flag=True, help='Skip restriction fragment aware background correction?')
 
@@ -67,7 +69,7 @@ def main(mode, out, keep_temp_files,
 	keep_samples, ignore_samples, read_length,
 	min_dist, max_dist,
 	macs2_string, macs2_genome,
-	peak_pad, merge_gap, skip_resfrag_pad, skip_background_correction,
+	peak_pad, merge_gap, no_merge, skip_resfrag_pad, skip_background_correction,
 	basic_qc, skip_diffloop, make_ucsc, make_washu,
 	bedtools_path,  macs2_path, tabix_path, bgzip_path, r_path):
 	
@@ -131,6 +133,12 @@ def main(mode, out, keep_temp_files,
  	else:
  		ucscoutput = "false"
 	
+	# Check no merge specification
+	if no_merge:
+ 		no_merge_str = "true"
+ 	else:
+ 		no_merge_str = "false"
+	
 	#------------------------------
 	# If it is a manifest file, handle it as such; otherwise check for the loop call mode
 	#------------------------------
@@ -174,7 +182,7 @@ def main(mode, out, keep_temp_files,
 		# Call putative interactions
 		for i in range(len(samples)):
 			hichipperRun = os.path.join(script_dir, 'interactionsCall.sh')	
-			cmd = ['bash', hichipperRun, cwd, out, p.hicprooutput, samples[i], peakfilespersample[i], min_dist, max_dist, merge_gap, str(halfLength), ucscoutput]        
+			cmd = ['bash', hichipperRun, cwd, out, p.hicprooutput, samples[i], peakfilespersample[i], min_dist, max_dist, merge_gap, str(halfLength), ucscoutput, no_merge_str]        
 			call(cmd)
 			if not os.path.isfile(out + "/" + samples[i] + ".stat"):
 				sys.exit('ERROR: something failed at the individual sample level; check the .log file for more info')
