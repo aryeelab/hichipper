@@ -189,6 +189,7 @@ def main(mode, out, keep_temp_files,
 
 	else:
 		# do the new implementation for `call`
+		print(input_vi)
 		if(os.path.isfile(input_vi)):
 			click.echo(gettime() + "Verified valid interations file: %s" % input_vi, logf) 
 		else:
@@ -201,9 +202,14 @@ def main(mode, out, keep_temp_files,
 		peakfilespersample = peakHelper(p.peaks, hicprooutput, p.resfrags, halfLength, peak_pad, out, samples,
 			Rscript, skip_resfrag_pad, skip_background_correction,
 			logf, macs2_string, macs2_genome, script_dir)
-			
-		print(peakfilespersample)
-		print("Not fully supported yet!")
+		click.echo(gettime() + "Pulling interaction PETs from valid interactions file (rather than full HiC-pro output): " + peaks, logf)
+		logf.close()
+		hichipperRunFrags = os.path.join(script_dir, 'interactionsCall_inputFrags.sh')	
+		i = 0
+		cmd = ['bash', hichipperRunFrags, cwd, out, input_vi, samples[i], peakfilespersample[i], min_dist, max_dist, merge_gap, str(halfLength), ucscoutput, no_merge_str]        
+		call(cmd)
+		if not os.path.isfile(out + "/" + samples[i] + ".stat"):
+			sys.exit('ERROR: something failed at the individual sample level; check the .log file for more info')
 	
 
 	# Back to Python

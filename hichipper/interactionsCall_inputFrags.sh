@@ -3,7 +3,7 @@
 # Parse parameters
 WK_DIR=$1
 OUT_NAME=$2
-HICPRO_OUT=$3
+VALID_PAIRS=$3
 SAMPLE=$4
 PEAKFILE=$5
 MIN_DIST=$6
@@ -16,14 +16,6 @@ NO_MERGE=${11}
 # Log from the shell script side
 LOG_FILE="${WK_DIR}/${OUT_NAME}/${OUT_NAME}.hichipper.log"
 echo "`date`: Processing ${SAMPLE}" | tee -a $LOG_FILE
-
-# Summary stats
-Total_PETs=`head -1 "${HICPRO_OUT}/bowtie_results/bwt2/${SAMPLE}/"*pairstat | awk '$2 > 0 && $2 < 10000000000 {sum += $2}; {print sum}' | tail -n 1 | awk '{print $1}'`
-echo "`date`: Total_PETs=${Total_PETs}" | tee -a $LOG_FILE
-Mapped_unique_quality_pairs=`cat "${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*Pairs | wc -l | awk '{print $1}'`
-echo "`date`: Mapped_unique_quality_pairs=${Mapped_unique_quality_pairs}" | tee -a $LOG_FILE
-Mapped_unique_quality_valid_pairs=`cat "${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*[_,.]allValidPairs | wc -l | awk '{print $1}'`
-echo "`date`: Mapped_unique_quality_valid_pairs=${Mapped_unique_quality_valid_pairs}"| tee -a $LOG_FILE
 
 # Merge gaps; check bedtools
 echo "`date`: Intersecting PETs with anchors" | tee -a $LOG_FILE
@@ -45,9 +37,10 @@ else
 fi
 
 # Count reads in anchors; spit out only valid pairs sorted and pretty
-cat "${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*Pairs | awk -v RL="$HALF_LEN" '{print $2 "\t" $3 - RL "\t" $3 + RL}' | awk '$2 > 0 {print $0}' | coverageBed -a stdin -b "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp" -counts | awk '{sum += $4} END {print sum}' > "${WK_DIR}/${OUT_NAME}/${SAMPLE}.peakReads.tmp"
-cat "${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*Pairs | awk -v RL="$HALF_LEN" '{print $5 "\t" $6 - RL "\t" $6 + RL}' | awk '$2 > 0 {print $0}' | coverageBed -a stdin -b "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp" -counts | awk '{sum += $4} END {print sum}' >> "${WK_DIR}/${OUT_NAME}/${SAMPLE}.peakReads.tmp"
-cat "${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*[_,.]allValidPairs | awk -v RL="$HALF_LEN" '{if ($2<$5 || ($2==$5 && $3<=$6)) print $2,$3-RL,$3+RL,$5,$6-RL,$6+RL; else print $5,$6-RL,$6+RL,$2,$3-RL,$3+RL}' 'OFS=\t' | awk '$2 > 0 && $5 > 0 {print $0}' | sort -k1,1n -k2,2n -k4,4n -k5,5n > "${WK_DIR}/${OUT_NAME}/${SAMPLE}_interactions.bedpe.tmp"
+Total_PETs=`wc -l $VALID_PAIRS`
+cat $VALID_PAIRS | awk -v RL="$HALF_LEN" '{print $2 "\t" $3 - RL "\t" $3 + RL}' | awk '$2 > 0 {print $0}' | coverageBed -a stdin -b "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp" -counts | awk '{sum += $4} END {print sum}' > "${WK_DIR}/${OUT_NAME}/${SAMPLE}.peakReads.tmp"
+cat $VALID_PAIRS | awk -v RL="$HALF_LEN" '{print $5 "\t" $6 - RL "\t" $6 + RL}' | awk '$2 > 0 {print $0}' | coverageBed -a stdin -b "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp" -counts | awk '{sum += $4} END {print sum}' >> "${WK_DIR}/${OUT_NAME}/${SAMPLE}.peakReads.tmp"
+cat $VALID_PAIRS | awk -v RL="$HALF_LEN" '{if ($2<$5 || ($2==$5 && $3<=$6)) print $2,$3-RL,$3+RL,$5,$6-RL,$6+RL; else print $5,$6-RL,$6+RL,$2,$3-RL,$3+RL}' 'OFS=\t' | awk '$2 > 0 && $5 > 0 {print $0}' | sort -k1,1n -k2,2n -k4,4n -k5,5n > "${WK_DIR}/${OUT_NAME}/${SAMPLE}_interactions.bedpe.tmp"
 READS_IN_ANCHORS=`awk '{sum += $1} END {print sum}' "${WK_DIR}/${OUT_NAME}/${SAMPLE}.peakReads.tmp" | awk '{print $1}'`
 
 # Valid interaction statistics
@@ -101,9 +94,9 @@ echo "`date`: Loop_PETs=${Loop_PETs}" | tee -a $LOG_FILE
 # Write out summary statistics
 echo "Total_PETs=${Total_PETs}" > "${WK_DIR}/${OUT_NAME}/${SAMPLE}.stat"
 
-echo "Mapped_unique_quality_pairs=${Mapped_unique_quality_pairs}" >> "${WK_DIR}/${OUT_NAME}/${SAMPLE}.stat"
-echo "Mapped_unique_quality_valid_pairs=${Mapped_unique_quality_valid_pairs}" >> "${WK_DIR}/${OUT_NAME}/${SAMPLE}.stat"
-echo "Mapped_unique_quality_valid_intrachromosomal=${intrachoromosomal_valid_all}" >> "${WK_DIR}/${OUT_NAME}/${SAMPLE}.stat"
+echo "Mapped_unique_quality_pairs=${Total_PETs}" >> "${WK_DIR}/${OUT_NAME}/${SAMPLE}.stat"
+echo "Mapped_unique_quality_valid_pairs=${Total_PETs}" >> "${WK_DIR}/${OUT_NAME}/${SAMPLE}.stat"
+echo "Mapped_unique_quality_valid_intrachromosomal=${Total_PETs}" >> "${WK_DIR}/${OUT_NAME}/${SAMPLE}.stat"
 echo "Intrachromosomal_valid_small=${intrachromosomal_valid_small}" >> "${WK_DIR}/${OUT_NAME}/${SAMPLE}.stat"
 echo "Intrachromosomal_valid_med=${intrachromosomal_valid_med}" >> "${WK_DIR}/${OUT_NAME}/${SAMPLE}.stat"
 echo "Intrachromosomal_valid_large=${intrachromosomal_valid_large}" >> "${WK_DIR}/${OUT_NAME}/${SAMPLE}.stat"
