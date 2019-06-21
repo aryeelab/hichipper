@@ -44,6 +44,7 @@ else
     exit
 fi
 
+echo "`date`: Computing loops..." | tee -a $LOG_FILE
 # Count reads in anchors; spit out only valid pairs sorted and pretty
 cat "${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*Pairs | awk -v RL="$HALF_LEN" '{print $2 "\t" $3 - RL "\t" $3 + RL}' | awk '$2 > 0 {print $0}' | coverageBed -a stdin -b "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp" -counts | awk '{sum += $4} END {print sum}' > "${WK_DIR}/${OUT_NAME}/${SAMPLE}.peakReads.tmp"
 cat "${HICPRO_OUT}/hic_results/data/${SAMPLE}/"*Pairs | awk -v RL="$HALF_LEN" '{print $5 "\t" $6 - RL "\t" $6 + RL}' | awk '$2 > 0 {print $0}' | coverageBed -a stdin -b "${WK_DIR}/${OUT_NAME}/${SAMPLE}_temporary_peaks.merged.bed.tmp" -counts | awk '{sum += $4} END {print sum}' >> "${WK_DIR}/${OUT_NAME}/${SAMPLE}.peakReads.tmp"

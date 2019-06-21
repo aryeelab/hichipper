@@ -2,10 +2,12 @@
 
 suppressMessages(suppressWarnings(library(GenomicRanges)))
 suppressMessages(suppressWarnings(library(data.table)))
+options(datatable.fread.input.cmd.message=FALSE)
 
 args <- commandArgs(trailingOnly = TRUE)
 resfile <- args[1]
 peaksfile <- args[2]
+no_merge <- args[3] == "true"
 
 pad <- 0 # taken care of in the Python execution
 
@@ -36,7 +38,11 @@ maxs <-  unname(tapply(queryHits(ov), subjectHits(ov), max))
 anchorsfin_g <- makeGRangesFromDataFrame(setNames(data.frame(
   resFrags[mins, 1], resFrags[mins, 2], resFrags[maxs, 3]), c("seqnames", "start", "end")))
 
-anchors_g <- reduce(anchorsfin_g)
+if(no_merge){
+  anchors_g <- anchorsfin_g
+} else{
+  anchors_g <- reduce(anchorsfin_g)
+}
 
 # Filter anchors that were on terminal restriction fragments
 anchors_gfilt <- anchors_g[width(anchors_g) < 50000] 

@@ -26,7 +26,7 @@ from .hicproHelper import *
 # User input
 @click.option('--input-vi', '-ii', default = "", help='Comma-separted list of interactions files for loop calling; option valid only in `call` mode')
 @click.option('--restriction-frags', '-rf', default = "", help='Filepath to restriction fragment files; will overwrite specification of this file when a .yaml is supplied for mode')
-@click.option('--peaks', '-p', default = "", help='Either 1 of 4 peak logic strings or a valid filepath to a .bed (or similary formatted) file; defers to what is in the .yaml')
+@click.option('--peaks', '-p', default = "", help='Bed (or similary formatted) file; defers to what is in the .yaml')
 
 # Essential options
 @click.option('--keep-samples', "-k", default="ALL", help='Comma separated list of sample names to keep; ALL (special string) by default')
@@ -161,7 +161,10 @@ def main(mode, out, keep_temp_files,
 		
 	peakopts = ["COMBINED,ALL", "EACH,ALL", "COMBINED,SELF", "EACH,SELF"]
 	if(p.peaks in peakopts):
+		if(p.go == "call"):
+			sys.exit('ERROR: `call` mode only compatible with pre-defined peaks ')
 		macs2 = get_software_path("macs2", macs2_path)
+		
 	elif not os.path.isfile(peaks):
 		sys.exit('ERROR: Could not identify the ' + peaks + ' file; correctly specify file location or use special variable {COMBINED,EACH},{ALL,SELF} for peaks')
 
@@ -176,7 +179,7 @@ def main(mode, out, keep_temp_files,
 		click.echo(gettime() + "User defined peaks specification: " + peaks, logf)
 		peakfilespersample = peakHelper(p.peaks, p.hicprooutput, p.resfrags, halfLength, peak_pad, out, samples,
 			Rscript, skip_resfrag_pad, skip_background_correction,
-			logf, macs2_string, macs2_genome, script_dir)
+			logf, macs2_string, macs2_genome, script_dir, no_merge_str)
 		logf.close()
 
 		# Call putative interactions
@@ -189,11 +192,10 @@ def main(mode, out, keep_temp_files,
 
 	else:
 		# do the new implementation for `call`
-		print(input_vi)
 		if(os.path.isfile(input_vi)):
 			click.echo(gettime() + "Verified valid interations file: %s" % input_vi, logf) 
 		else:
-			sys.exit('ERROR: in `call` mode, specify `--input-vi`')
+			sys.exit('ERROR: in `call` mode, specify `--input-vi` for valid interactions file.')
 		
 		samples = ["one"]
 		hicprooutput = ""

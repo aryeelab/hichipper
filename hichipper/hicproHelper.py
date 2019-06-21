@@ -8,7 +8,7 @@ from subprocess import call, check_call
 #------------------------------------------------------------------
 def peakHelper(peaks, hicprooutput, resfrags, halfLength, peak_pad, out, samples,
 	Rscript, skip_resfrag_pad, skip_background_correction,
-	logf, macs2_string, macs2_genome, script_dir):
+	logf, macs2_string, macs2_genome, script_dir, no_merge_str):
 	
 	peakfilespersample = []
 	# Call peaks integrating over all samples for self ligation reads
@@ -140,7 +140,8 @@ def peakHelper(peaks, hicprooutput, resfrags, halfLength, peak_pad, out, samples
 	else:
 		click.echo(gettime() + "Performing restriction fragment-aware padding", logf)
 		for peakFile in list(set(peakfilespersample)):
-			call([Rscript, os.path.join(script_dir, 'resFragAnchorProcess.R'), resfrags, peakFile])
+			cmd = [Rscript, os.path.join(script_dir, 'resFragAnchorProcess.R'), resfrags, peakFile, no_merge_str]
+			call(cmd)
 		peakfilespersample = [peakFile + "rf.tmp" for peakFile in peakfilespersample]
 	return(peakfilespersample)
 	
