@@ -71,7 +71,7 @@ interactive tables and figures between existing libraries.
 ### Citation
 If you use **hichipper** for your work, please cite:
 
-Lareau, C.A. and Aryee, M.J. (2017) "hichipper: A preprocessing pipeline for assessing library quality and DNA loops from HiChIP data." _bioRxiv_ [doi: https://doi.org/10.1101/192302 ](https://www.biorxiv.org/content/early/2017/09/21/192302)
+Lareau, C.A. and Aryee, M.J. (2018) "hichipper: A preprocessing pipeline for assessing library quality and DNA loops from HiChIP data." _bioRxiv_ [doi: https://doi.org/10.1101/192302 ](https://www.biorxiv.org/content/early/2017/09/21/192302)
 
 ### Questions/comments/feedback
 are always welcomed. The easiest way for us to have correspondence (if appropriate/interesting
