@@ -210,6 +210,10 @@ def main(mode, out, keep_temp_files,
 				call(cmd)
 				if not os.path.isfile(out + "/background_" + samples[i] + ".stat"):
 					sys.exit('ERROR: something failed at the individual sample level; check the .log file for more info')
+					
+				# Merge the background and foreground samples	
+				cmdRmerge = [Rscript, os.path.join(script_dir, 'background_table_assemble.R'), cwd, out, samples[i]]
+				call(cmdRmerge) 
 		
 	else:
 		# do the new implementation for `call`
