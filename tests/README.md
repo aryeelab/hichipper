@@ -27,3 +27,8 @@ hichipper --out eachall --skip-diffloop yaml/example_EACH_ALL.yaml
 hichipper --out eachself --skip-diffloop yaml/example_EACH_SELF.yaml
 ```
 
+## Test execution for the background IgG execution
+
+```
+hichipper --out background_igg --peak-pad 1000 --skip-resfrag-pad --basic-qc --skip-diffloop yaml/test_background.yaml --background-hicpro-dir hicpro_one --background-sample d1
+```
