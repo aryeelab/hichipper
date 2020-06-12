@@ -228,7 +228,7 @@ def main(mode, out, keep_temp_files,
 		# Most of this isn't needed but we'll call it for simplicity with the other parameters
 		peakfilespersample = peakHelper(p.peaks, hicprooutput, p.resfrags, halfLength, peak_pad, out, samples,
 			Rscript, skip_resfrag_pad, skip_background_correction,
-			logf, macs2_string, macs2_genome, script_dir)
+			logf, macs2_string, macs2_genome, script_dir, no_merge_str)
 		click.echo(gettime() + "Pulling interaction PETs from valid interactions file (rather than full HiC-pro output): " + peaks, logf)
 		logf.close()
 		hichipperRunFrags = os.path.join(script_dir, 'interactionsCall_inputFrags.sh')	
