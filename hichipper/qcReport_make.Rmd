@@ -23,6 +23,7 @@ suppressWarnings(suppressMessages(library(reshape2)))
 suppressWarnings(suppressMessages(library(readr)))
 suppressWarnings(suppressMessages(library(knitr)))
 suppressWarnings(suppressMessages(library(networkD3)))
+suppressWarnings(suppressMessages(library(tidyr)))
 
 options(scipen=999)
 
