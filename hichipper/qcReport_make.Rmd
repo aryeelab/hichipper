@@ -45,6 +45,9 @@ anchors <- data.frame()
 readstats <- foreach(sample = samples, .combine="rbind") %do% {
   sfilename <- file.path(paste0(cwd, "/", outdir, "/", sample, ".stat"))
   rs <- read.table(sfilename, header=FALSE, stringsAsFactors = FALSE, sep = "=")
+  rs <- separate(rs, V2, c("V2","file"), sep = " ")
+  rs$V2 <- as.numeric(rs$V2)
+  rs <- rs %>% select(-c(file)) 
   anchors <- rbind(anchors, data.frame(sample= sample, npeaks = rs[12,2] ))
   min_length <- rs[13,2]
   max_length <- rs[14,2]
