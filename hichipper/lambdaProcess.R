@@ -65,8 +65,12 @@ computeRatioEtc <- function(treatmentfile, backgroundfile){
   # Compute nearest neighbor for background
   mid <- (start(cont) + end(cont))/2
   backmid <- as(data.frame(chrom=seqnames(cont), start=mid, end=mid), "GRanges")
-  mcols(cont)$dist <- mcols(distanceToNearest(backmid, resSites))[,1]
-  
+  nearestHits <- distanceToNearest(backmid, resSites)
+  nearestDist <- rep(NA, length(cont))
+  nearestDist[queryHits(nearestHits)] <- mcols(nearestHits)$distance
+  nearestDist[is.na(nearestDist)] <- 0
+  mcols(cont)$dist <- nearestDist
+
   vals <- tapply(txtVals/contVals, nndist, mean)
   
   # Write adjusted treatment (only filters out regions where no restriction enzyme information is contained)
